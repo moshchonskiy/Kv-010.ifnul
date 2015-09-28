@@ -12,8 +12,8 @@ class PersonsPage(InternalPage):
 
     @property
     def is_this_page(self):
-        return self.is_element_visible((By.XPATH, ppm.AddPersonButtonXPATH))
+        return self.is_element_visible((By.XPATH, ppm.AddPersonButtonXpath))
 
     @property
     def add_person_link(self):
-        return self.driver.find_element_by_xpath(ppm.AddPersonButtonXPATH)
+        return self.driver.find_element_by_xpath(ppm.AddPersonButtonXpath)

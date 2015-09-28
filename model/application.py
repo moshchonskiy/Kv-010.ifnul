@@ -1,6 +1,7 @@
 __author__ = 'Evgen'
 
 from selenium import selenium
+from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.remote.webelement           import By
 from selenium.webdriver.support.ui                  import WebDriverWait
 from selenium.webdriver.support.expected_conditions import *

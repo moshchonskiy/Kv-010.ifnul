@@ -2,14 +2,14 @@ __author__ = 'Evgen'
 
 
 class LoginPageMap(object):
-    UsernameFieldID = "inputLogin"
-    PasswordFieldID = "inputPassword"
-    SubmitButtonXPATH = "//button[@type='submit']"
-    ThisPageNAME = "auth"
+    UsernameFieldId = "inputLogin"
+    PasswordFieldId = "inputPassword"
+    SubmitButtonXpath = "//button[@type='submit']"
+    ThisPageName = "auth"
 
 
 class PersonsPageMap(object):
-    AddPersonButtonXPATH = "//button[contains(@class,'btn-success')]"
+    AddPersonButtonXpath = "//button[contains(@class,'btn-success')]"
 
 
 class EnrollmentPageMap(object):
@@ -21,6 +21,7 @@ class InternalPageMap(object):
 
 
 class NewPersonPageMap(object):
+    ThisPageXpath = "//label[@for='inputDocSeries']"
     pass
 
 # LoginPageMap = dict(UsernameFieldID="inputLogin"

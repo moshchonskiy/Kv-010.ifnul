@@ -7,16 +7,16 @@ from ui_map import LoginPageMap as lpm
 class LoginPage(Page):
     @property
     def username_field(self):
-        return self.driver.find_element_by_id(lpm.UsernameFieldID)
+        return self.driver.find_element_by_id(lpm.UsernameFieldId)
 
     @property
     def password_field(self):
-        return self.driver.find_element_by_id(lpm.PasswordFieldID)
+        return self.driver.find_element_by_id(lpm.PasswordFieldId)
 
     @property
     def submit_button(self):
-        return self.driver.find_element_by_xpath(lpm.SubmitButtonXPATH)
+        return self.driver.find_element_by_xpath(lpm.SubmitButtonXpath)
 
     @property
     def is_this_page(self):
-        return self.is_element_visible((By.NAME, lpm.ThisPageNAME))
+        return self.is_element_visible((By.NAME, lpm.ThisPageName))

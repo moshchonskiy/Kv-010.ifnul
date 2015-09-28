@@ -1,6 +1,7 @@
 __author__ = 'Evgen'
 from page import Page
 from selenium.webdriver.common.by import By
+from selenium.webdriver.remote.webelement import WebElement
 
 class InternalPage(Page):
 
