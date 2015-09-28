@@ -1,19 +1,18 @@
 __author__ = 'Evgen'
 from internal_page import InternalPage
 from selenium.webdriver.common.by import By
-from ui_map import PersonsPageMap as ppm
 from selenium.webdriver.remote.webdriver import WebDriver
 
 
 class PersonsPage(InternalPage):
 
+    ADD_PERSON_BUTTON = (By.XPATH, "//button[contains(@class,'btn-success')]")
 
-   # driver= WebDriver  # using for development purpose, comment this line after finish
 
     @property
     def is_this_page(self):
-        return self.is_element_visible((By.XPATH, ppm.AddPersonButtonXPATH))
+        return self.is_element_visible(self.ADD_PERSON_BUTTON)
 
     @property
     def add_person_link(self):
-        return self.driver.find_element_by_xpath(ppm.AddPersonButtonXPATH)
+        return self.driver.find_element_by_xpath(*self.ADD_PERSON_BUTTON)
