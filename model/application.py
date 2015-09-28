@@ -1,16 +1,14 @@
 __author__ = 'Evgen'
 
-from selenium import selenium
-from selenium.webdriver.remote.webelement import WebElement
-from selenium.webdriver.remote.webelement           import By
-from selenium.webdriver.support.ui                  import WebDriverWait
+from selenium.webdriver.remote.webelement import By
+from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support.expected_conditions import *
-from pages.login_page                               import LoginPage
-from pages.persons_page                             import PersonsPage
-from pages.internal_page                            import InternalPage
-from pages.new_person_page                          import NewPersonPage
-from model.user                                     import User
-import pytest
+
+from pages.login_page import LoginPage
+from pages.persons_page import PersonsPage
+from pages.internal_page import InternalPage
+from pages.person.add_person_page import NewPersonPage
+from model.user import User
 
 
 class Application:
@@ -34,11 +32,11 @@ class Application:
         if element.tag_name == "input[id='inputLogin']":
             self.login(User.Admin())
 
-
     def logout(self):
-        self.internal_page.is_this_page
-        self.internal_page.user_dropdown.click()
-        self.internal_page.logout_button.click()
+        ip = self.internal_page
+        ip.is_this_page
+        ip.user_dropdown.click()
+        ip.logout_button.click()
 
     def ensure_logout(self):
         element = self.wait.until(presence_of_element_located((By.CSS_SELECTOR, "nav, input[id='inputLogin']")))
@@ -50,11 +48,3 @@ class Application:
 
     def is_not_logged_in(self):
         return self.login_page.is_this_page
-
-    def go_to_persons_page(self):
-        self.internal_page.is_this_page
-        self.internal_page.person_page_link.click()
-
-    def go_to_enrollment_page(self):
-        self.internal_page.is_this_page
-        self.internal_page.enrollment_page_link.click()

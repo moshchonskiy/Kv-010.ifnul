@@ -13,3 +13,4 @@ def test_invalid_login(app):
     app.ensure_logout()
     app.login(User.random())
     assert app.is_not_logged_in()
+
