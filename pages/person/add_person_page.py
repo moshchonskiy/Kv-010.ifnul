@@ -8,6 +8,9 @@ from selenium.webdriver.remote.webelement import WebElement
 class AddPersonPage(InternalPage):
 
     ADD_PERSON_PAGE = (By.XPATH, "//label[@for='inputDocSeries']")
+    SAVE_NEW_PERSON_BUTTON = (By.XPATH, "//button[@class='btn btn-block btn-success']")
+    NEXT_BUTTON = (By.XPATH, "//button[@ng-click='goToNextTab(1)']")
+    BACK_BUTTON = (By.XPATH, "//button[@ng-click='goToNextTab(-1)']")
 
     @property
     def is_this_page(self):
