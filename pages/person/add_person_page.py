@@ -5,7 +5,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webelement import WebElement
 
 
-class NewPersonPage(InternalPage):
+class AddPersonPage(InternalPage):
 
     ADD_PERSON_PAGE = (By.XPATH, "//label[@for='inputDocSeries']")
 
