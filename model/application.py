@@ -24,7 +24,7 @@ class Application:
 
     def login(self, user, checkbox=False):
         """
-        Method, to login to the application. Use app.login(User.Admin) in tests
+        Method performs login to the application. Use app.login(User.Admin) in tests
         :param user: User.Admin or User.random at the moment
         :param checkbox: True with checkbox remember me and False without it. Default value is False
         """
