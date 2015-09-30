@@ -25,7 +25,8 @@ def app(request, browser_type, base_url):
     """
     Fixture is used to perform all tests, use it in your tests like >>>  def test_method(app)
     It performs all tests in one browser, because of (scope="session")
-    If it needs to perform tests in another browser you can write in the console something like >>> py.test --browser "chrome"
+    If it needs to perform tests in another browser,
+    you can write in the console something like >>> py.test --browser "chrome"
     :return: new Application with chosen or default params
     """
     if browser_type == "firefox":
