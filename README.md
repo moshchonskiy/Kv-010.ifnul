@@ -10,7 +10,7 @@ In order to change default test runner, go to Settings > Tools > Python Integrat
 
 Test Design Specification: Persons and Enrolments Interaction
 
-Test Design Specification: Dictionary viewing
+[Test Design Specification: Dictionary viewing](https://docs.google.com/document/d/1Po6PPhxOAzvkwDzukKddjhEbZ9e6lMpHwuKOcyc9_tI/edit?usp=sharing)
 
 
 [Text fields validation rules](https://docs.google.com/document/d/1E6WnUKA8GEU1loQV5hlfP4bqyW5IpJAdd-OHXV4wQcs/edit?usp=sharing)
