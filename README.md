@@ -8,7 +8,7 @@ In order to change default test runner, go to Settings > Tools > Python Integrat
 
 [Test Design Specification: Authorization](https://docs.google.com/document/d/1lkLuqq6MHeWO0gqJrZMV9JMiaaWA8X23TLmgs6UcW5M/edit?usp=sharing)
 
-Test Design Specification: Persons and Enrolments Interaction
+[Test Design Specification: Persons and Enrolments Interaction](https://docs.google.com/document/d/1xOhLMlPoF7komgTpko6uBhu2cSlo7lDR7IN7gA3xJiA/edit?usp=sharing)
 
 [Test Design Specification: Dictionary viewing](https://docs.google.com/document/d/1Po6PPhxOAzvkwDzukKddjhEbZ9e6lMpHwuKOcyc9_tI/edit?usp=sharing)
 
