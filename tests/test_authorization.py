@@ -2,6 +2,7 @@ __author__ = 'Evgen'
 import pytest
 from model.user import User
 from selenium.webdriver.common.keys import Keys
+from conftest import app
 
 
 def test_valid_login(app):

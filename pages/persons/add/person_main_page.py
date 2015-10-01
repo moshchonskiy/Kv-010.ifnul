@@ -5,7 +5,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webelement import WebElement
 
 
-class AddPersonPage(InternalPage):
+class PersonMainPage(InternalPage):
 
     ADD_PERSON_PAGE = (By.XPATH, "//label[@for='inputDocSeries']")
     SAVE_NEW_PERSON_BUTTON = (By.XPATH, "//button[@class='btn btn-block btn-success']")

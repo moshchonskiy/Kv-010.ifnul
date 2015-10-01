@@ -4,7 +4,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
 
 
-class EnrollmentPage(InternalPage):
+class EnrollmentsPage(InternalPage):
     SEARCH_SELECT_DROPDOWN = (By.XPATH, "//select[contains(@class, 'form-control')]")
     SEARCH_FIELD = (By.XPATH, "//input[@ng-model='querySearchBy']")
     SUBMIT_SEARCH_BUTTON = (By.XPATH, "//button[contains(@ng-click, 'startSearch')]")
