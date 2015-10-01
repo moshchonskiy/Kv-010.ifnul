@@ -7,7 +7,8 @@ from selenium.webdriver.support.expected_conditions import *
 from pages.login_page import LoginPage
 from pages.persons.persons_page import PersonsPage
 from pages.internal_page import InternalPage
-from pages.persons.add.person_main_page import AddPersonPage
+from pages.persons.add.person_main_page import PersonMainPage
+from pages.enrollments.enrollments_page import EnrollmentsPage
 from model.user import User
 
 
@@ -19,7 +20,8 @@ class Application:
         self.login_page = LoginPage(driver, base_url)
         self.persons_page = PersonsPage(driver, base_url)
         self.internal_page = InternalPage(driver, base_url)
-        self.new_person_page = AddPersonPage(driver, base_url)
+        self.person_main_page = PersonMainPage(driver, base_url)
+        self.enrollments_page = EnrollmentsPage(driver, base_url)
 
     def login(self, user, checkbox=False):
         """
