@@ -9,7 +9,7 @@ class InternalPage(Page):
     USER_DROPDOWN = (By.XPATH, "//i[@class='fa fa-user fa-fw']")
     LOGOUT_BUTTON = (By.XPATH, "//li[@class='dropdown open']//a[@ng-click='header.logout()']")
     PERSON_PAGE_LINK = (By.XPATH, "//a[@ui-sref='root.person.list']")
-    ENROLLMENT_PAGE_LINK = (By.XPATH, "//a[@ui-sref='root.enrolment.list']")
+    ENROLLMENTS_PAGE_LINK = (By.XPATH, "//a[@ui-sref='root.enrolment.list']")
     DICTIONARIES_PAGE_LINK = (By.XPATH, "//a[@ui-sref='root.dictionaries']")
 
     @property
@@ -25,12 +25,12 @@ class InternalPage(Page):
         return self.is_element_visible(self.INTERNAL_PAGE)
 
     @property
-    def person_page_link(self):
+    def persons_page_link(self):
         return self.driver.find_element(*self.PERSON_PAGE_LINK)
 
     @property
-    def enrollment_page_link(self):
-        return self.driver.find_element(*self.ENROLLMENT_PAGE_LINK)
+    def enrollments_page_link(self):
+        return self.driver.find_element(*self.ENROLLMENTS_PAGE_LINK)
 
     @property
     def dictionaries_page_link(self):
