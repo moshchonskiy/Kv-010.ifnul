@@ -5,6 +5,7 @@ from selenium import webdriver
 from model.application import Application
 
 
+
 def pytest_addoption(parser):
     parser.addoption("--browser", action="store", default="firefox")
     parser.addoption("--base_url", action="store", default="http://194.44.198.221/")

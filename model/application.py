@@ -1,3 +1,5 @@
+from pages.dictionaries_page import DictionariesPage
+
 from pages.persons.view.person_current_view_page import PersonCurrentViewPage
 from pages.persons.view.person_main_view_page import PersonMainViewPage
 
@@ -25,6 +27,7 @@ class Application:
         self.internal_page = InternalPage(driver, base_url)
         self.person_main_page = PersonMainPage(driver, base_url)
         self.enrollments_page = EnrollmentsPage(driver, base_url)
+        self.dictionaries_page = DictionariesPage(driver,base_url)
         self.person_current_view_page = PersonCurrentViewPage(driver, base_url)
         self.person_main_view_page = PersonMainViewPage(driver, base_url)
 
