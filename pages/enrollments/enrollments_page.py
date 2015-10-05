@@ -4,7 +4,6 @@ from time import sleep
 from pages.internal_page import InternalPage
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
-from selenium.webdriver.support.ui import WebDriverWait
 from exceptions import AssertionError
 __author__ = 'Evgen'
 
@@ -118,7 +117,7 @@ class EnrollmentsPage(InternalPage):
         self.search_field_enr.clear()
         self.search_field_enr.send_keys(req)
         self.submit_search_button_enr.click()
-        sleep(6)
+        self.is_element_present(self.SPINNER_OFF)
 
     def search_enrollment_by_person_id(self, person_id):
         """
@@ -127,7 +126,7 @@ class EnrollmentsPage(InternalPage):
         :return:
         """
         self.hundred_button.click()
-        sleep(6)
+        self.is_element_present(self.SPINNER_OFF)
         self.search_method_chooser("0", person_id)
         person_ids = self.driver.find_elements(*self.PERSON_ID_COLUMN)
         lst = [cur_id.text for cur_id in person_ids if cur_id != person_id]
@@ -143,7 +142,7 @@ class EnrollmentsPage(InternalPage):
         :return:
         """
         self.hundred_button.click()
-        sleep(6)
+        self.is_element_present(self.SPINNER_OFF)
         self.search_method_chooser("1", doc_series)
         series = self.driver.find_elements(*self.DOC_SERIES_COLUMN)
         lst = [cur_series.text for cur_series in series if cur_series != doc_series]
@@ -159,7 +158,7 @@ class EnrollmentsPage(InternalPage):
         :return:
         """
         self.hundred_button.click()
-        sleep(6)
+        self.is_element_present(self.SPINNER_OFF)
         self.search_method_chooser("2", doc_number)
         numbers = self.driver.find_elements(*self.DOC_NUMBER_COLUMN)
         nums = [cur_num.text for cur_num in numbers if cur_num.text != doc_number]
@@ -175,7 +174,7 @@ class EnrollmentsPage(InternalPage):
         :return:
         """
         self.hundred_button.click()
-        sleep(6)
+        self.is_element_present(self.SPINNER_OFF)
         self.search_method_chooser("3", proposal_id)
         pro_ids = self.driver.find_elements(*self.PROPOSAL_ID_COLUMN)
         ids = [cur_id.text for cur_id in pro_ids if cur_id.text != proposal_id]
@@ -215,14 +214,14 @@ class EnrollmentsPage(InternalPage):
         yes_budget = u'✓'
         not_budget = u'✘'
         self.hundred_button.click()
-        self.is_element_visible(self.NEW_ROW_WAITER)
+        self.is_element_present(self.SPINNER_OFF)
         self.table_column_chooser(self.COLUMN_BUDGET_ADD)
         if budget:
             self.filter_budget.click()
         else:
             self.filter_not_budget.click()
         self.filter_refresh_button_enr.click()
-        sleep(5)
+        self.is_element_present(self.SPINNER_OFF)
         elements = self.driver.find_elements(*self.BUDGET_COLUMN)
         lst = [element.text for element in elements]
         if budget:
@@ -243,10 +242,10 @@ class EnrollmentsPage(InternalPage):
         """
         priv = u'є пільги'
         self.hundred_button.click()
-        self.is_element_visible(self.NEW_ROW_WAITER)
+        self.is_element_present(self.SPINNER_OFF)
         self.filter_add(self.FILTER_PRIVILEGES)
         self.filter_refresh_button_enr.click()
-        sleep(6)
+        self.is_element_present(self.SPINNER_OFF)
         elements = self.driver.find_elements(*self.PRIVILEGES_COLUMN)
         lst = [element.text for element in elements if element.text != priv]
         if len(lst) > 0:
@@ -257,10 +256,10 @@ class EnrollmentsPage(InternalPage):
     def filter_by_not_privileges(self):
         priv = u'пільги відсутні'
         self.hundred_button.click()
-        self.is_element_visible(self.NEW_ROW_WAITER)
+        self.is_element_present(self.SPINNER_OFF)
         self.filter_add(self.FILTER_NOT_PRIVILEGES)
         self.filter_refresh_button_enr.click()
-        sleep(6)
+        self.is_element_present(self.SPINNER_OFF)
         elements = self.driver.find_elements(*self.PRIVILEGES_COLUMN)
         lst = [element.text for element in elements if element.text != priv]
         if len(lst) > 0:
@@ -274,13 +273,13 @@ class EnrollmentsPage(InternalPage):
         :return: List of unique values of filtered columns
         """
         self.hundred_button.click()
-        self.is_element_visible(self.NEW_ROW_WAITER)
+        self.is_element_present(self.SPINNER_OFF)
         self.table_column_chooser(self.COLUMN_BUDGET_ADD)
         self.filter_add(self.FILTER_BUDGET)
         self.filter_add(self.FILTER_NOT_PRIVILEGES)
         self.filter_add(self.FILTER_NEED_ACCOMMODATION)
         self.filter_refresh_button_enr.click()
-        sleep(5)
+        self.is_element_present(self.SPINNER_OFF)
         elements = self.driver.find_elements(*self.BUDGET_COLUMN)
         elements1 = self.driver.find_elements(*self.PRIVILEGES_COLUMN)
         elements2 = self.driver.find_elements(*self.ACCOMMODATION_COLUMN)
