@@ -1,3 +1,5 @@
+from pages.persons.view.person_current_view_page import PersonCurrentViewPage
+
 __author__ = 'Evgen'
 
 from selenium.webdriver.remote.webelement import By
@@ -22,6 +24,7 @@ class Application:
         self.internal_page = InternalPage(driver, base_url)
         self.person_main_page = PersonMainPage(driver, base_url)
         self.enrollments_page = EnrollmentsPage(driver, base_url)
+        self.person_current_view_page = PersonCurrentViewPage(driver, base_url)
 
     def login(self, user, checkbox=False):
         """
