@@ -1,4 +1,5 @@
 from pages.persons.view.person_current_view_page import PersonCurrentViewPage
+from pages.persons.view.person_main_view_page import PersonMainViewPage
 
 __author__ = 'Evgen'
 
@@ -25,6 +26,7 @@ class Application:
         self.person_main_page = PersonMainPage(driver, base_url)
         self.enrollments_page = EnrollmentsPage(driver, base_url)
         self.person_current_view_page = PersonCurrentViewPage(driver, base_url)
+        self.person_main_view_page = PersonMainViewPage(driver, base_url)
 
     def login(self, user, checkbox=False):
         """
