@@ -1,1 +1,23 @@
-<?xml version="1.0" encoding="utf-8"?><testsuite errors="0" failures="0" name="pytest" skips="0" tests="3" time="12.977"><testcase classname="test_go_to_new_person" file="test_go_to_new_person.py" line="6" name="test_go_to_new_person" time="10.5280001163"/><testcase classname="test_login" file="test_login.py" line="5" name="test_valid_login" time="1.4209997654"/><testcase classname="test_login" file="test_login.py" line="11" name="test_invalid_login" time="0.995000123978"/></testsuite>
+<?xml version="1.0" encoding="utf-8"?><testsuite errors="0" failures="1" name="pytest" skips="0" tests="8" time="115.908"><testcase classname="tests.some_test" file="tests\some_test.py" line="6" name="test_search_by" time="59.0920000076"><failure message="assert &apos;134&apos; == &apos;5&apos;
+  - 134
+  + 5">app = &lt;model.application.Application instance at 0x0348B418&gt;
+
+    def test_search_by(app):
+        app.ensure_logout()
+        app.login(User.Admin())
+        app.internal_page.is_this_page
+        app.internal_page.enrollments_page_link.click()
+        app.enrollments_page.is_this_page
+        with pytest.allure.step(&quot;Searching by person ID&quot;):
+            assert app.enrollments_page.search_enrollment_by_person_id(&quot;9&quot;) == &quot;9&quot;
+        with pytest.allure.step(&quot;Searching by document&apos;s series&quot;):
+            assert app.enrollments_page.search_enrollment_by_doc_series(&quot;232&quot;) == &quot;232&quot;
+        with pytest.allure.step(&quot;Searching by document&apos;s number&quot;):
+            assert app.enrollments_page.search_enrollment_by_doc_number(&quot;3333&quot;) == &quot;3333&quot;
+        with pytest.allure.step(&quot;Searching by proposal ID&quot;):
+&gt;           assert app.enrollments_page.search_enrollment_by_proposal_id(&quot;5&quot;) == &quot;5&quot;
+E           assert &apos;134&apos; == &apos;5&apos;
+E             - 134
+E             + 5
+
+tests\some_test.py:20: AssertionError</failure></testcase><testcase classname="tests.some_test" file="tests\some_test.py" line="22" name="test_filter_by_budget" time="11.8989999294"/><testcase classname="tests.some_test" file="tests\some_test.py" line="32" name="test_filter_by_not_budget" time="11.7949998379"/><testcase classname="tests.some_test" file="tests\some_test.py" line="52" name="test_filter_by_privileges" time="10.9720001221"/><testcase classname="tests.some_test" file="tests\some_test.py" line="62" name="test_filter_mix" time="11.9350001812"/><testcase classname="tests.test_authorization" file="tests\test_authorization.py" line="7" name="test_valid_login" time="6.06500005722"/><testcase classname="tests.test_authorization" file="tests\test_authorization.py" line="13" name="test_remember_me_checkbox" time="2.86500000954"/><testcase classname="tests.test_authorization" file="tests\test_authorization.py" line="28" name="test_invalid_login" time="1.1930000782"/></testsuite>
