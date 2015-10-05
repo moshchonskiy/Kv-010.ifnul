@@ -5,6 +5,7 @@ from pages.internal_page import InternalPage
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
 from exceptions import AssertionError
+
 __author__ = 'Evgen'
 
 
@@ -14,10 +15,18 @@ class EnrollmentsPage(InternalPage):
     #     self.base_url = base_url
     #     self.wait = WebDriverWait(driver, 15)
 
+    SEARCH_METHOD = {"person_id": "0",
+                     "document_series": "1",
+                     "document_number": "2",
+                     "proposal_id": "3"
+                     }
     SEARCH_SELECT_DROPDOWN = (By.XPATH, "//select[contains(@class, 'form-control')]")
     SEARCH_FIELD = (By.XPATH, "//input[@ng-model='querySearchBy']")
     SUBMIT_SEARCH_BUTTON = (By.XPATH, "//button[contains(@ng-click, 'startSearch')]")
     ADD_NEW_ENROLLMENT_BUTTON = (By.XPATH, "//a[@href='#/enrolment/new/main']")
+    NEXT_TABLE_PAGE_BUTTON = (By.XPATH, "//div[@class='raw table-footer']/paging/ul/li[@title='Next Page']/span")
+    NEXT_TABLE_PAGE_DISABLED_BUTTON = (
+        By.XPATH, "//div[@class='raw table-footer']/paging/ul/li[@class='ng-scope disabled' and @title='Next Page']/span")
     TEN_BUTTON = (By.XPATH, "//div[@class='raw table-footer']//div[@class='btn-group pull-right']/button[1]")
     TWENTY_BUTTON = (By.XPATH, "//div[@class='raw table-footer']//div[@class='btn-group pull-right']/button[2]")
     FIFTY_BUTTON = (By.XPATH, "//div[@class='raw table-footer']//div[@class='btn-group pull-right']/button[3]")
@@ -38,14 +47,20 @@ class EnrollmentsPage(InternalPage):
     FILTER_NOT_CONTRACT = (By.XPATH, "//div[@class ='panel panel-default ng-isolate-scope'][2]/div[2]/div/div[2]/label")
     FILTER_PRIVILEGES_HEADER = (By.XPATH, "//div[@class ='panel panel-default ng-isolate-scope'][3]/div[1]//a")
     FILTER_PRIVILEGES = (By.XPATH, "//div[@class ='panel panel-default ng-isolate-scope'][3]/div[2]/div/div[1]/label")
-    FILTER_NOT_PRIVILEGES = (By.XPATH, "//div[@class ='panel panel-default ng-isolate-scope'][3]/div[2]/div/div[2]/label")
+    FILTER_NOT_PRIVILEGES = (
+        By.XPATH, "//div[@class ='panel panel-default ng-isolate-scope'][3]/div[2]/div/div[2]/label")
     FILTER_ACCOMMODATION_HEADER = (By.XPATH, "//div[@class ='panel panel-default ng-isolate-scope'][4]/div[1]//a")
-    FILTER_NEED_ACCOMMODATION = (By.XPATH, "//div[@class ='panel panel-default ng-isolate-scope'][4]/div[2]/div/div[1]/label")
-    FILTER_NOT_NEED_ACCOMMODATION = (By.XPATH, "//div[@class ='panel panel-default ng-isolate-scope'][4]/div[2]/div/div[2]/label")
+    FILTER_NEED_ACCOMMODATION = (
+        By.XPATH, "//div[@class ='panel panel-default ng-isolate-scope'][4]/div[2]/div/div[1]/label")
+    FILTER_NOT_NEED_ACCOMMODATION = (
+        By.XPATH, "//div[@class ='panel panel-default ng-isolate-scope'][4]/div[2]/div/div[2]/label")
     FILTER_ENROLL_TYPE_HEADER = (By.XPATH, "//div[@class ='panel panel-default ng-isolate-scope'][5]/div[1]//a")
-    FILTER_ENR_TYPE_CERTIFICATE = (By.XPATH, "//div[@class ='panel panel-default ng-isolate-scope'][5]/div[2]/div/div[1]/label")
-    FILTER_ENR_TYPE_EXAM = (By.XPATH, "//div[@class ='panel panel-default ng-isolate-scope'][5]/div[2]/div/div[2]/label")
-    FILTER_ENR_TYPE_NOT_ZNO = (By.XPATH, "//div[@class ='panel panel-default ng-isolate-scope'][5]/div[2]/div/div[14]/label")
+    FILTER_ENR_TYPE_CERTIFICATE = (
+        By.XPATH, "//div[@class ='panel panel-default ng-isolate-scope'][5]/div[2]/div/div[1]/label")
+    FILTER_ENR_TYPE_EXAM = (
+        By.XPATH, "//div[@class ='panel panel-default ng-isolate-scope'][5]/div[2]/div/div[2]/label")
+    FILTER_ENR_TYPE_NOT_ZNO = (
+        By.XPATH, "//div[@class ='panel panel-default ng-isolate-scope'][5]/div[2]/div/div[14]/label")
     FILTER_SUBDIVISION_HEADER = (By.XPATH, "//div[@class ='panel panel-default ng-isolate-scope'][6]/div[1]//a")
     COLUMN_CHOOSER_BUTTON = (By.XPATH, "//button[contains(@class,'field-chooser-button')]")
     COLUMN_BUDGET_ADD = (By.XPATH, "//li[4]//*[@id='showHideHeader']")
@@ -104,11 +119,11 @@ class EnrollmentsPage(InternalPage):
     def hundred_button(self):
         return self.driver.find_element(*self.HUNDRED_BUTTON)
 
-    def search_method_chooser(self, search_by, req):
+    def execute_search(self, search_by, req):
         """
         Method perform choosing of search method and clicking of submit button
-        :param search_by: "0" - person ID, "1" - document's series, "2" - document's number, "3" - proposal ID
-        :param req: Request is posted from search field
+        :param search_by:  person_id,  document_series, document_number, proposal_id
+        :param req: Request sends to search field
         :return:
         """
         self.is_this_page
@@ -119,6 +134,44 @@ class EnrollmentsPage(InternalPage):
         self.submit_search_button_enr.click()
         self.is_element_present(self.SPINNER_OFF)
 
+    def search_text_in_column(self, column, text):
+        """
+        Method searches in wanted column for requested text
+        :param column: Column selector
+        :param text: String
+        :return: List with founded text
+        """
+        elements = self.driver.find_elements(*column)
+        lst = [element.text for element in elements if element.text != text]
+        if len(lst) > 0:
+            return lst[0]
+        else:
+            return text
+
+    def search_enrollment(self, search_by, req):
+        """
+        Method perform choosing of search method and clicking of submit button
+        :param search_by:  person_id,  document_series, document_number, proposal_id
+        :param req: Request sends to search field
+        :return: List with founded text
+        """
+        self.is_this_page
+        select = Select(self.search_select_dropdown)
+        select.select_by_value(search_by)
+        self.search_field_enr.clear()
+        self.search_field_enr.send_keys(req)
+        self.submit_search_button_enr.click()
+        self.is_element_present(self.SPINNER_OFF)
+        # while self.is_element_present(self.NEXT_TABLE_PAGE_BUTTON):
+        if search_by is self.SEARCH_METHOD["person_id"]:
+            self.search_text_in_column(self.PERSON_ID_COLUMN, req)
+        elif search_by is self.SEARCH_METHOD["document_series"]:
+            self.search_text_in_column(self.DOC_SERIES_COLUMN, req)
+        elif search_by is self.SEARCH_METHOD["document_number"]:
+            self.search_text_in_column(self.DOC_NUMBER_COLUMN, req)
+        elif search_by is self.SEARCH_METHOD["proposal_id"]:
+            self.search_text_in_column(self.PROPOSAL_ID_COLUMN, req)
+
     def search_enrollment_by_person_id(self, person_id):
         """
         Method perform search of enrollment by person ID
@@ -127,13 +180,7 @@ class EnrollmentsPage(InternalPage):
         """
         self.hundred_button.click()
         self.is_element_present(self.SPINNER_OFF)
-        self.search_method_chooser("0", person_id)
-        person_ids = self.driver.find_elements(*self.PERSON_ID_COLUMN)
-        lst = [cur_id.text for cur_id in person_ids if cur_id != person_id]
-        if len(lst) > 0:
-            return lst[0]
-        else:
-            return person_id
+        return self.search_enrollment(self.SEARCH_METHOD["person_id"], person_id)
 
     def search_enrollment_by_doc_series(self, doc_series):
         """
@@ -143,13 +190,7 @@ class EnrollmentsPage(InternalPage):
         """
         self.hundred_button.click()
         self.is_element_present(self.SPINNER_OFF)
-        self.search_method_chooser("1", doc_series)
-        series = self.driver.find_elements(*self.DOC_SERIES_COLUMN)
-        lst = [cur_series.text for cur_series in series if cur_series != doc_series]
-        if len(lst) > 0:
-            return lst[0]
-        else:
-            return doc_series
+        return self.search_enrollment(self.SEARCH_METHOD["document_series"], doc_series)
 
     def search_enrollment_by_doc_number(self, doc_number):
         """
@@ -159,13 +200,7 @@ class EnrollmentsPage(InternalPage):
         """
         self.hundred_button.click()
         self.is_element_present(self.SPINNER_OFF)
-        self.search_method_chooser("2", doc_number)
-        numbers = self.driver.find_elements(*self.DOC_NUMBER_COLUMN)
-        nums = [cur_num.text for cur_num in numbers if cur_num.text != doc_number]
-        if len(nums) > 0:
-            return nums[0]
-        else:
-            return doc_number
+        return self.search_enrollment(self.SEARCH_METHOD["document_number"], doc_number)
 
     def search_enrollment_by_proposal_id(self, proposal_id):
         """
@@ -175,13 +210,7 @@ class EnrollmentsPage(InternalPage):
         """
         self.hundred_button.click()
         self.is_element_present(self.SPINNER_OFF)
-        self.search_method_chooser("3", proposal_id)
-        pro_ids = self.driver.find_elements(*self.PROPOSAL_ID_COLUMN)
-        ids = [cur_id.text for cur_id in pro_ids if cur_id.text != proposal_id]
-        if len(ids) > 0:
-            return ids[0]
-        else:
-            return proposal_id
+        return self.search_enrollment(self.SEARCH_METHOD["proposal_id"], proposal_id)
 
     def table_column_chooser(self, column):
         """
@@ -203,7 +232,6 @@ class EnrollmentsPage(InternalPage):
         :return:
         """
         self.driver.find_element(*f_add).click()
-
 
     def filter_by_budget(self, budget=True):
         """
@@ -294,6 +322,3 @@ class EnrollmentsPage(InternalPage):
             if element.text not in lst:
                 lst.append(element.text)
         return lst
-
-
-
