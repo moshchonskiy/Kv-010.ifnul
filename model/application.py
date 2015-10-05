@@ -1,3 +1,5 @@
+from pages.dictionaries_page import DictionariesPage
+
 __author__ = 'Evgen'
 
 from selenium.webdriver.remote.webelement import By
@@ -22,6 +24,7 @@ class Application:
         self.internal_page = InternalPage(driver, base_url)
         self.person_main_page = PersonMainPage(driver, base_url)
         self.enrollments_page = EnrollmentsPage(driver, base_url)
+        self.dictionaries_page = DictionariesPage(driver,base_url)
 
     def login(self, user, checkbox=False):
         """
