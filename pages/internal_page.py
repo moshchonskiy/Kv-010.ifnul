@@ -1,6 +1,7 @@
 __author__ = 'Evgen'
 from page import Page
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.expected_conditions import *
 from selenium.webdriver.remote.webelement import WebElement
 
 
@@ -11,6 +12,7 @@ class InternalPage(Page):
     PERSON_PAGE_LINK = (By.XPATH, "//a[@ui-sref='root.person.list']")
     ENROLLMENTS_PAGE_LINK = (By.XPATH, "//a[@ui-sref='root.enrolment.list']")
     DICTIONARIES_PAGE_LINK = (By.XPATH, "//a[@ui-sref='root.dictionaries']")
+    SPINNER_OFF = (By.XPATH, "//div[@id='spinnerDiv' and @style='display: none;']")
 
     @property
     def user_dropdown(self):
@@ -35,3 +37,9 @@ class InternalPage(Page):
     @property
     def dictionaries_page_link(self):
         return self.driver.find_element(*self.DICTIONARIES_PAGE_LINK)
+
+    def is_element_present(self, locator):
+        try:
+            return self.wait.until(presence_of_element_located(locator))
+        except WebDriverException:
+            return False
