@@ -16,6 +16,7 @@ class PersonsPage(InternalPage):
     INPUT_GROUP_SEARCH_BUTTON  = (By.XPATH, "//div[@class = 'input-group']/input")
     OK_GROUP_SEARCH_BUTTON     = (By.XPATH, "//div[@class = 'input-group']/span/button")
 
+    EXPECTED_SURNAME           = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope']/td[2]")
     EXPECTED_PERSON_ID         = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope']/td[1]")
     EXPECTED_NUM_OS            = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope']/td[11]")
     EXPECTED_SERIES_OS         = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope']/td[10]")
@@ -39,6 +40,9 @@ class PersonsPage(InternalPage):
     #surname search
     def try_get_choose_surname(self):
         return self.is_element_visible(self.CHOOSE_SURNAME_SEARCH)
+
+    def try_get_expected_surname(self):
+        return self.driver.find_element(*self.EXPECTED_SURNAME)
 
     #persone_id search
     def try_get_choose_person_id(self):
