@@ -4,6 +4,7 @@ from time import sleep
 from pages.internal_page import InternalPage
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
+from selenium.webdriver.support.expected_conditions import *
 from exceptions import AssertionError
 
 __author__ = 'Evgen'
@@ -20,13 +21,25 @@ class EnrollmentsPage(InternalPage):
                      "document_number": "2",
                      "proposal_id": "3"
                      }
+    FILTER_RESULTS = {"budget": u'✓',
+                      "not_budget": u'✘',
+                      "privileged": u'є пільги',
+                      "not_privileged": u'пільги відсутні',
+                      "contract": u'✓',
+                      "not_contract": u'✘',
+                      "accommodation": u'потреб. гуртож.',
+                      "not_accommodation": u'не потреб. гуртож.'
+    }
     SEARCH_SELECT_DROPDOWN = (By.XPATH, "//select[contains(@class, 'form-control')]")
     SEARCH_FIELD = (By.XPATH, "//input[@ng-model='querySearchBy']")
     SUBMIT_SEARCH_BUTTON = (By.XPATH, "//button[contains(@ng-click, 'startSearch')]")
     ADD_NEW_ENROLLMENT_BUTTON = (By.XPATH, "//a[@href='#/enrolment/new/main']")
-    NEXT_TABLE_PAGE_BUTTON = (By.XPATH, "//div[@class='raw table-footer']/paging/ul/li[@title='Next Page']/span")
+    NEXT_TABLE_PAGE_BUTTON = (
+        By.CSS_SELECTOR, "li[class='ng-scope'][title='Next Page'] span")
     NEXT_TABLE_PAGE_DISABLED_BUTTON = (
-        By.XPATH, "//div[@class='raw table-footer']/paging/ul/li[@class='ng-scope disabled' and @title='Next Page']/span")
+        By.CSS_SELECTOR, "li[class='ng-scope disabled'][title='Next Page'] span")
+    NEXT_TABLE_BUTTON_COUNTER = (
+        By.XPATH, "//li[contains(@title, 'Page')]")
     TEN_BUTTON = (By.XPATH, "//div[@class='raw table-footer']//div[@class='btn-group pull-right']/button[1]")
     TWENTY_BUTTON = (By.XPATH, "//div[@class='raw table-footer']//div[@class='btn-group pull-right']/button[2]")
     FIFTY_BUTTON = (By.XPATH, "//div[@class='raw table-footer']//div[@class='btn-group pull-right']/button[3]")
@@ -39,6 +52,7 @@ class EnrollmentsPage(InternalPage):
     DOC_NUMBER_COLUMN = (By.XPATH, "//table/tbody/tr/td[11]")
     ACCOMMODATION_COLUMN = (By.XPATH, "//table/tbody/tr/td[12]")
     FILTER_REFRESH_BUTTON = (By.XPATH, "//div[contains(@class,'col-md-2')]/p[1]/button")
+    DELETE_FILTER_BUTTON = (By.XPATH, "//div[@class='col-md-2 col-lg-2 filter']//button[@class='close']")
     FILTER_BUDGET_HEADER = (By.XPATH, "//div[@class ='panel panel-default ng-isolate-scope'][1]/div[1]//a")
     FILTER_BUDGET = (By.XPATH, "//div[@class ='panel panel-default ng-isolate-scope'][1]/div[2]/div/div[1]/label")
     FILTER_NOT_BUDGET = (By.XPATH, "//div[@class ='panel panel-default ng-isolate-scope'][1]/div[2]/div/div[2]/label")
@@ -127,6 +141,8 @@ class EnrollmentsPage(InternalPage):
         :return:
         """
         self.is_this_page
+        self.hundred_button.click()
+        self.is_element_present(self.SPINNER_OFF)
         select = Select(self.search_select_dropdown)
         select.select_by_value(search_by)
         self.search_field_enr.clear()
@@ -141,76 +157,44 @@ class EnrollmentsPage(InternalPage):
         :param text: String
         :return: List with founded text
         """
-        elements = self.driver.find_elements(*column)
-        lst = [element.text for element in elements if element.text != text]
-        if len(lst) > 0:
-            return lst[0]
+        lst = list()
+        web_elements = self.driver.find_elements(*self.NEXT_TABLE_BUTTON_COUNTER)
+        if len(web_elements) == 5:
+            elements = self.driver.find_elements(*column)
+            lst = [element.text for element in elements if element.text != text]
+            if len(lst) > 0:
+                return lst[0]
+            else:
+                return text
         else:
-            return text
+            while self.is_element_visible(self.NEXT_TABLE_PAGE_BUTTON):
+                elements = self.driver.find_elements(*column)
+                for element in elements:
+                    if element.text != text:
+                        lst.append(element.text)
+                self.driver.find_element(*self.NEXT_TABLE_PAGE_BUTTON).click()
+                self.is_element_present(self.SPINNER_OFF)
+            if len(lst) > 0:
+                return lst[0]
+            else:
+                return text
 
     def search_enrollment(self, search_by, req):
         """
-        Method perform choosing of search method and clicking of submit button
+        Method perform search of enrollment
         :param search_by:  person_id,  document_series, document_number, proposal_id
         :param req: Request sends to search field
-        :return: List with founded text
+        :return: If any difference between request and founded it returns difference, if not it returns request
         """
-        self.is_this_page
-        select = Select(self.search_select_dropdown)
-        select.select_by_value(search_by)
-        self.search_field_enr.clear()
-        self.search_field_enr.send_keys(req)
-        self.submit_search_button_enr.click()
-        self.is_element_present(self.SPINNER_OFF)
-        # while self.is_element_present(self.NEXT_TABLE_PAGE_BUTTON):
+        self.execute_search(search_by, req)
         if search_by is self.SEARCH_METHOD["person_id"]:
-            self.search_text_in_column(self.PERSON_ID_COLUMN, req)
+            return self.search_text_in_column(self.PERSON_ID_COLUMN, req)
         elif search_by is self.SEARCH_METHOD["document_series"]:
-            self.search_text_in_column(self.DOC_SERIES_COLUMN, req)
+            return self.search_text_in_column(self.DOC_SERIES_COLUMN, req)
         elif search_by is self.SEARCH_METHOD["document_number"]:
-            self.search_text_in_column(self.DOC_NUMBER_COLUMN, req)
+            return self.search_text_in_column(self.DOC_NUMBER_COLUMN, req)
         elif search_by is self.SEARCH_METHOD["proposal_id"]:
-            self.search_text_in_column(self.PROPOSAL_ID_COLUMN, req)
-
-    def search_enrollment_by_person_id(self, person_id):
-        """
-        Method perform search of enrollment by person ID
-        :param person_id: The person ID in string
-        :return:
-        """
-        self.hundred_button.click()
-        self.is_element_present(self.SPINNER_OFF)
-        return self.search_enrollment(self.SEARCH_METHOD["person_id"], person_id)
-
-    def search_enrollment_by_doc_series(self, doc_series):
-        """
-        Method perform search of enrollment by document's series
-        :param doc_series: String
-        :return:
-        """
-        self.hundred_button.click()
-        self.is_element_present(self.SPINNER_OFF)
-        return self.search_enrollment(self.SEARCH_METHOD["document_series"], doc_series)
-
-    def search_enrollment_by_doc_number(self, doc_number):
-        """
-        Method perform search of enrollment by document's number
-        :param doc_number: String
-        :return:
-        """
-        self.hundred_button.click()
-        self.is_element_present(self.SPINNER_OFF)
-        return self.search_enrollment(self.SEARCH_METHOD["document_number"], doc_number)
-
-    def search_enrollment_by_proposal_id(self, proposal_id):
-        """
-        Method perform search of enrollment by proposal id
-        :param proposal_id: String
-        :return:
-        """
-        self.hundred_button.click()
-        self.is_element_present(self.SPINNER_OFF)
-        return self.search_enrollment(self.SEARCH_METHOD["proposal_id"], proposal_id)
+            return self.search_text_in_column(self.PROPOSAL_ID_COLUMN, req)
 
     def table_column_chooser(self, column):
         """
@@ -225,13 +209,19 @@ class EnrollmentsPage(InternalPage):
         self.column_chooser_close_button.click()
         sleep(1)
 
-    def filter_add(self, f_add):
+    def add_filters(self, *selectors_tuple):
         """
-        Method adds a wanted filter
-        :param f_add: self.FILTER_WANTED
+        Method adds wanted filters
+        :param selectors_tuple: Selectors, separated with comas
         :return:
         """
-        self.driver.find_element(*f_add).click()
+        self.is_this_page
+        for selector in selectors_tuple:
+            self.driver.find_element(*selector).click()
+        self.filter_refresh_button_enr.click()
+        self.is_element_present(self.SPINNER_OFF)
+
+
 
     def filter_by_budget(self, budget=True):
         """
@@ -265,13 +255,13 @@ class EnrollmentsPage(InternalPage):
 
     def filter_by_privileges(self):
         """
-        Method perform a filtering by privileges
+        Method performs filtration by privileges
         :return:
         """
         priv = u'є пільги'
         self.hundred_button.click()
         self.is_element_present(self.SPINNER_OFF)
-        self.filter_add(self.FILTER_PRIVILEGES)
+        self.add_filters(self.FILTER_PRIVILEGES)
         self.filter_refresh_button_enr.click()
         self.is_element_present(self.SPINNER_OFF)
         elements = self.driver.find_elements(*self.PRIVILEGES_COLUMN)
@@ -285,7 +275,7 @@ class EnrollmentsPage(InternalPage):
         priv = u'пільги відсутні'
         self.hundred_button.click()
         self.is_element_present(self.SPINNER_OFF)
-        self.filter_add(self.FILTER_NOT_PRIVILEGES)
+        self.add_filters(self.FILTER_NOT_PRIVILEGES)
         self.filter_refresh_button_enr.click()
         self.is_element_present(self.SPINNER_OFF)
         elements = self.driver.find_elements(*self.PRIVILEGES_COLUMN)
@@ -298,27 +288,40 @@ class EnrollmentsPage(InternalPage):
     def filter_mixer(self):
         """
         Method performs mix of different filters
-        :return: List of unique values of filtered columns
+        :return: List with unique values of filtered columns
         """
         self.hundred_button.click()
         self.is_element_present(self.SPINNER_OFF)
         self.table_column_chooser(self.COLUMN_BUDGET_ADD)
-        self.filter_add(self.FILTER_BUDGET)
-        self.filter_add(self.FILTER_NOT_PRIVILEGES)
-        self.filter_add(self.FILTER_NEED_ACCOMMODATION)
+        self.add_filters(self.FILTER_BUDGET, self.FILTER_NOT_PRIVILEGES, self.FILTER_NEED_ACCOMMODATION)
+        return self.get_column_info(self.BUDGET_COLUMN, self.PRIVILEGES_COLUMN, self.ACCOMMODATION_COLUMN)
+
+    def get_column_info(self, *columns_tuple):
+        """
+        Method collects info from given columns and adds it to list, but only one time.
+        It can take several columns in arguments
+        :param columns_tuple: Columns, separated with comas  (self.COLUMN_1, self.COLUMN_2)
+        :return: List with founded unique values
+        """
+        lst = list()
+        for column in columns_tuple:
+            elements = self.driver.find_elements(*column)
+            for element in elements:
+                if element.text not in lst:
+                    lst.append(element.text)
+        return lst
+
+    def delete_all_filters(self):
+        """
+        Method deletes all filters
+        :return:
+        """
+        self.is_this_page
+        elements = self.driver.find_elements(*self.DELETE_FILTER_BUTTON)
+        for element in elements:
+            element.click()
         self.filter_refresh_button_enr.click()
         self.is_element_present(self.SPINNER_OFF)
-        elements = self.driver.find_elements(*self.BUDGET_COLUMN)
-        elements1 = self.driver.find_elements(*self.PRIVILEGES_COLUMN)
-        elements2 = self.driver.find_elements(*self.ACCOMMODATION_COLUMN)
-        lst = list()
-        for element in elements:
-            if element.text not in lst:
-                lst.append(element.text)
-        for element in elements1:
-            if element.text not in lst:
-                lst.append(element.text)
-        for element in elements2:
-            if element.text not in lst:
-                lst.append(element.text)
-        return lst
+
+
+
