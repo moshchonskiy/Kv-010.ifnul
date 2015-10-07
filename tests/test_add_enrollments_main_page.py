@@ -12,8 +12,8 @@ def test_add_enrollments(app):
     app.internal_page.enrollments_page_link.click()
     assert app.enrollments_page.is_this_page
     app.enrollments_page.is_this_page.click()
-    enrollment = app.enrollments_main_page
-    enrollment.fill_enrollment()
+    app.enrollments_main_page.fill_enrollment()
+    app.enrollments_page.search_enrollment_by_doc_number("7778777")
 
 
 
