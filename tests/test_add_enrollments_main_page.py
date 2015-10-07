@@ -6,6 +6,11 @@ __author__ = 'stako'
 
 
 def test_add_enrollments(app):
+    """
+    Method creates and adds the enrollment.
+    :param app:
+    :return:
+    """
     app.ensure_logout()
     app.login(User.Admin(), True)
     sleep(3)
@@ -13,7 +18,7 @@ def test_add_enrollments(app):
     assert app.enrollments_page.is_this_page
     app.enrollments_page.is_this_page.click()
     app.enrollments_main_page.fill_enrollment()
-    app.enrollments_page.search_enrollment_by_doc_number("7778777")
+    assert app.enrollments_page.search_enrollment(app.enrollments_page.SEARCH_METHOD["document_series"], "222333") == "222333"
 
 
 

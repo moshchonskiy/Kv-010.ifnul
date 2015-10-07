@@ -33,20 +33,7 @@ class EnrollmentsMainPage(InternalPage):
     TYPE_OF_ENTRY_MENU = (By.ID, "inputChiefEnrolTypes")
     DETAILING_START_MENU = (By.ID, "inputEnrolmentTypeId")
     DATE_CLOSING_STATEMENTS = (By.XPATH, ".//*[@id='endDate']")
-    BUTTON_YEARS_AND_MONTH = (By.XPATH,
-                              ".//ul[@class='dropdown-menu ng-valid ng-valid-date-disabled ng-dirty ng-valid-parse ng-valid-date']//button[contains(@id, 'datepicker-')]")
-    BUTTON_YEARS = (By.XPATH,
-                    ".//ul[@class='dropdown-menu ng-valid ng-valid-date-disabled ng-dirty ng-valid-parse ng-valid-date']//button[contains(@id, 'datepicker-')]")
-    BUTTON_YEAR_2018 = (By.XPATH, ".//*[@id=contains(@id, ''datepicker-')]/button")
-    BUTTON_MONTH_APRIL = (By.XPATH, ".//*[@id=contains(@id, ''datepicker-')]/button")
-    BUTTON_DATE_FORTH = (By.XPATH, ".//*[@id=contains(@id, ''datepicker-')]/button")
     BUTTON_SAVE = (By.XPATH, ".//*[@class='btn btn-primary'][@ng-click='sendToServer()']")
-
-    POP = (By.XPATH, ".//*[@class='btn btn-default btn-sm pull-right']")
-
-    @property
-    def pop(self):
-        return self.is_element_visible(self.POP)
 
     @property
     def search_offers_field(self):
@@ -142,41 +129,35 @@ class EnrollmentsMainPage(InternalPage):
         return self.is_element_visible(self.DATE_CLOSING_STATEMENTS)
 
     @property
-    def button_years_and_month(self):
-        return self.is_element_visible(self.BUTTON_YEARS_AND_MONTH)
-
-    @property
-    def button_years(self):
-        return self.is_element_visible(self.BUTTON_YEARS)
-
-    @property
-    def button_year_2018(self):
-        return self.is_element_visible(self.BUTTON_YEAR_2018)
-
-    @property
-    def button_month_april(self):
-        return self.is_element_visible(self.BUTTON_MONTH_APRIL)
-
-    @property
-    def button_date_forth(self):
-        return self.is_element_visible(self.BUTTON_DATE_FORTH)
-
-    @property
     def button_save(self):
         return self.is_element_visible(self.BUTTON_SAVE)
 
     def find_element_in_ui_select(self, elements, string):
+        """
+        This method looks for WebElement in ui-select by name.
+        :param elements: is list of WebElements in ui-select.
+        :param string: is name of elements.
+        :return: looked for WebElement.
+        """
         for el in elements:
             if el.text.encode('utf8') == string:
                 return el
 
     def find_element_in_select(self, elements, string):
+        """
+        This method looks for options in select by name and click one.
+        :param elements: is list of options in select.
+        :param string: is name of elements.
+        """
         for sel in elements:
             if sel.text.encode('utf8') == string:
                 sel.click()
                 break
 
     def fill_enrollment(self):
+        """
+        This method fill enrollment and save one.
+        """
         sleep(1)
         self.ok_for_input_field.click()
         sleep(1)
@@ -212,24 +193,4 @@ class EnrollmentsMainPage(InternalPage):
             Select(self.driver.find_element_by_id("inputEnrolmentTypeId")).options, "Учасник міжнародної олімпіади")
         self.date_closing_statements.send_keys("2016-04-04")
         sleep(1)
-
-        #//tbody[@class='pointer']//td[contains (@class, 'ng-binding ng-scope')]
-        # enroll_user = {
-        #     "number": "",
-        #     "person_id": "",
-        #     "propose_id": "",
-        #     "isBudget": "",
-        #     "isContract": "",
-        #     "unit": "",
-        #     "documents_personification": "",
-        #     "total_score": "",
-        #     "isPrivileges": "",
-        #     "series_doc": "",
-        #     "number_doc": "",
-        #     "isHostel": "",
-        #     "type_of_admission": "",
-        #     "date_of_create": "",
-        #     "date_start": "",
-        #     "date_end": "",
-        #     "hierarchy": ""
-        #     }
+        self.button_save.click()
