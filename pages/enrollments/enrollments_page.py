@@ -5,7 +5,6 @@ from pages.internal_page import InternalPage
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.support.expected_conditions import *
-from exceptions import AssertionError
 
 __author__ = 'Evgen'
 
@@ -16,30 +15,29 @@ class EnrollmentsPage(InternalPage):
     #     self.base_url = base_url
     #     self.wait = WebDriverWait(driver, 15)
 
-    SEARCH_METHOD = {"person_id":       "0",
+    SEARCH_METHOD = {"person_id": "0",
                      "document_series": "1",
                      "document_number": "2",
-                     "proposal_id":     "3"
+                     "proposal_id": "3"
                      }
-    FILTER_RESULTS = {"budget":            u'✓',
-                      "not_budget":        u'✘',
-                      "privileged":        u'є пільги',
-                      "not_privileged":    u'пільги відсутні',
-                      "contract":          u'✓',
-                      "not_contract":      u'✘',
-                      "accommodation":     u'потреб. гуртож.',
+    FILTER_RESULTS = {"budget": u'✓',
+                      "not_budget": u'✘',
+                      "privileged": u'є пільги',
+                      "not_privileged": u'пільги відсутні',
+                      "contract": u'✓',
+                      "not_contract": u'✘',
+                      "accommodation": u'потреб. гуртож.',
                       "not_accommodation": u'не потреб. гуртож.'
                       }
     SEARCH_SELECT_DROPDOWN = (By.XPATH, "//select[contains(@class, 'form-control')]")
     SEARCH_FIELD = (By.XPATH, "//input[@ng-model='querySearchBy']")
     SUBMIT_SEARCH_BUTTON = (By.XPATH, "//button[contains(@ng-click, 'startSearch')]")
     ADD_NEW_ENROLLMENT_BUTTON = (By.XPATH, "//a[@href='#/enrolment/new/main']")
-    NEXT_TABLE_PAGE_BUTTON = (
-        By.CSS_SELECTOR, "li[class='ng-scope'][title='Next Page'] span")
-    NEXT_TABLE_PAGE_DISABLED_BUTTON = (
-        By.CSS_SELECTOR, "li[class='ng-scope disabled'][title='Next Page'] span")
-    NEXT_TABLE_BUTTON_COUNTER = (
-        By.XPATH, "//li[contains(@title, 'Page')]")
+    NEXT_TABLE_PAGE_BUTTON = (By.CSS_SELECTOR, "li[class='ng-scope'][title='Next Page'] span")
+    NEXT_TABLE_PAGE_DISABLED_BUTTON = (By.CSS_SELECTOR, "li[class='ng-scope disabled'][title='Next Page'] span")
+    NEXT_TABLE_BUTTON_COUNTER = (By.XPATH, "//li[contains(@title, 'Page')]")
+    IF_NEXT_BUTTON_DISABLED = (By.CSS_SELECTOR, "li[class='ng-scope'][title='Next Page'], \
+                                                li[class='ng-scope disabled'][title='Next Page']")
     TEN_BUTTON = (By.XPATH, "//div[@class='raw table-footer']//div[@class='btn-group pull-right']/button[1]")
     TWENTY_BUTTON = (By.XPATH, "//div[@class='raw table-footer']//div[@class='btn-group pull-right']/button[2]")
     FIFTY_BUTTON = (By.XPATH, "//div[@class='raw table-footer']//div[@class='btn-group pull-right']/button[3]")
@@ -79,7 +77,6 @@ class EnrollmentsPage(InternalPage):
     COLUMN_CHOOSER_BUTTON = (By.XPATH, "//button[contains(@class,'field-chooser-button')]")
     COLUMN_BUDGET_ADD = (By.XPATH, "//li[4]//*[@id='showHideHeader']")
     COLUMN_CHOOSER_CLOSE_BUTTON = (By.XPATH, "//div[@class='modal-footer']/button")
-    NEW_ROW_WAITER = (By.XPATH, "//table/tbody/tr[11]")
 
     @property
     def is_this_page(self):
@@ -135,10 +132,9 @@ class EnrollmentsPage(InternalPage):
 
     def execute_search(self, search_by, req):
         """
-        Method perform choosing of search method and clicking of submit button
-        :param search_by:  person_id,  document_series, document_number, proposal_id
-        :param req: Request sends to search field
-        :return:
+        Method chooses search method and pastes request in search field
+        :param search_by:  SEARCH_METHOD["method"]
+        :param req: Any wanted string request
         """
         self.is_this_page
         # self.hundred_button.click()
@@ -150,33 +146,30 @@ class EnrollmentsPage(InternalPage):
         self.submit_search_button_enr.click()
         self.is_element_present(self.SPINNER_OFF)
 
-    def search_text_in_column(self, column, text):
+    def search_text_in_column(self, column, req):
         """
-        Method searches in wanted column for requested text
+        Method searches in wanted column for text
         :param column: Column selector
-        :param text: String
-        :return: List with founded text
+        :param req: String
+        :return: String with founded text. If it finds only requested text it will return text. If it finds some
+                 difference method will return difference.
         """
         lst = list()
-        web_elem = self.wait.until(presence_of_element_located((By.CSS_SELECTOR,
-                                                                "li[class='ng-scope'][title='Next Page'], \
-                                                                li[class='ng-scope disabled'][title='Next Page']")))
+        web_elem = self.wait.until(presence_of_element_located(self.IF_NEXT_BUTTON_DISABLED))
         if web_elem.get_attribute("class") == "ng-scope disabled":
             elements = self.driver.find_elements(*column)
-            lst = [element.text for element in elements if element.text != text]
+            lst = [element.text for element in elements if element.text[:len(req)] != req]
             if len(lst) > 0:
                 return lst[0]
             else:
-                return text
+                return req
         else:
             while True:
                 elements = self.driver.find_elements(*column)
                 for element in elements:
-                    if element.text != text:
+                    if element.text != req:
                         lst.append(element.text)
-                new_elem = self.wait.until(presence_of_element_located((By.CSS_SELECTOR,
-                                                                        "li[class='ng-scope'][title='Next Page'], \
-                                                                    li[class='ng-scope disabled'][title='Next Page']")))
+                new_elem = self.wait.until(presence_of_element_located(self.IF_NEXT_BUTTON_DISABLED))
                 if new_elem.get_attribute("class") == "ng-scope disabled":
                     break
                 self.driver.find_element(*self.NEXT_TABLE_PAGE_BUTTON).click()
@@ -185,13 +178,13 @@ class EnrollmentsPage(InternalPage):
         if len(lst) > 0:
             return lst[0]
         else:
-            return text
+            return req
 
-    def search_enrollment(self, search_by, req):
+    def search_enrollment(self,  search_by, req,):
         """
-        Method perform search of enrollment
-        :param search_by:  person_id,  document_series, document_number, proposal_id
-        :param req: Request sends to search field
+        Method performs search of enrollment.
+        :param search_by:  SEARCH_METHOD["method"]
+        :param req: String
         :return: If any difference between request and founded it returns difference, if not it returns request
         """
         self.execute_search(search_by, req)
@@ -208,7 +201,6 @@ class EnrollmentsPage(InternalPage):
         """
         Method adds one or more columns in table
         :param columns: Column selectors, separated with comas
-        :return:
         """
         self.is_this_page
         self.column_chooser_button.click()
@@ -220,9 +212,8 @@ class EnrollmentsPage(InternalPage):
 
     def add_filters(self, *selectors_tuple):
         """
-        Method adds wanted filters
+        Method adds one or more wanted filters
         :param selectors_tuple: Selectors, separated with comas
-        :return:
         """
         self.is_this_page
         for selector in selectors_tuple:
@@ -230,97 +221,25 @@ class EnrollmentsPage(InternalPage):
         self.filter_refresh_button_enr.click()
         self.is_element_present(self.SPINNER_OFF)
 
-    def filter_by_budget(self, budget=True):
-        """
-        Method performs filter by budget. Don't use in one test
-        :param budget: True is budget, False is not budget
-        :return:
-        """
-        yes_budget = u'✓'
-        not_budget = u'✘'
-        self.hundred_button.click()
-        self.is_element_present(self.SPINNER_OFF)
-        self.add_table_columns(self.COLUMN_BUDGET_ADD)
-        if budget:
-            self.filter_budget.click()
-        else:
-            self.filter_not_budget.click()
-        self.filter_refresh_button_enr.click()
-        self.is_element_present(self.SPINNER_OFF)
-        elements = self.driver.find_elements(*self.BUDGET_COLUMN)
-        lst = [element.text for element in elements]
-        if budget:
-            if not_budget in lst:
-                return not_budget
-            else:
-                return yes_budget
-        else:
-            if yes_budget in lst:
-                return yes_budget
-            else:
-                return not_budget
-
-    def filter_by_privileges(self):
-        """
-        Method performs filtration by privileges
-        :return:
-        """
-        priv = u'є пільги'
-        self.hundred_button.click()
-        self.is_element_present(self.SPINNER_OFF)
-        self.add_filters(self.FILTER_PRIVILEGES)
-        self.filter_refresh_button_enr.click()
-        self.is_element_present(self.SPINNER_OFF)
-        elements = self.driver.find_elements(*self.PRIVILEGES_COLUMN)
-        lst = [element.text for element in elements if element.text != priv]
-        if len(lst) > 0:
-            return lst[0]
-        else:
-            return priv
-
-    def filter_by_not_privileges(self):
-        priv = u'пільги відсутні'
-        self.hundred_button.click()
-        self.is_element_present(self.SPINNER_OFF)
-        self.add_filters(self.FILTER_NOT_PRIVILEGES)
-        self.filter_refresh_button_enr.click()
-        self.is_element_present(self.SPINNER_OFF)
-        elements = self.driver.find_elements(*self.PRIVILEGES_COLUMN)
-        lst = [element.text for element in elements if element.text != priv]
-        if len(lst) > 0:
-            return lst[0]
-        else:
-            return priv
-
-    def filter_mixer(self):
-        """
-        Method performs mix of different filters
-        :return: Set with unique values of filtered columns
-        """
-        self.hundred_button.click()
-        self.is_element_present(self.SPINNER_OFF)
-        self.add_table_columns(self.COLUMN_BUDGET_ADD)
-        self.add_filters(self.FILTER_BUDGET, self.FILTER_NOT_PRIVILEGES, self.FILTER_NEED_ACCOMMODATION)
-        return self.get_columns_text(self.BUDGET_COLUMN, self.PRIVILEGES_COLUMN, self.ACCOMMODATION_COLUMN)
-
     def get_columns_text(self, *column_tuple):
         """
-        Method collects info from given columns and adds it to list, but only one time.
+        Method collects info from given columns and adds it to set. So it is unique values.
         It can take several columns in arguments
-        :param column_tuple: Columns, separated with comas  (self.COLUMN_1, self.COLUMN_2)
-        :return: Set with founded unique values
+        :param column_tuple: Selectors, separated with comas  (self.COLUMN_1, self.COLUMN_2)
+        :return: Set with founded unique values.
         """
         lst = list()
-        web_elem = self.wait.until(presence_of_element_located((By.CSS_SELECTOR,
-                                                                "li[class='ng-scope'][title='Next Page'], \
-                                                                li[class='ng-scope disabled'][title='Next Page']")))
+        web_elem = self.wait.until(presence_of_element_located(self.IF_NEXT_BUTTON_DISABLED))
         if web_elem.get_attribute("class") == "ng-scope disabled":
             for column in column_tuple:
                 elements = self.driver.find_elements(*column)
                 for element in elements:
                     if element.text not in lst:
                         lst.append(element.text)
-            return set(lst)
+            if len(column_tuple) == 1:
+                return lst[0]
+            else:
+                return set(lst)
         else:
             while True:
                 for column in column_tuple:
@@ -328,19 +247,19 @@ class EnrollmentsPage(InternalPage):
                     for element in elements:
                         if element.text not in lst:
                             lst.append(element.text)
-                new_elem = self.wait.until(presence_of_element_located((By.CSS_SELECTOR,
-                                                                        "li[class='ng-scope'][title='Next Page'], \
-                                                                    li[class='ng-scope disabled'][title='Next Page']")))
+                new_elem = self.wait.until(presence_of_element_located(self.IF_NEXT_BUTTON_DISABLED))
                 if new_elem.get_attribute("class") == "ng-scope disabled":
                     break
                 self.driver.find_element(*self.NEXT_TABLE_PAGE_BUTTON).click()
                 self.is_element_present(self.SPINNER_OFF)
-            return set(lst)
+            if len(column_tuple) == 1:
+                return lst[0]
+            else:
+                return set(lst)
 
     def delete_all_filters(self):
         """
         Method deletes all filters
-        :return:
         """
         self.is_this_page
         elements = self.driver.find_elements(*self.DELETE_FILTER_BUTTON)
