@@ -154,31 +154,40 @@ class EnrollmentsPage(InternalPage):
         :return: String with founded text. If it finds only requested text it will return text. If it finds some
                  difference method will return difference.
         """
-        lst = list()
         web_elem = self.wait.until(presence_of_element_located(self.IF_NEXT_BUTTON_DISABLED))
         if web_elem.get_attribute("class") == "ng-scope disabled":
             elements = self.driver.find_elements(*column)
-            lst = [element.text for element in elements if element.text[:len(req)] != req]
-            if len(lst) > 0:
-                return lst[0]
+            incorrect = [element.text for element in elements if element.text[:len(req)] != req]
+            correct = [element.text for element in elements if element.text[:len(req)] == req]
+            if len(incorrect) > 0 and len(correct) >= 0:
+                return incorrect[0]
+            elif len(incorrect) == 0 and len(correct) > 0:
+                return correct[0]
             else:
-                return req
+                return "Nothing is founded"
         else:
             while True:
+                correct = list()
+                incorrect = list()
                 elements = self.driver.find_elements(*column)
                 for element in elements:
-                    if element.text != req:
-                        lst.append(element.text)
+                    if element.text[:len(req)] != req:
+                        incorrect.append(element.text)
+                for element in elements:
+                    if element.text[:len(req)] == req:
+                        correct.append(element.text)
                 new_elem = self.wait.until(presence_of_element_located(self.IF_NEXT_BUTTON_DISABLED))
                 if new_elem.get_attribute("class") == "ng-scope disabled":
                     break
                 self.driver.find_element(*self.NEXT_TABLE_PAGE_BUTTON).click()
                 self.is_element_present(self.SPINNER_OFF)
+            if len(incorrect) > 0 and len(correct) >= 0:
+                return incorrect[0]
+            elif len(incorrect) == 0 and len(correct) > 0:
+                return correct[0]
+            else:
+                return "Nothing is founded"
 
-        if len(lst) > 0:
-            return lst[0]
-        else:
-            return req
 
     def search_enrollment(self,  search_by, req,):
         """
