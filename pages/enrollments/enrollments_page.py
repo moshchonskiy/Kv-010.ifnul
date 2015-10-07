@@ -16,20 +16,20 @@ class EnrollmentsPage(InternalPage):
     #     self.base_url = base_url
     #     self.wait = WebDriverWait(driver, 15)
 
-    SEARCH_METHOD = {"person_id": "0",
+    SEARCH_METHOD = {"person_id":       "0",
                      "document_series": "1",
                      "document_number": "2",
-                     "proposal_id": "3"
+                     "proposal_id":     "3"
                      }
-    FILTER_RESULTS = {"budget": u'✓',
-                      "not_budget": u'✘',
-                      "privileged": u'є пільги',
-                      "not_privileged": u'пільги відсутні',
-                      "contract": u'✓',
-                      "not_contract": u'✘',
-                      "accommodation": u'потреб. гуртож.',
+    FILTER_RESULTS = {"budget":            u'✓',
+                      "not_budget":        u'✘',
+                      "privileged":        u'є пільги',
+                      "not_privileged":    u'пільги відсутні',
+                      "contract":          u'✓',
+                      "not_contract":      u'✘',
+                      "accommodation":     u'потреб. гуртож.',
                       "not_accommodation": u'не потреб. гуртож.'
-    }
+                      }
     SEARCH_SELECT_DROPDOWN = (By.XPATH, "//select[contains(@class, 'form-control')]")
     SEARCH_FIELD = (By.XPATH, "//input[@ng-model='querySearchBy']")
     SUBMIT_SEARCH_BUTTON = (By.XPATH, "//button[contains(@ng-click, 'startSearch')]")
@@ -141,7 +141,7 @@ class EnrollmentsPage(InternalPage):
         :return:
         """
         self.is_this_page
-        self.hundred_button.click()
+        # self.hundred_button.click()
         self.is_element_present(self.SPINNER_OFF)
         select = Select(self.search_select_dropdown)
         select.select_by_value(search_by)
@@ -158,8 +158,10 @@ class EnrollmentsPage(InternalPage):
         :return: List with founded text
         """
         lst = list()
-        web_elements = self.driver.find_elements(*self.NEXT_TABLE_BUTTON_COUNTER)
-        if len(web_elements) == 5:
+        web_elem = self.wait.until(presence_of_element_located((By.CSS_SELECTOR,
+                                                                "li[class='ng-scope'][title='Next Page'], \
+                                                                li[class='ng-scope disabled'][title='Next Page']")))
+        if web_elem.get_attribute("class") == "ng-scope disabled":
             elements = self.driver.find_elements(*column)
             lst = [element.text for element in elements if element.text != text]
             if len(lst) > 0:
@@ -167,17 +169,23 @@ class EnrollmentsPage(InternalPage):
             else:
                 return text
         else:
-            while self.is_element_visible(self.NEXT_TABLE_PAGE_BUTTON):
+            while True:
                 elements = self.driver.find_elements(*column)
                 for element in elements:
                     if element.text != text:
                         lst.append(element.text)
+                new_elem = self.wait.until(presence_of_element_located((By.CSS_SELECTOR,
+                                                                        "li[class='ng-scope'][title='Next Page'], \
+                                                                    li[class='ng-scope disabled'][title='Next Page']")))
+                if new_elem.get_attribute("class") == "ng-scope disabled":
+                    break
                 self.driver.find_element(*self.NEXT_TABLE_PAGE_BUTTON).click()
                 self.is_element_present(self.SPINNER_OFF)
-            if len(lst) > 0:
-                return lst[0]
-            else:
-                return text
+
+        if len(lst) > 0:
+            return lst[0]
+        else:
+            return text
 
     def search_enrollment(self, search_by, req):
         """
@@ -196,16 +204,17 @@ class EnrollmentsPage(InternalPage):
         elif search_by is self.SEARCH_METHOD["proposal_id"]:
             return self.search_text_in_column(self.PROPOSAL_ID_COLUMN, req)
 
-    def table_column_chooser(self, column):
+    def add_table_columns(self, *columns):
         """
-        Method adds column from column chooser
-        :param column: constant with column
+        Method adds one or more columns in table
+        :param columns: Column selectors, separated with comas
         :return:
         """
         self.is_this_page
         self.column_chooser_button.click()
-        self.is_element_visible(column)
-        self.driver.find_element(*column).click()
+        for column in columns:
+            self.is_element_visible(column)
+            self.driver.find_element(*column).click()
         self.column_chooser_close_button.click()
         sleep(1)
 
@@ -221,8 +230,6 @@ class EnrollmentsPage(InternalPage):
         self.filter_refresh_button_enr.click()
         self.is_element_present(self.SPINNER_OFF)
 
-
-
     def filter_by_budget(self, budget=True):
         """
         Method performs filter by budget. Don't use in one test
@@ -233,7 +240,7 @@ class EnrollmentsPage(InternalPage):
         not_budget = u'✘'
         self.hundred_button.click()
         self.is_element_present(self.SPINNER_OFF)
-        self.table_column_chooser(self.COLUMN_BUDGET_ADD)
+        self.add_table_columns(self.COLUMN_BUDGET_ADD)
         if budget:
             self.filter_budget.click()
         else:
@@ -288,28 +295,47 @@ class EnrollmentsPage(InternalPage):
     def filter_mixer(self):
         """
         Method performs mix of different filters
-        :return: List with unique values of filtered columns
+        :return: Set with unique values of filtered columns
         """
         self.hundred_button.click()
         self.is_element_present(self.SPINNER_OFF)
-        self.table_column_chooser(self.COLUMN_BUDGET_ADD)
+        self.add_table_columns(self.COLUMN_BUDGET_ADD)
         self.add_filters(self.FILTER_BUDGET, self.FILTER_NOT_PRIVILEGES, self.FILTER_NEED_ACCOMMODATION)
-        return self.get_column_info(self.BUDGET_COLUMN, self.PRIVILEGES_COLUMN, self.ACCOMMODATION_COLUMN)
+        return self.get_columns_text(self.BUDGET_COLUMN, self.PRIVILEGES_COLUMN, self.ACCOMMODATION_COLUMN)
 
-    def get_column_info(self, *columns_tuple):
+    def get_columns_text(self, *column_tuple):
         """
         Method collects info from given columns and adds it to list, but only one time.
         It can take several columns in arguments
-        :param columns_tuple: Columns, separated with comas  (self.COLUMN_1, self.COLUMN_2)
-        :return: List with founded unique values
+        :param column_tuple: Columns, separated with comas  (self.COLUMN_1, self.COLUMN_2)
+        :return: Set with founded unique values
         """
         lst = list()
-        for column in columns_tuple:
-            elements = self.driver.find_elements(*column)
-            for element in elements:
-                if element.text not in lst:
-                    lst.append(element.text)
-        return lst
+        web_elem = self.wait.until(presence_of_element_located((By.CSS_SELECTOR,
+                                                                "li[class='ng-scope'][title='Next Page'], \
+                                                                li[class='ng-scope disabled'][title='Next Page']")))
+        if web_elem.get_attribute("class") == "ng-scope disabled":
+            for column in column_tuple:
+                elements = self.driver.find_elements(*column)
+                for element in elements:
+                    if element.text not in lst:
+                        lst.append(element.text)
+            return set(lst)
+        else:
+            while True:
+                for column in column_tuple:
+                    elements = self.driver.find_elements(*column)
+                    for element in elements:
+                        if element.text not in lst:
+                            lst.append(element.text)
+                new_elem = self.wait.until(presence_of_element_located((By.CSS_SELECTOR,
+                                                                        "li[class='ng-scope'][title='Next Page'], \
+                                                                    li[class='ng-scope disabled'][title='Next Page']")))
+                if new_elem.get_attribute("class") == "ng-scope disabled":
+                    break
+                self.driver.find_element(*self.NEXT_TABLE_PAGE_BUTTON).click()
+                self.is_element_present(self.SPINNER_OFF)
+            return set(lst)
 
     def delete_all_filters(self):
         """
@@ -322,6 +348,3 @@ class EnrollmentsPage(InternalPage):
             element.click()
         self.filter_refresh_button_enr.click()
         self.is_element_present(self.SPINNER_OFF)
-
-
-
