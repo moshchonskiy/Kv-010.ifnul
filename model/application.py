@@ -47,7 +47,7 @@ class Application:
         Method ensures you are logged in, if not it enters as Admin
         """
         element = self.wait.until(presence_of_element_located((By.CSS_SELECTOR, "nav, input[id='inputLogin']")))
-        if element.tag_name == "input[id='inputLogin']":
+        if element.tag_name == "input":
             self.login(User.Admin())
 
     def logout(self):
