@@ -188,7 +188,6 @@ class EnrollmentsPage(InternalPage):
             else:
                 return "Nothing is founded"
 
-
     def search_enrollment(self,  search_by, req,):
         """
         Method performs search of enrollment.
