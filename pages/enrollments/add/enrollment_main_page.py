@@ -8,6 +8,22 @@ __author__ = 'Stako'
 
 
 class EnrollmentsMainPage(InternalPage):
+
+    res_dict = {
+        "series_of_statements": "222333",
+        "number_statements": "7778777",
+        "offers": "Фізичний",
+        "form_of_education": "Бакалавр",
+        "document": "Атестат про повну загальну середню освіту",
+        "grading_scale": "стобальна",
+        "total_score": "77",
+        "priority": "3",
+        "structural_unit": "Фізичний",
+        "type_of_entry": "За результатами іспитів",
+        "detailing_start": "Учасник міжнародної олімпіади",
+        "date_closing": "2016-04-04"
+    }
+
     OK_FOR_INPUT_FIELD = (By.CSS_SELECTOR, "div[class='input-group'] * button[class='btn btn-primary']")
     SECOND_PERSON = (By.XPATH, "html/body/div[5]/div/div/div[2]/div[2]/table/tbody/tr[6]/td[2]")
     SERIES_OF_STATEMENTS = (By.XPATH, "//*[@id='inputDocSeries']")
@@ -28,8 +44,7 @@ class EnrollmentsMainPage(InternalPage):
     GRADING_SCALE = (By.XPATH, ".//*[@id='markScale']//i[@class='caret pull-right']")
     CHECKBOX_DOCUMENT_IS_ORIGINAL = (By.XPATH, ".//*[@class='ng-pristine ng-untouched ng-valid']")
     PRIORITY = (By.XPATH, ".//*[@id='inputPriority']")
-    STRUCTURAL_UNIT = (By.XPATH,
-                       ".//*[@class='col-xs-3']/*[@id='inputStructure']//i[@class='caret pull-right']")
+    STRUCTURAL_UNIT = (By.XPATH, ".//*[@class='col-xs-3']/*[@id='inputStructure']//i[@class='caret pull-right']")
     TYPE_OF_ENTRY_MENU = (By.ID, "inputChiefEnrolTypes")
     DETAILING_START_MENU = (By.ID, "inputEnrolmentTypeId")
     DATE_CLOSING_STATEMENTS = (By.XPATH, ".//*[@id='endDate']")
@@ -163,8 +178,8 @@ class EnrollmentsMainPage(InternalPage):
         sleep(1)
         self.second_person.click()
         sleep(1)
-        self.series_of_statements.send_keys("222333")
-        self.number_statements.send_keys("7778777")
+        self.series_of_statements.send_keys(self.res_dict["series_of_statements"])
+        self.number_statements.send_keys(self.res_dict["number_statements"])
         self.checkbox_is_state.click()
         self.checkbox_is_contract.click()
         self.checkbox_is_privilege.click()
@@ -172,25 +187,29 @@ class EnrollmentsMainPage(InternalPage):
         self.radiobutton_is_interview.click()
         self.checkbox_is_hostel.click()
         self.search_offers_field.click()
-        self.find_element_in_ui_select(self.list_form_ui_select(), "Фізичний").click()
+        self.find_element_in_ui_select(self.list_form_ui_select(), self.res_dict["offers"]).click()
         self.choose_form_of_education.click()
-        self.find_element_in_ui_select(self.list_form_ui_select(), "Бакалавр").click()
+        self.find_element_in_ui_select(self.list_form_ui_select(), self.res_dict["form_of_education"]).click()
         self.button_choose_specialties.click()
         sleep(3)
         self.choose_first_specialties.click()
         self.document.click()
-        self.find_element_in_ui_select(self.list_form_ui_select(), "Атестат про повну загальну середню освіту").click()
+        self.find_element_in_ui_select(self.list_form_ui_select(), self.res_dict["document"]).click()
         self.grading_scale.click()
-        self.find_element_in_ui_select(self.list_form_ui_select(), "стобальна").click()
-        self.total_score.send_keys("77")
+        self.find_element_in_ui_select(self.list_form_ui_select(), self.res_dict["grading_scale"]).click()
+        self.total_score.send_keys(self.res_dict["total_score"])
         self.checkbox_document_is_original.click()
-        self.priority.send_keys("3")
+        self.priority.send_keys(self.res_dict["priority"])
         self.structural_unit.click()
-        self.find_element_in_ui_select(self.list_form_ui_select(), "Фізичний").click()
+        self.find_element_in_ui_select(self.list_form_ui_select(), self.res_dict["structural_unit"]).click()
         self.find_element_in_select(
-            Select(self.driver.find_element_by_id("inputChiefEnrolTypes")).options, "За результатами іспитів")
+            Select(self.driver.find_element_by_id("inputChiefEnrolTypes")).options, self.res_dict["type_of_entry"])
         self.find_element_in_select(
-            Select(self.driver.find_element_by_id("inputEnrolmentTypeId")).options, "Учасник міжнародної олімпіади")
-        self.date_closing_statements.send_keys("2016-04-04")
+            Select(self.driver.find_element_by_id("inputEnrolmentTypeId")).options, self.res_dict["detailing_start"])
+        self.date_closing_statements.send_keys(self.res_dict["date_closing"])
         sleep(1)
         self.button_save.click()
+
+
+# splinner off
+# is present
