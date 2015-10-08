@@ -2,7 +2,7 @@
 from selenium.webdriver.support.select import Select
 
 from model.user import User
-from utils.data_provader_from_json import DataProviderJSON
+from utils.data_provider_from_json import DataProviderJSON
 from utils.table_ease_access import TestTable
 
 __author__ = 'Den'
