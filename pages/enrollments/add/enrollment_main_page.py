@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
-from pages.internal_page import InternalPage
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
+
+from pages.internal_page import InternalPage
 
 __author__ = 'Stako'
 
 
 class EnrollmentsMainPage(InternalPage):
-
     res_dict = {
         "series_of_statements": "222333",
         "number_statements": "7778777",

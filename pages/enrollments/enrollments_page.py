@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
-from selenium import webdriver
 from time import sleep
-from pages.internal_page import InternalPage
+
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.support.expected_conditions import *
+
+from pages.internal_page import InternalPage
 
 __author__ = 'Evgen'
 
@@ -187,8 +188,7 @@ class EnrollmentsPage(InternalPage):
             else:
                 return correct
 
-
-    def search_enrollment(self,  search_by, req,):
+    def search_enrollment(self, search_by, req, ):
         """
         Method performs search of enrollment. For example:
         assert "some request" in ....enrolments_page.search_enrollment(... , .....)

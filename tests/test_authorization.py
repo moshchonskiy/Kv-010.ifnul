@@ -1,15 +1,16 @@
 __author__ = 'Evgen'
 import pytest
-import allure
-from model.user import User
 from selenium.webdriver.common.keys import Keys
-from conftest import app
+
+from model.user import User
+
 
 def test_valid_login(app):
     with pytest.allure.step('Valid login test'):
         app.ensure_logout()
         app.login(User.Admin())
         assert app.is_logged_in()
+
 
 def test_remember_me_checkbox(app):
     with pytest.allure.step("Remember me checkbox test"):
@@ -25,6 +26,7 @@ def test_remember_me_checkbox(app):
         ip.driver.switch_to.window(all_windows[1])
         ip.driver.get(ip.base_url + "#/person/list")
         assert app.is_logged_in()
+
 
 def test_invalid_login(app):
     app.ensure_logout()
