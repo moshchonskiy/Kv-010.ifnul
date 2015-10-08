@@ -1,10 +1,7 @@
 # -*- coding: utf-8 -*-
-from time import sleep
-
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.support.expected_conditions import *
-
 from pages.internal_page import InternalPage
 
 __author__ = 'Evgen'
@@ -218,7 +215,7 @@ class EnrollmentsPage(InternalPage):
             self.is_element_visible(column)
             self.driver.find_element(*column).click()
         self.column_chooser_close_button.click()
-        sleep(1)
+        self.is_element_visible(columns[0])
 
     def add_filters(self, *selectors_tuple):
         """
