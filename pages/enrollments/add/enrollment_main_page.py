@@ -24,7 +24,7 @@ class EnrollmentsMainPage(InternalPage):
     }
 
     OK_FOR_INPUT_FIELD = (By.CSS_SELECTOR, "div[class='input-group'] * button[class='btn btn-primary']")
-    SECOND_PERSON = (By.XPATH, "html/body/div[5]/div/div/div[2]/div[2]/table/tbody/tr[6]/td[2]")
+    SECOND_PERSON = (By.XPATH, "//div[@class='table-responsive']//tr[6]/td[2]")
     SERIES_OF_STATEMENTS = (By.XPATH, "//*[@id='inputDocSeries']")
     NUMBER_STATEMENTS = (By.XPATH, ".//*[@id='inputdocNum']")
     CHECKBOX_IS_STATE = (By.XPATH, ".//input[@ng-model='enrolment.isState']")
@@ -33,8 +33,8 @@ class EnrollmentsMainPage(InternalPage):
     RADIOBUTTON_GETTING_EDUCATION = (By.CSS_SELECTOR, "input[name='isedustate'][value='11']")
     RADIOBUTTON_IS_INTERVIEW = (By.CSS_SELECTOR, "input[value='11'][ng-model='enrolment.isInterview']")
     CHECKBOX_IS_HOSTEL = (By.XPATH, ".//*[@ng-init='enrolment.isHostel = 0']")
-    SEARCH_OFFERS_FIELD = (By.XPATH, ".//*[@id='movieForm']/div[9]/div[1]/div[1]/div/div/div/span/i")
-    CHOOSE_FORM_OF_EDUCATION = (By.XPATH, ".//*[@id='movieForm']/div[9]/div[1]/div[2]/div/div/div/span/i")
+    SEARCH_OFFERS_FIELD = (By.XPATH, ".//div[@class='col-xs-4']//div[@class='ui-select-container ui-select-bootstrap dropdown ng-valid ng-touched']//i[@class='caret pull-right']")
+    CHOOSE_FORM_OF_EDUCATION = (By.XPATH, ".//div[@class='col-xs-4']//div[@class='ui-select-container ui-select-bootstrap dropdown ng-valid']//i[@class='caret pull-right']")
     LIST_FROM_UI_SELECT = (By.XPATH, "//div[contains(@id, 'ui-select-choices-row')]/a/div")
     BUTTON_CHOOSE_SPECIALTIES = (By.CSS_SELECTOR, "button[class='btn btn-primary'] >i")
     CHOOSE_FIRST_SPECIALTIES = (By.XPATH, "//div[@class='table-responsive']//tbody[@class='pointer']/tr[1]/td[2]")
