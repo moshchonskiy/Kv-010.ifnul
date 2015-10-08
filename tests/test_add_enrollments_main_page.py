@@ -1,4 +1,3 @@
-from time import sleep
 from model.user import User
 
 
@@ -13,7 +12,7 @@ def test_add_enrollments(app):
     """
     app.ensure_logout()
     app.login(User.Admin(), True)
-    sleep(3)
+    app.internal_page.is_element_present(app.internal_page.SPINNER_OFF)
     app.internal_page.enrollments_page_link.click()
     assert app.enrollments_page.is_this_page
     app.enrollments_page.is_this_page.click()

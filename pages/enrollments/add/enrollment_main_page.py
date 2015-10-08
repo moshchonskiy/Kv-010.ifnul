@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from pages.internal_page import InternalPage
 from selenium.webdriver.common.by import By
-from time import sleep
 from selenium.webdriver.support.ui import Select
 
 __author__ = 'Stako'
@@ -173,11 +172,11 @@ class EnrollmentsMainPage(InternalPage):
         """
         This method fill enrollment and save one.
         """
-        sleep(1)
+        self.is_element_present(self.SPINNER_OFF)
         self.ok_for_input_field.click()
-        sleep(1)
+        self.is_element_present(self.SPINNER_OFF)
         self.second_person.click()
-        sleep(1)
+        self.is_element_present(self.SPINNER_OFF)
         self.series_of_statements.send_keys(self.res_dict["series_of_statements"])
         self.number_statements.send_keys(self.res_dict["number_statements"])
         self.checkbox_is_state.click()
@@ -191,7 +190,7 @@ class EnrollmentsMainPage(InternalPage):
         self.choose_form_of_education.click()
         self.find_element_in_ui_select(self.list_form_ui_select(), self.res_dict["form_of_education"]).click()
         self.button_choose_specialties.click()
-        sleep(3)
+        self.is_element_present(self.SPINNER_OFF)
         self.choose_first_specialties.click()
         self.document.click()
         self.find_element_in_ui_select(self.list_form_ui_select(), self.res_dict["document"]).click()
@@ -207,9 +206,5 @@ class EnrollmentsMainPage(InternalPage):
         self.find_element_in_select(
             Select(self.driver.find_element_by_id("inputEnrolmentTypeId")).options, self.res_dict["detailing_start"])
         self.date_closing_statements.send_keys(self.res_dict["date_closing"])
-        sleep(1)
+        self.is_element_present(self.SPINNER_OFF)
         self.button_save.click()
-
-
-# splinner off
-# is present
