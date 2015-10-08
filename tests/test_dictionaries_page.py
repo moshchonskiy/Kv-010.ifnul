@@ -50,7 +50,7 @@ def test_public_activity_dict_check_all_value(app):
     table = TestTable(dict_page.driver, dict_page.DICTIONARIES_PAGE_TABLE)
     assert table.try_get_table()
 
-    data_provider = DataProviderJSON('resources\\public_activity.json')
+    data_provider = DataProviderJSON('resources/public_activity.json')
 
     for i in range(1, table.try_get_table_data_height() + 1):
         for j in range(1, table.try_get_table_data_width() + 1):
