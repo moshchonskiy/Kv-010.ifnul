@@ -17,6 +17,7 @@ def test_add_enrollments(app):
         assert app.enrollments_page.is_this_page
         app.enrollments_page.is_this_page.click()
         app.enrollments_main_page.fill_enrollment()
-        assert app.enrollments_main_page.res_dict["series_of_statements"] in \
+        assert app.enrollments_main_page.from_enrollment_json("series_of_statements") in \
                app.enrollments_page.search_enrollment(app.enrollments_page.SEARCH_METHOD["document_series"],
-                                                      app.enrollments_main_page.res_dict["series_of_statements"])
+                                                      app.enrollments_main_page.from_enrollment_json(
+                                                          "series_of_statements"))
