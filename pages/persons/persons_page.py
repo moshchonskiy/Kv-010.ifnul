@@ -1,5 +1,3 @@
-# coding: utf8
-
 # -*- coding: utf-8 -*-
 __author__ = 'Evgen'
 from pages.internal_page import InternalPage
@@ -8,16 +6,9 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.remote.webdriver import WebDriver
 
-GIVEN_SURNAME = u'Прізвище'
-GIVEN_PERSON_ID = '14'
-GIVEN_NUM_OS = '999999'
-GIVEN_SERIES_OS = 'ss'
-
-TIME_TO_WAIT = 3
-
 
 class PersonsPage(InternalPage):
-    # TO SEARCH
+
     ADD_PERSON_BUTTON = (By.XPATH, "//button[contains(@class,'btn-success')]")
     SHOW_HIDE_FILTERS_BUTTON = (By.XPATH, "//button[contains(@ng-click,'hideFilterFunc')]")
     ACTIVE_ITEMS_PER_PAGE_BUTTON = (By.XPATH, "//button[contains(@class, 'active')]")
@@ -47,7 +38,7 @@ class PersonsPage(InternalPage):
         16: 'Гуртожиток',
         17: 'Мат. відп'
     }
-    
+          
     CHOOSE_SURNAME_SEARCH = (By.XPATH, "//div[@class = 'col-sm-12']//option[@value = '0']")
     CHOOSE_PERSON_ID_SEARCH = (By.XPATH, "//div[@class = 'col-sm-12']//option[@value = '1']")
     CHOOSE_NUM_OS_SEARCH = (By.XPATH, "//div[@class = 'col-sm-12']//option[@value = '2']")
@@ -181,7 +172,7 @@ class PersonsPage(InternalPage):
         list_of_column_text = []
         list_of_column_elements = self.driver.find_elements_by_xpath("//tbody/tr/td[" + str(column_number) + "]")
         for element in list_of_column_elements:
-            list_of_column_text.append(element.text.lower())
+            list_of_column_text.append(element.text)
         return list_of_column_text
 
     def get_all_hidden_columns(self):
