@@ -11,6 +11,8 @@ from pages.persons.persons_page import PersonsPage
 from pages.internal_page import InternalPage
 from pages.persons.add.person_main_page import PersonMainPage
 from pages.enrollments.enrollments_page import EnrollmentsPage
+from pages.enrollments.add.enrollment_main_page import EnrollmentsMainPage
+from pages.enrollments.add.enrollment_base_page import EnrollmentsBasePage
 from model.user import User
 
 
@@ -24,7 +26,9 @@ class Application:
         self.internal_page = InternalPage(driver, base_url)
         self.person_main_page = PersonMainPage(driver, base_url)
         self.enrollments_page = EnrollmentsPage(driver, base_url)
-        self.dictionaries_page = DictionariesPage(driver,base_url)
+        self.dictionaries_page = DictionariesPage(driver, base_url)
+        self.enrollments_main_page = EnrollmentsMainPage(driver, base_url)
+        self.enrollments_base_page = EnrollmentsBasePage(driver, base_url)
 
     def login(self, user, checkbox=False):
         """
