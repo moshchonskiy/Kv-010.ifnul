@@ -1,7 +1,9 @@
 from pages.dictionaries_page import DictionariesPage
 
 from pages.persons.view.person_current_view_page import PersonCurrentViewPage
+from pages.persons.view.person_enrollment_view_page import PersonEnrollmentViewPage
 from pages.persons.view.person_main_view_page import PersonMainViewPage
+from pages.persons.view.person_papers_view_page import PersonPapersViewPage
 
 __author__ = 'Evgen'
 
@@ -30,6 +32,8 @@ class Application:
         self.dictionaries_page = DictionariesPage(driver,base_url)
         self.person_current_view_page = PersonCurrentViewPage(driver, base_url)
         self.person_main_view_page = PersonMainViewPage(driver, base_url)
+        self.person_papers_view_page = PersonPapersViewPage(driver, base_url)
+        self.person_enrollment_view_page = PersonEnrollmentViewPage(driver, base_url)
 
     def login(self, user, checkbox=False):
         """

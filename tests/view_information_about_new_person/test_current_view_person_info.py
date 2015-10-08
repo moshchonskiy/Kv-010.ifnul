@@ -1,9 +1,8 @@
 # coding=utf-8
 import time
+from model.user import User
 
 __author__ = 'Vadym'
-
-from model.user import User
 
 def test_global_info_about_person(app):
     app.ensure_logout()
@@ -11,114 +10,91 @@ def test_global_info_about_person(app):
     app.internal_page.is_this_page
     app.internal_page.driver.get('http://194.44.198.221/#/person/view/68/main')
     time.sleep(8)
+    assert app.person_papers_view_page.get_text_person_profile() == u"Перегляд персони"
+    data_main_info_person = [u'Малкович Малкович Малкович', u'Malkovich Malkovich', u'MA', u'19531209']
 
-    fio_ukranian = app.person_current_view_page.get_fio_ukranian
-    assert fio_ukranian
-    assert u'Малкович Малкович Малкович'.encode("cp1251") == fio_ukranian.text.encode("cp1251")
-
-    fio_english = app.person_current_view_page.get_fio_english
-    assert fio_english
-    assert 'Malkovich Malkovich' == fio_english.text
-
-    assert 'MA' == app.person_current_view_page.get_serial_person_record()
-
-    assert '19531209' == app.person_current_view_page.get_number_person_record()
+    assert data_main_info_person[0] == app.person_current_view_page.get_fio_ukranian().text
+    assert data_main_info_person[1] == app.person_current_view_page.get_fio_english().text
+    assert data_main_info_person[2] == app.person_current_view_page.get_serial_person_record()
+    assert data_main_info_person[3] == app.person_current_view_page.get_number_person_record()
 
 
 def test_main_info_about_person(app):
     data_main_info_person = [u'абітурієнт', u'09.12.1953 р.', u'✘', u'Чоловіча',
                              u'одружений', u'✘', u'Україна', u'3', u'✘']
-    titles = app.person_current_view_page.arr_titles_main
-    dict_data_info_person = {}
-    count = 0
-    for value in data_main_info_person:
-        if value != u'✘':
-            value = value.encode("cp1251")
-        dict_data_info_person[titles[count]] = value
-        count += 1
+    arr_main_info_from_web = app.person_current_view_page.get_arr_main_info_about_person()
 
-    dict_main_info_from_web = app.person_current_view_page.get_dict_main_info_about_person()
+    data_main_info_person.sort()
+    arr_main_info_from_web.sort()
 
-    for number in range(len(dict_main_info_from_web)):
-        assert dict_data_info_person[titles[number]] == dict_main_info_from_web[titles[number]]
+    assert len(data_main_info_person) == len(arr_main_info_from_web)
+    # assert array by values
+    for index, value_from_web in enumerate(arr_main_info_from_web):
+        assert data_main_info_person[index] == value_from_web
 
 def test_place_of_birth(app):
     data_birth_person = [u'М.КИЇВ', u'РАЙОНИ М. КИЇВ', u'ДЕСНЯНСЬКИЙ']
-    titles = app.person_current_view_page.arr_titles_birth
     size_data_birth = len(data_birth_person)
-    dict_birth_person = {}
-    count = 0
-    for value in data_birth_person:
-        dict_birth_person[titles[count]] = value.encode("cp1251")
-        count += 1
-
     count_of_elements_on_web = app.person_current_view_page.get_count_elements_place_of_birth()
     assert count_of_elements_on_web == size_data_birth
 
-    dict_main_info_from_web = app.person_current_view_page.get_dict_place_of_birth()
-    for number in range(len(dict_main_info_from_web)):
-        assert dict_birth_person[titles[number]] == dict_main_info_from_web[titles[number]]
+    arr_main_info_from_web = app.person_current_view_page.get_arr_place_of_birth()
 
-def test_address_of_registration(app):
+    data_birth_person.sort()
+    arr_main_info_from_web.sort()
+
+    for index, value_from_web in enumerate(arr_main_info_from_web):
+        assert data_birth_person[index] == value_from_web
+
+
+def test_addres_of_registration(app):
     data_addres_registration = [u'М.КИЇВ', u'РАЙОНИ М. КИЇВ', u'ДЕСНЯНСЬКИЙ']
-    titles = app.person_current_view_page.arr_titles_registration
-    size_data_addres_registration = len(data_addres_registration)
-    dict_addres_person = {}
-    count = 0
-    for value in data_addres_registration:
-        dict_addres_person[titles[count]] = value.encode("cp1251")
-        count += 1
-
+    size_data_addres = len(data_addres_registration)
     count_of_elements_on_web = app.person_current_view_page.get_count_elements_addres_of_registration()
-    assert count_of_elements_on_web == size_data_addres_registration
+    assert count_of_elements_on_web == size_data_addres
 
-    dict_main_info_from_web = app.person_current_view_page.get_dict_addres_of_registration()
-    for number in range(len(dict_main_info_from_web)):
-        assert dict_addres_person[titles[number]] == dict_main_info_from_web[titles[number]]
+    arr_addres_of_reg_from_web = app.person_current_view_page.get_arr_addres_of_registration()
+
+    data_addres_registration.sort()
+    arr_addres_of_reg_from_web.sort()
+
+    for index, value_from_web in enumerate(arr_addres_of_reg_from_web):
+        assert data_addres_registration[index] == value_from_web
 
 def test_exact_address_of_registration(app):
-    data_exact_addres_registration = [u'591209', u'бульвар ', u'Малкович', u'12', u'9']
-    titles = app.person_current_view_page.arr_titles_exact_reg
-    dict_exact_addres_person = {}
-    count = 0
-    for value in data_exact_addres_registration:
-        value = value.encode("cp1251")
-        value = value.strip(" ")
-        dict_exact_addres_person[titles[count]] = value
-        count += 1
+    data_exact_addres = [u'591209', u'бульвар', u'Малкович', u'12', u'9']
+    arr_main_info_from_web = app.person_current_view_page.get_arr_exact_addres_of_registration()
 
-    dict_main_info_from_web = app.person_current_view_page.get_dict_exact_addres_of_registration()
-    for number in range(len(dict_main_info_from_web)):
-        assert dict_exact_addres_person[titles[number]] == dict_main_info_from_web[titles[number]]
+    data_exact_addres.sort()
+    arr_main_info_from_web.sort()
+
+    assert len(data_exact_addres) == len(arr_main_info_from_web)
+    # assert array by values
+    for index, value_from_web in enumerate(arr_main_info_from_web):
+        assert data_exact_addres[index] == value_from_web
 
 def test_post_address(app):
     data_post_addres = [u'М.КИЇВ', u'РАЙОНИ М. КИЇВ', u'ДЕСНЯНСЬКИЙ']
-    titles = app.person_current_view_page.arr_titles_post_addres
-    size_data_post_addres = len(data_post_addres)
-    dict_post_addres = {}
-    count = 0
-    for value in data_post_addres:
-        dict_post_addres[titles[count]] = value.encode("cp1251")
-        count += 1
-
+    size_data_addres = len(data_post_addres)
     count_of_elements_on_web = app.person_current_view_page.get_count_elements_post_addres()
-    assert count_of_elements_on_web == size_data_post_addres
+    assert count_of_elements_on_web == size_data_addres
 
-    dict_main_info_from_web = app.person_current_view_page.get_dict_post_addres()
-    for number in range(len(dict_main_info_from_web)):
-        assert dict_post_addres[titles[number]] == dict_main_info_from_web[titles[number]]
+    arr_addres_of_reg_from_web = app.person_current_view_page.get_arr_post_addres()
+
+    data_post_addres.sort()
+    arr_addres_of_reg_from_web.sort()
+
+    for index, value_from_web in enumerate(arr_addres_of_reg_from_web):
+        assert data_post_addres[index] == value_from_web
 
 def test_exact_post_addres(app):
-    data_exact_post_addres = [u'591209', u'бульвар ', u'Малкович', u'12', u'9']
-    titles = app.person_current_view_page.arr_titles_post_exact
-    dict_exact_post_addres_person = {}
-    count = 0
-    for value in data_exact_post_addres:
-        value = value.encode("cp1251")
-        value = value.strip(" ")
-        dict_exact_post_addres_person[titles[count]] = value
-        count += 1
+    data_exact_post_addres = [u'591209', u'бульвар', u'Малкович', u'12', u'9']
+    arr_main_info_from_web = app.person_current_view_page.get_arr_exact_post_addres()
 
-    dict_main_info_from_web = app.person_current_view_page.get_dict_exact_post_addres()
-    for number in range(len(dict_main_info_from_web)):
-        assert dict_exact_post_addres_person[titles[number]] == dict_main_info_from_web[titles[number]]
+    data_exact_post_addres.sort()
+    arr_main_info_from_web.sort()
+
+    assert len(data_exact_post_addres) == len(arr_main_info_from_web)
+    # assert array by values
+    for index, value_from_web in enumerate(arr_main_info_from_web):
+        assert data_exact_post_addres[index] == value_from_web
