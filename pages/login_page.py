@@ -1,6 +1,7 @@
 __author__ = 'Evgen'
-from page import Page
 from selenium.webdriver.common.by import By
+
+from page import Page
 
 
 class LoginPage(Page):
@@ -29,4 +30,3 @@ class LoginPage(Page):
     @property
     def is_this_page(self):
         return self.is_element_visible(self.LOGIN_PAGE)
-
