@@ -1,20 +1,16 @@
 # -*- coding: utf-8 -*-
-import os
-from pages.internal_page import InternalPage
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
-from pages.enrollments.add.data_provider_json import DataProviderJSON
-import sys
 
+from pages.internal_page import InternalPage
 
 __author__ = 'Stako'
 
 
 class EnrollmentsMainPage(InternalPage):
-
     res_dict = {
-        "series_of_statements": "222333",
-        "number_statements": "7778777",
+        "series_of_statements": "445445",
+        "number_statements": "77799777",
         "offers": "Фізичний",
         "form_of_education": "Бакалавр",
         "document": "Атестат про повну загальну середню освіту",
@@ -28,7 +24,7 @@ class EnrollmentsMainPage(InternalPage):
     }
 
     OK_FOR_INPUT_FIELD = (By.CSS_SELECTOR, "div[class='input-group'] * button[class='btn btn-primary']")
-    SECOND_PERSON = (By.XPATH, "//div[@class='table-responsive']//tr[6]/td[2]")
+    SECOND_PERSON = (By.XPATH, "html/body/div[5]/div/div/div[2]/div[2]/table/tbody/tr[6]/td[2]")
     SERIES_OF_STATEMENTS = (By.XPATH, "//*[@id='inputDocSeries']")
     NUMBER_STATEMENTS = (By.XPATH, ".//*[@id='inputdocNum']")
     CHECKBOX_IS_STATE = (By.XPATH, ".//input[@ng-model='enrolment.isState']")
@@ -37,8 +33,8 @@ class EnrollmentsMainPage(InternalPage):
     RADIOBUTTON_GETTING_EDUCATION = (By.CSS_SELECTOR, "input[name='isedustate'][value='11']")
     RADIOBUTTON_IS_INTERVIEW = (By.CSS_SELECTOR, "input[value='11'][ng-model='enrolment.isInterview']")
     CHECKBOX_IS_HOSTEL = (By.XPATH, ".//*[@ng-init='enrolment.isHostel = 0']")
-    SEARCH_OFFERS_FIELD = (By.XPATH, ".//div[@class='col-xs-4']//div[@class='ui-select-container ui-select-bootstrap dropdown ng-valid ng-touched']//i[@class='caret pull-right']")
-    CHOOSE_FORM_OF_EDUCATION = (By.XPATH, ".//div[@class='col-xs-4']//div[@class='ui-select-container ui-select-bootstrap dropdown ng-valid']//i[@class='caret pull-right']")
+    SEARCH_OFFERS_FIELD = (By.XPATH, ".//*[@id='movieForm']/div[9]/div[1]/div[1]/div/div/div/span/i")
+    CHOOSE_FORM_OF_EDUCATION = (By.XPATH, ".//*[@id='movieForm']/div[9]/div[1]/div[2]/div/div/div/span/i")
     LIST_FROM_UI_SELECT = (By.XPATH, "//div[contains(@id, 'ui-select-choices-row')]/a/div")
     BUTTON_CHOOSE_SPECIALTIES = (By.CSS_SELECTOR, "button[class='btn btn-primary'] >i")
     CHOOSE_FIRST_SPECIALTIES = (By.XPATH, "//div[@class='table-responsive']//tbody[@class='pointer']/tr[1]/td[2]")
@@ -62,6 +58,7 @@ class EnrollmentsMainPage(InternalPage):
         return self.is_element_visible(self.CHOOSE_FIRST_SPECIALTIES)
 
     def list_form_ui_select(self):
+        self.is_element_visible(self.LIST_FROM_UI_SELECT)
         return self.driver.find_elements(*self.LIST_FROM_UI_SELECT)
 
     @property
@@ -176,18 +173,13 @@ class EnrollmentsMainPage(InternalPage):
         """
         This method fill enrollment and save one.
         """
-        sys.path.append(os.path.abspath(os.path.dirname("Kv-010.ifnul")))
-        dp = DataProviderJSON("pages/enrollments/add/fill_enrollment_main.json")
-        dp.get_value_by_ij("fill_data_enrollment", "date_closing")
         self.is_element_present(self.SPINNER_OFF)
         self.ok_for_input_field.click()
         self.is_element_present(self.SPINNER_OFF)
         self.second_person.click()
         self.is_element_present(self.SPINNER_OFF)
-        self.series_of_statements.send_keys(
-            dp.get_value_by_ij("fill_data_enrollment", "series_of_statements"))
-        self.number_statements.send_keys(
-            dp.get_value_by_ij("fill_data_enrollment", "number_statements"))
+        self.series_of_statements.send_keys(self.res_dict["series_of_statements"])
+        self.number_statements.send_keys(self.res_dict["number_statements"])
         self.checkbox_is_state.click()
         self.checkbox_is_contract.click()
         self.checkbox_is_privilege.click()
@@ -195,32 +187,25 @@ class EnrollmentsMainPage(InternalPage):
         self.radiobutton_is_interview.click()
         self.checkbox_is_hostel.click()
         self.search_offers_field.click()
-        self.find_element_in_ui_select(self.list_form_ui_select(),
-                                       dp.get_value_by_ij("fill_data_enrollment", "offers")).click()
+        self.find_element_in_ui_select(self.list_form_ui_select(), self.res_dict["offers"]).click()
         self.choose_form_of_education.click()
-        self.find_element_in_ui_select(self.list_form_ui_select(),
-                                       dp.get_value_by_ij("fill_data_enrollment", "form_of_education")).click()
+        self.find_element_in_ui_select(self.list_form_ui_select(), self.res_dict["form_of_education"]).click()
         self.button_choose_specialties.click()
         self.is_element_present(self.SPINNER_OFF)
         self.choose_first_specialties.click()
         self.document.click()
-        self.find_element_in_ui_select(self.list_form_ui_select(),
-                                       dp.get_value_by_ij("fill_data_enrollment", "document")).click()
+        self.find_element_in_ui_select(self.list_form_ui_select(), self.res_dict["document"]).click()
         self.grading_scale.click()
-        self.find_element_in_ui_select(self.list_form_ui_select(),
-                                       dp.get_value_by_ij("fill_data_enrollment", "grading_scale")).click()
-        self.total_score.send_keys(dp.get_value_by_ij("fill_data_enrollment", "total_score"))
+        self.find_element_in_ui_select(self.list_form_ui_select(), self.res_dict["grading_scale"]).click()
+        self.total_score.send_keys(self.res_dict["total_score"])
         self.checkbox_document_is_original.click()
-        self.priority.send_keys(dp.get_value_by_ij("fill_data_enrollment", "priority"))
+        self.priority.send_keys(self.res_dict["priority"])
         self.structural_unit.click()
-        self.find_element_in_ui_select(self.list_form_ui_select(),
-                                       dp.get_value_by_ij("fill_data_enrollment", "structural_unit")).click()
+        self.find_element_in_ui_select(self.list_form_ui_select(), self.res_dict["structural_unit"]).click()
         self.find_element_in_select(
-            Select(self.driver.find_element_by_id("inputChiefEnrolTypes")).options,
-            dp.get_value_by_ij("fill_data_enrollment", "type_of_entry"))
+            Select(self.driver.find_element_by_id("inputChiefEnrolTypes")).options, self.res_dict["type_of_entry"])
         self.find_element_in_select(
-            Select(self.driver.find_element_by_id("inputEnrolmentTypeId")).options,
-            dp.get_value_by_ij("fill_data_enrollment", "detailing_start"))
-        self.date_closing_statements.send_keys(dp.get_value_by_ij("fill_data_enrollment", "date_closing"))
+            Select(self.driver.find_element_by_id("inputEnrolmentTypeId")).options, self.res_dict["detailing_start"])
+        self.date_closing_statements.send_keys(self.res_dict["date_closing"])
         self.is_element_present(self.SPINNER_OFF)
         self.button_save.click()
