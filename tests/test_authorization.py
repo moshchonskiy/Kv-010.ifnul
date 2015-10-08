@@ -23,7 +23,7 @@ def test_remember_me_checkbox(app):
         all_windows = ip.driver.window_handles
         ip.driver.close()
         ip.driver.switch_to.window(all_windows[1])
-        ip.driver.get("http://localhost:9000/#/person/list")
+        ip.driver.get(ip.base_url + "#/person/list")
         assert app.is_logged_in()
 
 def test_invalid_login(app):

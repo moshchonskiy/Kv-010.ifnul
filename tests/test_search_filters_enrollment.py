@@ -19,22 +19,22 @@ class TestSearchFilters(object):
         app.enrollments_page.is_this_page
         en_page = app.enrollments_page
         with pytest.allure.step("Searching by person ID"):
-            assert en_page.search_enrollment(en_page.SEARCH_METHOD["person_id"], "9") == "9"
+            assert "9" in en_page.search_enrollment(en_page.SEARCH_METHOD["person_id"], "9")
 
     def test_search_by_document_series(self, app):
         en_page = app.enrollments_page
         with pytest.allure.step("Searching by document's series"):
-            assert en_page.search_enrollment(en_page.SEARCH_METHOD["document_series"], "232") == "232"
+            assert u'авіа' in en_page.search_enrollment(en_page.SEARCH_METHOD["document_series"], u'ві')
 
     def test_search_by_document_number(self, app):
         en_page = app.enrollments_page
         with pytest.allure.step("Searching by document's number"):
-            assert en_page.search_enrollment(en_page.SEARCH_METHOD["document_number"], "3333") == "3333"
+            assert "3333" in  en_page.search_enrollment(en_page.SEARCH_METHOD["document_number"], "3333")
 
     def test_search_by_proposal_id(self, app):
         en_page = app.enrollments_page
         with pytest.allure.step("Searching by proposal ID"):
-            assert en_page.search_enrollment(en_page.SEARCH_METHOD["proposal_id"], "5") == "5"
+            assert "5" in en_page.search_enrollment(en_page.SEARCH_METHOD["proposal_id"], "5")
 
     def test_filter_by_budget(self, app):
 
@@ -47,7 +47,7 @@ class TestSearchFilters(object):
         enr_page.add_table_columns(enr_page.COLUMN_BUDGET_ADD)
         enr_page.add_filters(enr_page.FILTER_BUDGET)
         actual = enr_page.get_columns_text(enr_page.BUDGET_COLUMN)
-        expected = enr_page.FILTER_RESULTS["budget"]
+        expected = {enr_page.FILTER_RESULTS["budget"]}
         assert actual == expected
 
     def test_filter_by_not_budget(self, app):
@@ -60,7 +60,7 @@ class TestSearchFilters(object):
         enr_page = app.enrollments_page
         enr_page.add_filters(enr_page.FILTER_NOT_BUDGET)
         actual = enr_page.get_columns_text(enr_page.BUDGET_COLUMN)
-        expected = enr_page.FILTER_RESULTS["not_budget"]
+        expected = {enr_page.FILTER_RESULTS["not_budget"]}
         assert actual == expected
 
     def test_filter_by_privileges(self, app):
@@ -72,7 +72,7 @@ class TestSearchFilters(object):
         enr_page = app.enrollments_page
         enr_page.add_filters(enr_page.FILTER_PRIVILEGES)
         actual = enr_page.get_columns_text(enr_page.PRIVILEGES_COLUMN)
-        expected = enr_page.FILTER_RESULTS["privileged"]
+        expected = {enr_page.FILTER_RESULTS["privileged"]}
         assert actual == expected
 
     def test_filter_by_privileges(self, app):
@@ -84,7 +84,7 @@ class TestSearchFilters(object):
         enr_page = app.enrollments_page
         enr_page.add_filters(enr_page.FILTER_NOT_PRIVILEGES)
         actual = enr_page.get_columns_text(enr_page.PRIVILEGES_COLUMN)
-        expected = enr_page.FILTER_RESULTS["not_privileged"]
+        expected = {enr_page.FILTER_RESULTS["not_privileged"]}
         assert actual == expected
 
     def test_filter_mix(self, app):
