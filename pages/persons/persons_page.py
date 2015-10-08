@@ -9,7 +9,7 @@ from selenium.webdriver.remote.webdriver import WebDriver
 
 class PersonsPage(InternalPage):
 
-    ADD_PERSON_BUTTON = (By.XPATH, "//button[contains(@class,'btn-success')]")
+    ADD_PERSON_BUTTON = (By.XPATH, "//a[@ui-sref='root.person.new.main']")
     SHOW_HIDE_FILTERS_BUTTON = (By.XPATH, "//button[contains(@ng-click,'hideFilterFunc')]")
     ACTIVE_ITEMS_PER_PAGE_BUTTON = (By.XPATH, "//button[contains(@class, 'active')]")
     PREVIOUS_PAGE = (By.XPATH, "//li[contains(@title, 'Previous Page')]")
@@ -39,16 +39,18 @@ class PersonsPage(InternalPage):
         17: 'Мат. відп'
     }
           
+    # TO SEARCH    
     CHOOSE_SURNAME_SEARCH = (By.XPATH, "//div[@class = 'col-sm-12']//option[@value = '0']")
     CHOOSE_PERSON_ID_SEARCH = (By.XPATH, "//div[@class = 'col-sm-12']//option[@value = '1']")
     CHOOSE_NUM_OS_SEARCH = (By.XPATH, "//div[@class = 'col-sm-12']//option[@value = '2']")
     CHOOSE_SERIES_OS_SEARCH = (By.XPATH, "//div[@class = 'col-sm-12']//option[@value = '3']")
     INPUT_GROUP_SEARCH_BUTTON = (By.XPATH, "//div[@class = 'input-group']/input")
     OK_GROUP_SEARCH_BUTTON = (By.XPATH, "//div[@class = 'input-group']/span/button")
-    EXPECTED_SURNAME = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope']/td[2]")
+    EXPECTED_SURNAME = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope'][1]/td[2]")
     EXPECTED_PERSON_ID = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope']/td[1]")
     EXPECTED_NUM_OS = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope']/td[11]")
     EXPECTED_SERIES_OS = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope']/td[10]")
+    DELETE_FIRST_PERSON_IN_TABLE = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope'][1]/td[18]//button[3]")
 
     # TO FILTER
     # There would be absolute passes. It is awful, it may be changed.
@@ -100,7 +102,13 @@ class PersonsPage(InternalPage):
 
     @property
     def add_person_link(self):
-        return self.driver.find_element_by_xpath(*self.ADD_PERSON_BUTTON)
+        return self.driver.find_element(*self.ADD_PERSON_BUTTON).click()
+
+    @property
+    def delete_first_person_in_page(self):
+        if self.is_element_visible(self.DELETE_FIRST_PERSON_IN_TABLE):
+            self.driver.find_element(*self.DELETE_FIRST_PERSON_IN_TABLE).click()
+            self.is_element_present(self.SPINNER_OFF)
 
     # to all filters
 
@@ -132,9 +140,9 @@ class PersonsPage(InternalPage):
     def try_get_choose_surname(self):
         return self.is_element_visible(self.CHOOSE_SURNAME_SEARCH)
 
-    def try_get_expected_surname(self):
-        WebDriverWait(self.driver, TIME_TO_WAIT).until(
-            EC.text_to_be_present_in_element(self.EXPECTED_SURNAME, GIVEN_SURNAME))
+    def try_get_expected_surname(self, given_surname):
+        WebDriverWait(self.driver, 15).until(
+            EC.text_to_be_present_in_element(self.EXPECTED_SURNAME, given_surname))
         return self.is_element_visible(self.EXPECTED_SURNAME)
 
     # persone_id search
