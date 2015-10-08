@@ -9,8 +9,8 @@ __author__ = 'Stako'
 
 class EnrollmentsMainPage(InternalPage):
     res_dict = {
-        "series_of_statements": "222333",
-        "number_statements": "7778777",
+        "series_of_statements": "445445",
+        "number_statements": "77799777",
         "offers": "Фізичний",
         "form_of_education": "Бакалавр",
         "document": "Атестат про повну загальну середню освіту",
@@ -58,6 +58,7 @@ class EnrollmentsMainPage(InternalPage):
         return self.is_element_visible(self.CHOOSE_FIRST_SPECIALTIES)
 
     def list_form_ui_select(self):
+        self.is_element_visible(self.LIST_FROM_UI_SELECT)
         return self.driver.find_elements(*self.LIST_FROM_UI_SELECT)
 
     @property

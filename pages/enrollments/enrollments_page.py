@@ -135,7 +135,7 @@ class EnrollmentsPage(InternalPage):
         :param req: Any wanted string request
         """
         self.is_this_page
-        # self.hundred_button.click()
+        self.hundred_button.click()
         self.is_element_present(self.SPINNER_OFF)
         select = Select(self.search_select_dropdown)
         select.select_by_value(search_by)

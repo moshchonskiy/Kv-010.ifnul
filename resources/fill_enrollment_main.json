@@ -1,0 +1,17 @@
+{
+  "fill_data_enrollment":
+  {
+      "series_of_statements": "222333",
+      "number_statements": "7778777",
+      "offers": "Фізичний",
+      "form_of_education": "Бакалавр",
+      "document": "Атестат про повну загальну середню освіту",
+      "grading_scale": "стобальна",
+      "total_score": "77",
+      "priority": "3",
+      "structural_unit": "Фізичний",
+      "type_of_entry": "За результатами іспитів",
+      "detailing_start": "Учасник міжнародної олімпіади",
+      "date_closing": "2016-01-01"
+  }
+}
