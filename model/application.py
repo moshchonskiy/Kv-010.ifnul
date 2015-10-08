@@ -14,11 +14,16 @@ from selenium.webdriver.support.expected_conditions import *
 from pages.login_page import LoginPage
 from pages.persons.persons_page import PersonsPage
 from pages.internal_page import InternalPage
-from pages.persons.add.person_main_page import PersonMainPage
 from pages.enrollments.enrollments_page import EnrollmentsPage
 from pages.enrollments.add.enrollment_main_page import EnrollmentsMainPage
 from pages.enrollments.add.enrollment_base_page import EnrollmentsBasePage
 from model.user import User
+from pages.persons.add.person_main_page import *
+from pages.persons.persons_page import PersonsPage
+from pages.persons.add.person_extra_page import *
+from pages.persons.add.person_addresses_page import *
+from pages.persons.add.person_contacts_page import *
+from pages.persons.add.person_papers_page import *
 
 
 class Application:
@@ -29,7 +34,7 @@ class Application:
         self.login_page = LoginPage(driver, base_url)
         self.persons_page = PersonsPage(driver, base_url)
         self.internal_page = InternalPage(driver, base_url)
-        self.person_main_page = PersonMainPage(driver, base_url)
+        self.person_main_page = AddPersonMainPage(driver, base_url)
         self.enrollments_page = EnrollmentsPage(driver, base_url)
         self.dictionaries_page = DictionariesPage(driver,base_url)
         self.person_current_view_page = PersonCurrentViewPage(driver, base_url)
@@ -38,6 +43,11 @@ class Application:
         self.person_enrollment_view_page = PersonEnrollmentViewPage(driver, base_url)
         self.enrollments_main_page = EnrollmentsMainPage(driver, base_url)
         self.enrollments_base_page = EnrollmentsBasePage(driver, base_url)
+        self.main_page = AddPersonMainPage(driver, base_url)
+        self.extra_page = AddPersonExtraPage(driver, base_url)
+        self.address_page = AddPersonAddressesPage(driver, base_url)
+        self.contact_page = AddPersonContactsPage(driver, base_url)
+        self.papers_page = AddPersonPapersPage(driver, base_url)
 
     def login(self, user, checkbox=False):
         """
