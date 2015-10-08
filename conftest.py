@@ -2,7 +2,6 @@ __author__ = 'Evgen'
 
 import pytest
 from selenium import webdriver
-
 from model.application import Application
 
 
