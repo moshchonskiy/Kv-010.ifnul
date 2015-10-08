@@ -30,14 +30,11 @@ def app(request, browser_type, base_url):
     you can write in the console something like >>> py.test --browser "chrome"
     :return: new Application with chosen or default params
     """
-
     if browser_type == "firefox":
-
         driver = webdriver.Firefox()
     elif browser_type == "chrome":
         driver = webdriver.Chrome()
     elif browser_type == "ie":
         driver = webdriver.Ie()
     request.addfinalizer(driver.quit)
-
     return Application(driver, base_url)
