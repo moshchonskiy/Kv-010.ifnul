@@ -84,10 +84,3 @@ class Application:
         :return: True or False
         """
         return self.login_page.is_this_page
-
-
-
-
-
-
-
