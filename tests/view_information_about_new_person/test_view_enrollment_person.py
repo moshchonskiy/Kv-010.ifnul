@@ -9,11 +9,11 @@ def test_login_page_document_verify(app):
     app.login(User.Admin())
     app.internal_page.is_this_page
     app.internal_page.driver.get('http://194.44.198.221/#/person/view/68/main')
-    time.sleep(8)
+    app.person_enrollment_view_page.is_element_present(app.person_enrollment_view_page.SPINNER_OFF)
 
     assert app.person_enrollment_view_page.get_text_person_profile() == u"Перегляд персони"
     app.person_main_view_page.person_enrollment_button().click()
-    time.sleep(2)
+    app.person_enrollment_view_page.is_element_present(app.person_enrollment_view_page.SPINNER_OFF)
 
     assert app.person_enrollment_view_page.is_table_enrollment_present() == True
 

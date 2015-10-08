@@ -1,5 +1,6 @@
 # coding=utf-8
 import time
+from selenium.webdriver.common.by import By
 from model.user import User
 
 __author__ = 'Vadym'
@@ -9,7 +10,7 @@ def test_global_info_about_person(app):
     app.login(User.Admin())
     app.internal_page.is_this_page
     app.internal_page.driver.get('http://194.44.198.221/#/person/view/68/main')
-    time.sleep(8)
+    app.person_current_view_page.is_element_present(app.person_current_view_page.SPINNER_OFF)
     assert app.person_papers_view_page.get_text_person_profile() == u"Перегляд персони"
     data_main_info_person = [u'Малкович Малкович Малкович', u'Malkovich Malkovich', u'MA', u'19531209']
 
