@@ -47,7 +47,9 @@ class Application:
         """
         lp = self.login_page
         lp.is_this_page
+        lp.username_field.clear()
         lp.username_field.send_keys(user.username)
+        lp.password_field.clear()
         lp.password_field.send_keys(user.password)
         if checkbox:
             lp.login_checkbox.click()
