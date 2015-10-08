@@ -5,10 +5,10 @@ from selenium import webdriver
 from model.application import Application
 
 
-
 def pytest_addoption(parser):
     parser.addoption("--browser", action="store", default="firefox")
-    parser.addoption("--base_url", action="store", default="http://194.44.198.221/")
+    # parser.addoption("--base_url", action="store", default="http://localhost:9000/")
+    parser.addoption("--base_url", action="store", default="http://194.44.198.221")
 
 
 @pytest.fixture(scope="session")

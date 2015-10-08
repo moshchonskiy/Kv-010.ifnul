@@ -6,7 +6,6 @@ class User(object):
         self.username = username
         self.password = password
 
-
     @classmethod
     def Admin(cls):
         return cls(username="admin", password="nimda")
