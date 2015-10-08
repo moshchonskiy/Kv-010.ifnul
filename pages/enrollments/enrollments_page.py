@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
-from selenium import webdriver
 from time import sleep
-from pages.internal_page import InternalPage
+
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.support.expected_conditions import *
+
+from pages.internal_page import InternalPage
 
 __author__ = 'Evgen'
 
@@ -148,44 +149,53 @@ class EnrollmentsPage(InternalPage):
 
     def search_text_in_column(self, column, req):
         """
-        Method searches in wanted column for text
+        Method searches for inserted in search field request in a certain column
         :param column: Column selector
         :param req: String
-        :return: String with founded text. If it finds only requested text it will return text. If it finds some
-                 difference method will return difference.
+        :return: List with found values. It will return list with correct values if method find only correct ones.
+        Opposite, it returns list with incorrect values.
         """
-        lst = list()
+        req = req.lower()
+        correct = list()
+        incorrect = list()
         web_elem = self.wait.until(presence_of_element_located(self.IF_NEXT_BUTTON_DISABLED))
         if web_elem.get_attribute("class") == "ng-scope disabled":
             elements = self.driver.find_elements(*column)
-            lst = [element.text for element in elements if element.text[:len(req)] != req]
-            if len(lst) > 0:
-                return lst[0]
+            for element in elements:
+                if element.text.lower().count(req):
+                    correct.append(element.text)
+                else:
+                    incorrect.append(element.text)
+            if len(incorrect):
+                return incorrect
             else:
-                return req
+                return correct
         else:
             while True:
                 elements = self.driver.find_elements(*column)
                 for element in elements:
-                    if element.text != req:
-                        lst.append(element.text)
+                    if element.text.lower().count(req):
+                        correct.append(element.text)
+                    else:
+                        incorrect.append(element.text)
                 new_elem = self.wait.until(presence_of_element_located(self.IF_NEXT_BUTTON_DISABLED))
                 if new_elem.get_attribute("class") == "ng-scope disabled":
                     break
                 self.driver.find_element(*self.NEXT_TABLE_PAGE_BUTTON).click()
                 self.is_element_present(self.SPINNER_OFF)
+            if len(incorrect):
+                return incorrect
+            else:
+                return correct
 
-        if len(lst) > 0:
-            return lst[0]
-        else:
-            return req
-
-    def search_enrollment(self,  search_by, req,):
+    def search_enrollment(self, search_by, req, ):
         """
-        Method performs search of enrollment.
+        Method performs search of enrollment. For example:
+        assert "some request" in ....enrolments_page.search_enrollment(... , .....)
         :param search_by:  SEARCH_METHOD["method"]
-        :param req: String
-        :return: If any difference between request and founded it returns difference, if not it returns request
+        :param req: String. For example "46" or u'текст'
+        :return: List with found values. It will return list with correct values if method find only correct ones.
+        Opposite, it returns list with incorrect values.
         """
         self.execute_search(search_by, req)
         if search_by is self.SEARCH_METHOD["person_id"]:
@@ -226,36 +236,30 @@ class EnrollmentsPage(InternalPage):
         Method collects info from given columns and adds it to set. So it is unique values.
         It can take several columns in arguments
         :param column_tuple: Selectors, separated with comas  (self.COLUMN_1, self.COLUMN_2)
-        :return: Set with founded unique values.
+        :return: Set with found unique values.
         """
-        lst = list()
+        found = set()
         web_elem = self.wait.until(presence_of_element_located(self.IF_NEXT_BUTTON_DISABLED))
         if web_elem.get_attribute("class") == "ng-scope disabled":
             for column in column_tuple:
                 elements = self.driver.find_elements(*column)
                 for element in elements:
-                    if element.text not in lst:
-                        lst.append(element.text)
-            if len(column_tuple) == 1:
-                return lst[0]
-            else:
-                return set(lst)
+                    if element.text not in found:
+                        found.add(element.text)
+            return found
         else:
             while True:
                 for column in column_tuple:
                     elements = self.driver.find_elements(*column)
                     for element in elements:
-                        if element.text not in lst:
-                            lst.append(element.text)
+                        if element.text not in found:
+                            found.add(element.text)
                 new_elem = self.wait.until(presence_of_element_located(self.IF_NEXT_BUTTON_DISABLED))
                 if new_elem.get_attribute("class") == "ng-scope disabled":
                     break
                 self.driver.find_element(*self.NEXT_TABLE_PAGE_BUTTON).click()
                 self.is_element_present(self.SPINNER_OFF)
-            if len(column_tuple) == 1:
-                return lst[0]
-            else:
-                return set(lst)
+            return found
 
     def delete_all_filters(self):
         """
