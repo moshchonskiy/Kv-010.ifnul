@@ -1,5 +1,6 @@
 # coding: utf8
 from selenium.webdriver.support.select import Select
+
 from model.user import User
 from utils.data_provader_from_json import DataProviderJSON
 from utils.table_ease_access import TestTable
@@ -72,8 +73,3 @@ def test_count(app):
         while dict_page.try_get_table_body_last_cell_in_i_row(1) != dict_page.try_get_table_body_cell_i_j(1, i):
             i += 1
         print i
-
-
-
-
-

@@ -15,8 +15,9 @@ def test_surname_search(app):
     person_page.try_get_input_group().clear()
     person_page.try_get_input_group().send_keys(GIVEN_SURNAME)
     person_page.try_get_ok_button().click()
-    #the 1st word (surname) will be given
+    # the 1st word (surname) will be given
     assert person_page.try_get_expected_surname().text.partition(' ')[0] == GIVEN_SURNAME
+
 
 def test_person_id_search(app):
     person_page = app.persons_page
@@ -26,6 +27,7 @@ def test_person_id_search(app):
     person_page.try_get_ok_button().click()
     assert person_page.try_get_expected_person_id().text == GIVEN_PERSON_ID
 
+
 def test_num_os_search(app):
     person_page = app.persons_page
     person_page.try_get_choose_num_os().click()
@@ -33,6 +35,7 @@ def test_num_os_search(app):
     person_page.try_get_input_group().send_keys(GIVEN_NUM_OS)
     person_page.try_get_ok_button().click()
     assert person_page.try_get_expected_num_os().text == GIVEN_NUM_OS
+
 
 def test_series_os_search(app):
     person_page = app.persons_page

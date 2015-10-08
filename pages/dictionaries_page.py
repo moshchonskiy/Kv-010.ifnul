@@ -1,8 +1,5 @@
-from selenium.common.exceptions import WebDriverException
-from selenium.selenium import selenium
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.expected_conditions import visibility_of_element_located
-from selenium.webdriver.support.wait import WebDriverWait
+
 from pages.internal_page import InternalPage
 
 __author__ = 'Denys'
@@ -62,6 +59,3 @@ class DictionariesPage(InternalPage):
 
     def try_get_table_body_last_cell_in_last_row(self):
         return self.is_element_visible((By.XPATH, self.TABLE_BODY_LAST_CELL_IN_LAST_ROW))
-
-
-

@@ -2,13 +2,15 @@ __author__ = 'Evgen'
 
 import pytest
 from selenium import webdriver
+
 from model.application import Application
 
 
 def pytest_addoption(parser):
     parser.addoption("--browser", action="store", default="firefox")
-    #parser.addoption("--base_url", action="store", default="http://localhost:9000/")
+    # parser.addoption("--base_url", action="store", default="http://localhost:9000/")
     parser.addoption("--base_url", action="store", default="http://194.44.198.221")
+
 
 @pytest.fixture(scope="session")
 def browser_type(request):
@@ -31,8 +33,6 @@ def app(request, browser_type, base_url):
     """
 
     if browser_type == "firefox":
-
-
 
         driver = webdriver.Firefox()
     elif browser_type == "chrome":

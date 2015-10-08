@@ -17,7 +17,3 @@ class DataProviderJSON():
 
     def get_value_by_ij(self, i, j):
         return self.json_data[i][j]
-
-
-
-

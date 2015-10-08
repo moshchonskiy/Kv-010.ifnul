@@ -1,6 +1,5 @@
 from model.user import User
 
-
 __author__ = 'stako'
 
 
@@ -19,9 +18,4 @@ def test_add_enrollments(app):
     app.enrollments_main_page.fill_enrollment()
     assert app.enrollments_page.search_enrollment(app.enrollments_page.SEARCH_METHOD["document_series"],
                                                   app.enrollments_main_page.res_dict["series_of_statements"]) == \
-                                                  app.enrollments_main_page.res_dict["series_of_statements"]
-
-
-
-
-
+           app.enrollments_main_page.res_dict["series_of_statements"]

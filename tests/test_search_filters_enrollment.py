@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
 __author__ = 'Evgen'
 import pytest
+
 from model.user import User
-from selenium import webdriver
-from model.application import Application
 
 
 class TestSearchFilters(object):
@@ -12,7 +11,6 @@ class TestSearchFilters(object):
     # app = Application(driver, base_url)
 
     def test_search_by_person_id(self, app):
-
         app.ensure_logged_in()
         app.internal_page.is_this_page
         app.internal_page.enrollments_page_link.click()
@@ -29,7 +27,7 @@ class TestSearchFilters(object):
     def test_search_by_document_number(self, app):
         en_page = app.enrollments_page
         with pytest.allure.step("Searching by document's number"):
-            assert "3333" in  en_page.search_enrollment(en_page.SEARCH_METHOD["document_number"], "3333")
+            assert "3333" in en_page.search_enrollment(en_page.SEARCH_METHOD["document_number"], "3333")
 
     def test_search_by_proposal_id(self, app):
         en_page = app.enrollments_page
@@ -37,7 +35,6 @@ class TestSearchFilters(object):
             assert "5" in en_page.search_enrollment(en_page.SEARCH_METHOD["proposal_id"], "5")
 
     def test_filter_by_budget(self, app):
-
         app.ensure_logout()
         app.login(User.Admin())
         app.internal_page.is_this_page
@@ -51,7 +48,6 @@ class TestSearchFilters(object):
         assert actual == expected
 
     def test_filter_by_not_budget(self, app):
-
         app.ensure_logout()
         app.login(User.Admin())
         app.internal_page.is_this_page
@@ -95,8 +91,10 @@ class TestSearchFilters(object):
         app.enrollments_page.is_this_page
         enr_page = app.enrollments_page
         enr_page.add_filters(enr_page.FILTER_NOT_PRIVILEGES, enr_page.FILTER_BUDGET, enr_page.FILTER_NEED_ACCOMMODATION)
-        actual = enr_page.get_columns_text(enr_page.PRIVILEGES_COLUMN, enr_page.BUDGET_COLUMN, enr_page.ACCOMMODATION_COLUMN)
-        expected = {enr_page.FILTER_RESULTS["not_privileged"], enr_page.FILTER_RESULTS["budget"], enr_page.FILTER_RESULTS["accommodation"]}
+        actual = enr_page.get_columns_text(enr_page.PRIVILEGES_COLUMN, enr_page.BUDGET_COLUMN,
+                                           enr_page.ACCOMMODATION_COLUMN)
+        expected = {enr_page.FILTER_RESULTS["not_privileged"], enr_page.FILTER_RESULTS["budget"],
+                    enr_page.FILTER_RESULTS["accommodation"]}
         assert actual == expected
 
     def test_delete_filters(self, app):
