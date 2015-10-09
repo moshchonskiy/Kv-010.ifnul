@@ -20,23 +20,23 @@ class PersonsPage(InternalPage):
     INACTIVE_COLUMNS_MODAL = (By.XPATH, "//ul[@class='list-group']/li/label/input[not(@checked)]")
     # Columns dictionary binding number of column to it's name
     COLUMNS_DICT = {
-        1: '№',
-        2: 'ПІБ',
-        3: 'Ім’я',
-        4: 'По-батькові',
-        5: 'Прізвище',
-        6: 'Тип персони',
-        7: 'Стать',
-        8: 'Сімейний стан',
-        9: 'Громад-во',
-        10: 'Серія ОС',
-        11: 'Номер ОС',
-        12: 'Резидент',
-        13: 'Місце народж.',
-        14: 'Дата народж.',
-        15: 'ВЗ',
-        16: 'Гуртожиток',
-        17: 'Мат. відп'
+        1: 'â„–',
+        2: 'ÐŸÐ†Ð‘',
+        3: 'Ð†Ð¼â€™Ñ�',
+        4: 'ÐŸÐ¾-Ð±Ð°Ñ‚ÑŒÐºÐ¾Ð²Ñ–',
+        5: 'ÐŸÑ€Ñ–Ð·Ð²Ð¸Ñ‰Ðµ',
+        6: 'Ð¢Ð¸Ð¿ Ð¿ÐµÑ€Ñ�Ð¾Ð½Ð¸',
+        7: 'Ð¡Ñ‚Ð°Ñ‚ÑŒ',
+        8: 'Ð¡Ñ–Ð¼ÐµÐ¹Ð½Ð¸Ð¹ Ñ�Ñ‚Ð°Ð½',
+        9: 'Ð“Ñ€Ð¾Ð¼Ð°Ð´-Ð²Ð¾',
+        10: 'Ð¡ÐµÑ€Ñ–Ñ� ÐžÐ¡',
+        11: 'Ð�Ð¾Ð¼ÐµÑ€ ÐžÐ¡',
+        12: 'Ð ÐµÐ·Ð¸Ð´ÐµÐ½Ñ‚',
+        13: 'ÐœÑ–Ñ�Ñ†Ðµ Ð½Ð°Ñ€Ð¾Ð´Ð¶.',
+        14: 'Ð”Ð°Ñ‚Ð° Ð½Ð°Ñ€Ð¾Ð´Ð¶.',
+        15: 'Ð’Ð—',
+        16: 'Ð“ÑƒÑ€Ñ‚Ð¾Ð¶Ð¸Ñ‚Ð¾Ðº',
+        17: 'ÐœÐ°Ñ‚. Ð²Ñ–Ð´Ð¿'
     }
           
     # TO SEARCH    
@@ -51,6 +51,7 @@ class PersonsPage(InternalPage):
     EXPECTED_NUM_OS = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope']/td[11]")
     EXPECTED_SERIES_OS = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope']/td[10]")
     DELETE_FIRST_PERSON_IN_TABLE = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope'][1]/td[18]//button[3]")
+    VIEW_FIRST_PERSON_IN_TABLE = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope'][1]/td[18]//button[2]")
 
     # TO FILTER
     # There would be absolute passes. It is awful, it may be changed.
@@ -109,6 +110,13 @@ class PersonsPage(InternalPage):
         if self.is_element_visible(self.DELETE_FIRST_PERSON_IN_TABLE):
             self.driver.find_element(*self.DELETE_FIRST_PERSON_IN_TABLE).click()
             self.is_element_present(self.SPINNER_OFF)
+
+    @property
+    def view_first_person_in_page(self):
+        if self.is_element_visible(self.VIEW_FIRST_PERSON_IN_TABLE):
+            self.driver.find_element(*self.VIEW_FIRST_PERSON_IN_TABLE).click()
+            self.is_element_present(self.SPINNER_OFF)
+
 
     # to all filters
 

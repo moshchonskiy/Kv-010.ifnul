@@ -20,6 +20,7 @@ class Person(object):
         self.hostel_need = False
         self.burn_place = []
         self.registration_place = {"area": [], "index": 0, "type": "", "street": "", "house": 0, "apartment": 0, "is_addresses_match": True}
+        self.post_registration_place = {"area": [], "index": 0, "type": "", "street": "", "house": 0, "apartment": 0}
         self.photo = ""
         self.mobile_phone1 = ""
         self.mobile_phone2 = ""
