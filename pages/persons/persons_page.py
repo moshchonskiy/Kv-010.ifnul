@@ -2,6 +2,8 @@
 from pages.internal_page import InternalPage
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.remote.webdriver import WebDriver
 
 
 class PersonsPage(InternalPage):
@@ -48,14 +50,15 @@ class PersonsPage(InternalPage):
     FILTERED_BOUND_TO_MILITARY      = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope'][1]/td[15]")
     FILTERED_RESIDENT               = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope'][1]/td[12]")
 
-    SHOW_HIDE_FILTERS_BUTTON        = (By.XPATH, "//button[contains(@ng-click,'hideFilterFunc')]")
-    ACTIVE_ITEMS_PER_PAGE_BUTTON    = (By.XPATH, "//button[contains(@class, 'active')]")
-    PREVIOUS_PAGE                   = (By.XPATH, "//li[contains(@title, 'Previous Page')]")
-    LAST_NUMBERED_PAGE              = (By.XPATH, "//li[contains(@title, 'Last Page')]/preceding-sibling::li[2]/span")
-    LAST_PAGE                       = (By.XPATH, "//li[contains(@title, 'Last Page')]")
-    FIELD_CHOOSER_BUTTON            = (By.XPATH, "//button[contains(@class, 'field-chooser-button')]")
-    FIELD_CHOOSER_RED_CLOSE_BUTTON  = (By.XPATH, "//button[parent::div[contains(@class, 'modal-footer')]]")
-    INACTIVE_COLUMNS_MODAL          = (By.XPATH, "//ul[@class='list-group']/li/label/input[not(@checked)]")
+    ADD_PERSON_BUTTON = (By.XPATH, "//a[@ui-sref='root.person.new.main']")
+    SHOW_HIDE_FILTERS_BUTTON = (By.XPATH, "//button[contains(@ng-click,'hideFilterFunc')]")
+    ACTIVE_ITEMS_PER_PAGE_BUTTON = (By.XPATH, "//button[contains(@class, 'active')]")
+    PREVIOUS_PAGE = (By.XPATH, "//li[contains(@title, 'Previous Page')]")
+    LAST_NUMBERED_PAGE = (By.XPATH, "//li[contains(@title, 'Last Page')]/preceding-sibling::li[2]/span")
+    LAST_PAGE = (By.XPATH, "//li[contains(@title, 'Last Page')]")
+    FIELD_CHOOSER_BUTTON = (By.XPATH, "//button[contains(@class, 'field-chooser-button')]")
+    FIELD_CHOOSER_RED_CLOSE_BUTTON = (By.XPATH, "//button[parent::div[contains(@class, 'modal-footer')]]")
+    INACTIVE_COLUMNS_MODAL = (By.XPATH, "//ul[@class='list-group']/li/label/input[not(@checked)]")
     # Columns dictionary binding number of column to it's name
     COLUMNS_DICT = {
         1: '№',
@@ -76,7 +79,7 @@ class PersonsPage(InternalPage):
         16: 'Гуртожиток',
         17: 'Мат. відп'
     }
-
+DELETE_FIRST_PERSON_IN_TABLE = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope'][1]/td[18]//button[3]")
     #
     # !!! Important
     #
@@ -102,12 +105,33 @@ class PersonsPage(InternalPage):
 
     @property
     def add_person_link(self):
-        return self.driver.find_element_by_xpath(*self.ADD_PERSON_BUTTON)
+        return self.driver.find_element(*self.ADD_PERSON_BUTTON).click()
 
     #FILTER
     #to all filters
     def try_get_refresh_upper_button(self):
         return self.is_element_visible(self.REFRESH_UPPER_BUTTON)
+    @property
+    def delete_first_person_in_page(self):
+        if self.is_element_visible(self.DELETE_FIRST_PERSON_IN_TABLE):
+            self.driver.find_element(*self.DELETE_FIRST_PERSON_IN_TABLE).click()
+            self.is_element_present(self.SPINNER_OFF)
+
+    def searching_person_by_surname(self, given_surname):
+        """
+        Method needs for "test_add_person". It checks that the added person doesn't exist in the system.
+        :param given_surname: String parametr. Added persons surname.
+        :return:
+        """
+        if self.is_element_present(self.EXPECTED_SURNAME):
+            elem = self.driver.find_element(*self.EXPECTED_SURNAME)
+            s = "aaa"
+            if elem.text.__contains__(given_surname):
+                return elem
+        else:
+            return None
+
+    # to all filters
 
     def try_get_refresh_bottom_button(self):
         return self.is_element_visible(self.REFRESH_BOTTOM_BUTTON)

@@ -135,7 +135,7 @@ class EnrollmentsPage(InternalPage):
         :param req: Any wanted string request
         """
         self.is_this_page
-        # self.hundred_button.click()
+        self.hundred_button.click()
         self.is_element_present(self.SPINNER_OFF)
         select = Select(self.search_select_dropdown)
         select.select_by_value(search_by)
@@ -215,7 +215,7 @@ class EnrollmentsPage(InternalPage):
             self.is_element_visible(column)
             self.driver.find_element(*column).click()
         self.column_chooser_close_button.click()
-        self.is_element_visible(columns[0])
+        # self.is_element_visible(columns[0])
 
     def add_filters(self, *selectors_tuple):
         """

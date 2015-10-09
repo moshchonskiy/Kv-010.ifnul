@@ -1,28 +1,14 @@
 # -*- coding: utf-8 -*-
+import os
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
-
 from pages.internal_page import InternalPage
+from utils.data_provider_from_json import DataProviderJSON
 
 __author__ = 'Stako'
 
 
 class EnrollmentsMainPage(InternalPage):
-    res_dict = {
-        "series_of_statements": "222333",
-        "number_statements": "7778777",
-        "offers": "Фізичний",
-        "form_of_education": "Бакалавр",
-        "document": "Атестат про повну загальну середню освіту",
-        "grading_scale": "стобальна",
-        "total_score": "77",
-        "priority": "3",
-        "structural_unit": "Фізичний",
-        "type_of_entry": "За результатами іспитів",
-        "detailing_start": "Учасник міжнародної олімпіади",
-        "date_closing": "2016-04-04"
-    }
-
     OK_FOR_INPUT_FIELD = (By.CSS_SELECTOR, "div[class='input-group'] * button[class='btn btn-primary']")
     SECOND_PERSON = (By.XPATH, "html/body/div[5]/div/div/div[2]/div[2]/table/tbody/tr[6]/td[2]")
     SERIES_OF_STATEMENTS = (By.XPATH, "//*[@id='inputDocSeries']")
@@ -58,6 +44,7 @@ class EnrollmentsMainPage(InternalPage):
         return self.is_element_visible(self.CHOOSE_FIRST_SPECIALTIES)
 
     def list_form_ui_select(self):
+        self.is_element_visible(self.LIST_FROM_UI_SELECT)
         return self.driver.find_elements(*self.LIST_FROM_UI_SELECT)
 
     @property
@@ -168,6 +155,18 @@ class EnrollmentsMainPage(InternalPage):
                 sel.click()
                 break
 
+    def file_path(self, file_name):
+        project_path = os.path.dirname(os.path.realpath(__file__))
+        path = os.path.normpath(os.path.abspath(project_path) + "/../../../resources/" + file_name)
+        return path
+
+    def from_enrollment_json(self, key):
+        """
+        This method returns value by key from json file according to UTF-8 encoding.
+        """
+        db = DataProviderJSON(str(self.file_path("fill_enrollment_main.json")))
+        return db.get_value_by_ij("fill_data_enrollment", key).encode('utf8')
+
     def fill_enrollment(self):
         """
         This method fill enrollment and save one.
@@ -177,8 +176,8 @@ class EnrollmentsMainPage(InternalPage):
         self.is_element_present(self.SPINNER_OFF)
         self.second_person.click()
         self.is_element_present(self.SPINNER_OFF)
-        self.series_of_statements.send_keys(self.res_dict["series_of_statements"])
-        self.number_statements.send_keys(self.res_dict["number_statements"])
+        self.series_of_statements.send_keys(self.from_enrollment_json("series_of_statements"))
+        self.number_statements.send_keys(self.from_enrollment_json("number_statements"))
         self.checkbox_is_state.click()
         self.checkbox_is_contract.click()
         self.checkbox_is_privilege.click()
@@ -186,25 +185,28 @@ class EnrollmentsMainPage(InternalPage):
         self.radiobutton_is_interview.click()
         self.checkbox_is_hostel.click()
         self.search_offers_field.click()
-        self.find_element_in_ui_select(self.list_form_ui_select(), self.res_dict["offers"]).click()
+        self.find_element_in_ui_select(self.list_form_ui_select(), self.from_enrollment_json("offers")).click()
         self.choose_form_of_education.click()
-        self.find_element_in_ui_select(self.list_form_ui_select(), self.res_dict["form_of_education"]).click()
+        self.find_element_in_ui_select(self.list_form_ui_select(),
+                                       self.from_enrollment_json("form_of_education")).click()
         self.button_choose_specialties.click()
         self.is_element_present(self.SPINNER_OFF)
         self.choose_first_specialties.click()
         self.document.click()
-        self.find_element_in_ui_select(self.list_form_ui_select(), self.res_dict["document"]).click()
+        self.find_element_in_ui_select(self.list_form_ui_select(), self.from_enrollment_json("document")).click()
         self.grading_scale.click()
-        self.find_element_in_ui_select(self.list_form_ui_select(), self.res_dict["grading_scale"]).click()
-        self.total_score.send_keys(self.res_dict["total_score"])
+        self.find_element_in_ui_select(self.list_form_ui_select(), self.from_enrollment_json("grading_scale")).click()
+        self.total_score.send_keys(self.from_enrollment_json("total_score"))
         self.checkbox_document_is_original.click()
-        self.priority.send_keys(self.res_dict["priority"])
+        self.priority.send_keys(self.from_enrollment_json("priority"))
         self.structural_unit.click()
-        self.find_element_in_ui_select(self.list_form_ui_select(), self.res_dict["structural_unit"]).click()
+        self.find_element_in_ui_select(self.list_form_ui_select(), self.from_enrollment_json("structural_unit")).click()
         self.find_element_in_select(
-            Select(self.driver.find_element_by_id("inputChiefEnrolTypes")).options, self.res_dict["type_of_entry"])
+            Select(self.driver.find_element_by_id("inputChiefEnrolTypes")).options,
+            self.from_enrollment_json("type_of_entry"))
         self.find_element_in_select(
-            Select(self.driver.find_element_by_id("inputEnrolmentTypeId")).options, self.res_dict["detailing_start"])
-        self.date_closing_statements.send_keys(self.res_dict["date_closing"])
+            Select(self.driver.find_element_by_id("inputEnrolmentTypeId")).options,
+            self.from_enrollment_json("detailing_start"))
+        self.date_closing_statements.send_keys(self.from_enrollment_json("date_closing"))
         self.is_element_present(self.SPINNER_OFF)
         self.button_save.click()
