@@ -2,8 +2,6 @@
 from pages.internal_page import InternalPage
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.remote.webdriver import WebDriver
 
 
 class PersonsPage(InternalPage):
@@ -50,14 +48,14 @@ class PersonsPage(InternalPage):
     FILTERED_BOUND_TO_MILITARY      = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope'][1]/td[15]")
     FILTERED_RESIDENT               = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope'][1]/td[12]")
 
-    SHOW_HIDE_FILTERS_BUTTON = (By.XPATH, "//button[contains(@ng-click,'hideFilterFunc')]")
-    ACTIVE_ITEMS_PER_PAGE_BUTTON = (By.XPATH, "//button[contains(@class, 'active')]")
-    PREVIOUS_PAGE = (By.XPATH, "//li[contains(@title, 'Previous Page')]")
-    LAST_NUMBERED_PAGE = (By.XPATH, "//li[contains(@title, 'Last Page')]/preceding-sibling::li[2]/span")
-    LAST_PAGE = (By.XPATH, "//li[contains(@title, 'Last Page')]")
-    FIELD_CHOOSER_BUTTON = (By.XPATH, "//button[contains(@class, 'field-chooser-button')]")
-    FIELD_CHOOSER_RED_CLOSE_BUTTON = (By.XPATH, "//button[parent::div[contains(@class, 'modal-footer')]]")
-    INACTIVE_COLUMNS_MODAL = (By.XPATH, "//ul[@class='list-group']/li/label/input[not(@checked)]")
+    SHOW_HIDE_FILTERS_BUTTON        = (By.XPATH, "//button[contains(@ng-click,'hideFilterFunc')]")
+    ACTIVE_ITEMS_PER_PAGE_BUTTON    = (By.XPATH, "//button[contains(@class, 'active')]")
+    PREVIOUS_PAGE                   = (By.XPATH, "//li[contains(@title, 'Previous Page')]")
+    LAST_NUMBERED_PAGE              = (By.XPATH, "//li[contains(@title, 'Last Page')]/preceding-sibling::li[2]/span")
+    LAST_PAGE                       = (By.XPATH, "//li[contains(@title, 'Last Page')]")
+    FIELD_CHOOSER_BUTTON            = (By.XPATH, "//button[contains(@class, 'field-chooser-button')]")
+    FIELD_CHOOSER_RED_CLOSE_BUTTON  = (By.XPATH, "//button[parent::div[contains(@class, 'modal-footer')]]")
+    INACTIVE_COLUMNS_MODAL          = (By.XPATH, "//ul[@class='list-group']/li/label/input[not(@checked)]")
     # Columns dictionary binding number of column to it's name
     COLUMNS_DICT = {
         1: '№',
