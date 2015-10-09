@@ -1,4 +1,5 @@
 # coding: utf8
+
 from selenium.webdriver.support.select import Select
 
 from model.user import User
@@ -46,30 +47,46 @@ def test_public_activity_dict_check_all_value(app):
     assert select_value
     case_value = Select(select_value)
     case_value.select_by_visible_text(u'Публічні активності')
-
     table = TestTable(dict_page.driver, dict_page.DICTIONARIES_PAGE_TABLE)
     assert table.try_get_table()
-
-    data_provider = DataProviderJSON('resources/public_activity.json')
-
+    data_provider = DataProviderJSON('public_activity.json')
     for i in range(1, table.try_get_table_data_height() + 1):
         for j in range(1, table.try_get_table_data_width() + 1):
             assert table.try_get_cell_ij(i, j).text == data_provider.get_value_by_ij(str(i), str(j))
 
 
-def test_count(app):
+def test_inform_about_unit_dict_check_all_value(app):
     dict_page = app.dictionaries_page
-
     goto_dictionaries_page(app)
     select_value = dict_page.try_get_dictionaries_select_elem
     assert select_value
     case_value = Select(select_value)
-    case_value.select_by_visible_text(u'Дані про пільги')
-    table = dict_page.try_get_table
-    assert table
+    case_value.select_by_visible_text(u'Інформація про підрозділи')
+    data_provider = DataProviderJSON('info_about_unit.json')
+    table = TestTable(dict_page.driver, dict_page.DICTIONARIES_PAGE_TABLE)
+    assert dict_page.is_element_present(dict_page.SPINNER_OFF)
+    for i in range(1, table.try_get_table_data_height() + 1):
+        for j in range(1, table.try_get_table_data_width() + 1):
+            assert table.try_get_cell_ij(i, j).text == data_provider.get_value_by_ij(str(i), str(j))
+    dict_page.try_get_button_25().click()
+    for i in range(1, table.try_get_table_data_height() + 1):
+        for j in range(1, table.try_get_table_data_width() + 1):
+            assert table.try_get_cell_ij(i, j).text == data_provider.get_value_by_ij(str(i), str(j))
 
-    if dict_page.try_get_table_body_last_cell_in_last_row():
-        i = 1
-        while dict_page.try_get_table_body_last_cell_in_i_row(1) != dict_page.try_get_table_body_cell_i_j(1, i):
-            i += 1
-        print i
+
+def test_click_on_all_dictionary(app):
+    dict_page = app.dictionaries_page
+    goto_dictionaries_page(app)
+    select_value = dict_page.try_get_dictionaries_select_elem
+    assert select_value
+    case_value = Select(select_value)
+    dp = DataProviderJSON('dictionaries_page_selecting_name.json')
+    for s in dp.get_dict_value()["value"]:
+        if s != u"Адміністративно-територіальні одиниці":
+            print s
+            case_value.select_by_visible_text(s)
+            assert dict_page.is_element_present(dict_page.SPINNER_OFF)
+            button = dict_page.try_get_button_10()
+            button.click()
+            table = TestTable(dict_page.driver, dict_page.DICTIONARIES_PAGE_TABLE)
+            assert table.try_get_table_data_height() <= 10
