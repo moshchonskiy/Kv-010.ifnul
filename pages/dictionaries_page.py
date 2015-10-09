@@ -9,10 +9,13 @@ class DictionariesPage(InternalPage):
     DICTIONARIES_PAGE = (By.XPATH, "//i[@class ='fa fa-book text-danger']")
     DICTIONARIES_DROPDOWN = (By.XPATH, "//select[@ng-click ='pickDictionary()']")
     DICTIONARIES_PAGE_TABLE = (By.XPATH, "//table")
-    BUTTON_DISPLAY_BY_10 = (By.XPATH, "//div/button[1]")
-    BUTTON_DISPLAY_BY_25 = (By.XPATH, "//div/button[2]")
-    BUTTON_DISPLAY_BY_50 = (By.XPATH, "//div/button[3]")
-    BUTTON_DISPLAY_BY_100 = (By.XPATH, "//div/button[4]")
+    BUTTON_DISPLAY_BY_10 = (By.XPATH, "//div[contains(@class,'ng-table-counts')]/button[1]")
+    BUTTON_DISPLAY_BY_25 = (By.XPATH, "//div[contains(@class,'ng-table-counts')]/button[2]")
+    BUTTON_DISPLAY_BY_50 = (By.XPATH, "//div[contains(@class,'ng-table-counts')]/button[3]")
+    BUTTON_DISPLAY_BY_100 = (By.XPATH, "//div[contains(@class,'ng-table-counts')]/button[4]")
+    PAGE_BUTTON_NEXT = (By.XPATH, "//ul[@class='pagination ng-table-pagination']/li/a[@ng-switch-when='next']")
+    PAGE_BUTTON_PREV = (By.XPATH, "//ul[@class='pagination ng-table-pagination']/li/a[@ng-switch-when='prev']")
+
 
     TABLE_HEAD_CELL = "//table/thead/tr/td[%d]"
     TABLE_HEAD_LAST_CELL = "//table/thead/tr/td[last()]"
@@ -44,6 +47,12 @@ class DictionariesPage(InternalPage):
 
     def try_get_button_100(self):
         return self.driver.find_element(*self.BUTTON_DISPLAY_BY_100)
+
+    def try_get_page_button_next(self):
+        return self.is_element_visible(self.PAGE_BUTTON_NEXT)
+
+    def try_get_page_button_prev(self):
+        return self.is_element_visible(self.PAGE_BUTTON_PREV)
 
     def try_get_table_head_cell_i(self, i):
         return self.is_element_visible((By.XPATH, self.TABLE_HEAD_CELL % i))
