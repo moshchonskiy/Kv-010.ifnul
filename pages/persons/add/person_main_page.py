@@ -25,6 +25,7 @@ class AddPersonMainPage(AddPersonPage):
         Method performs clicking on person type select field
         :return:
         """
+        self.is_element_present(self.PERSON_TYPE_SELECT)
         self.driver.find_element(*self.PERSON_TYPE_SELECT).click()
 
     def choose_person_type(self, person_type):
@@ -33,6 +34,7 @@ class AddPersonMainPage(AddPersonPage):
         :param person_type: if person_type exists in select menu, then method will click on it, else will leave default value
         :return:
         """
+        self.is_element_present(self.ALL_PERSON_TYPES_SELECT)
         self.find_element_in_select(self.driver.find_elements(*self.ALL_PERSON_TYPES_SELECT), person_type).click()
 
     def set_first_ukr_name(self, first_ukr_name):
@@ -41,6 +43,7 @@ class AddPersonMainPage(AddPersonPage):
         :param first_ukr_name: first person name on Ukranian language
         :return:
         """
+        self.is_element_present(self.PERSON_FIRST_NAME_UKR_INPUT)
         self.driver.find_element(*self.PERSON_FIRST_NAME_UKR_INPUT).send_keys(first_ukr_name)
 
     def set_ukr_surname(self, ukr_surname):
