@@ -2,8 +2,6 @@
 from pages.internal_page import InternalPage
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.remote.webdriver import WebDriver
 
 
 class PersonsPage(InternalPage):
@@ -60,6 +58,8 @@ class PersonsPage(InternalPage):
     FIELD_CHOOSER_RED_CLOSE_BUTTON = (By.XPATH, "//button[parent::div[contains(@class, 'modal-footer')]]")
     INACTIVE_COLUMNS_MODAL = (By.XPATH, "//ul[@class='list-group']/li/label/input[not(@checked)]")
     # Columns dictionary binding number of column to it's name
+    DELETE_FIRST_PERSON_IN_TABLE = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope'][1]/td[18]//button[3]")
+
     COLUMNS_DICT = {
         1: '№',
         2: 'ПІБ',
@@ -79,7 +79,6 @@ class PersonsPage(InternalPage):
         16: 'Гуртожиток',
         17: 'Мат. відп'
     }
-DELETE_FIRST_PERSON_IN_TABLE = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope'][1]/td[18]//button[3]")
     #
     # !!! Important
     #
@@ -97,7 +96,6 @@ DELETE_FIRST_PERSON_IN_TABLE = (By.XPATH, "//tbody[@class='pointer']/tr[@class='
     #
     # END OF SELECTORS SECTION
     #
-
 
     @property
     def is_this_page(self):
