@@ -5,18 +5,34 @@ __author__ = 'acidroed'
 
 from utility.personCreator import PersonCreator
 from model.user import User
+from time import *
 
 def test_add_person(app):
+    # Create person from JSON file
     person_creator = PersonCreator()
     person = person_creator.create_person_from_json("person.json")
 
+    # Login into system
     app.ensure_logout()
     app.login(User.Admin(), True)
 
+    # Check that the added person doesn't exist
     person_page = app.persons_page
+    is_person_already_exists = True
+    while is_person_already_exists:
+        person_page.is_this_page
+        person_page.try_get_choose_surname().click()
+        person_page.try_get_input_group().clear()
+        person_page.try_get_input_group().send_keys(person.surname_ukr)
+        person_page.try_get_ok_button().click()
+        if person_page.searching_person_by_surname(person.surname_ukr) != None:
+            person_page.delete_first_person_in_page
+        else:
+            is_person_already_exists = False
     person_page.is_this_page
     person_page.add_person_link
 
+    # Add persons data on main page
     main_page = app.main_page
     main_page.is_this_page
     main_page.person_type_select_click()
@@ -28,6 +44,7 @@ def test_add_person(app):
     main_page.set_first_eng_name(person.first_name_eng)
     main_page.click_next_button
 
+    # Add persons data on extra page
     extra_page = app.extra_page
     extra_page.is_this_page
     extra_page.set_persons_birth_day(person.birth_day)
@@ -42,6 +59,7 @@ def test_add_person(app):
     extra_page.click_next_button
     extra_page.click_next_button
 
+    # Add persons data on address page
     address_page = app.address_page
     address_page.is_this_page
     for i in range(0, len(person.burn_place)):
@@ -60,6 +78,7 @@ def test_add_person(app):
     address_page.click_next_button
     address_page.click_next_button
 
+    # Add persons data on contact page
     contact_page = app.contact_page
     contact_page.is_this_page
     contact_page.set_first_mobile_phone(person.mobile_phone1)
@@ -72,6 +91,7 @@ def test_add_person(app):
     contact_page.set_icq(person.icq)
     contact_page.click_next_button
 
+    # Add persons data on papers page
     papers_page = app.papers_page
     papers_page.is_this_page
     papers_page.press_add_new_document_button
@@ -86,12 +106,15 @@ def test_add_person(app):
     papers_page.press_save_new_document_button
     papers_page.save_new_person()
 
+    # Search added person
+    person_page.is_this_page
     person_page.try_get_choose_surname().click()
     person_page.try_get_input_group().clear()
     person_page.try_get_input_group().send_keys(person.surname_ukr)
     person_page.try_get_ok_button().click()
     expected_person = person_page.try_get_expected_surname(person.surname_ukr).text.partition(' ')[0]
-    person_page.delete_first_person_in_page
+    if expected_person:
+        person_page.delete_first_person_in_page
 
     assert expected_person == person.surname_ukr
 

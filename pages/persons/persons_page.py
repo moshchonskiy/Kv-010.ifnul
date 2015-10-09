@@ -110,6 +110,20 @@ class PersonsPage(InternalPage):
             self.driver.find_element(*self.DELETE_FIRST_PERSON_IN_TABLE).click()
             self.is_element_present(self.SPINNER_OFF)
 
+    def searching_person_by_surname(self, given_surname):
+        """
+        Method needs for "test_add_person". It checks that the added person doesn't exist in the system.
+        :param given_surname: String parametr. Added persons surname.
+        :return:
+        """
+        if self.is_element_present(self.EXPECTED_SURNAME):
+            elem = self.driver.find_element(*self.EXPECTED_SURNAME)
+            s = "aaa"
+            if elem.text.__contains__(given_surname):
+                return elem
+        else:
+            return None
+
     # to all filters
 
 

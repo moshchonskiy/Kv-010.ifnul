@@ -215,7 +215,7 @@ class EnrollmentsPage(InternalPage):
             self.is_element_visible(column)
             self.driver.find_element(*column).click()
         self.column_chooser_close_button.click()
-        self.is_element_visible(columns[0])
+        # self.is_element_visible(columns[0])
 
     def add_filters(self, *selectors_tuple):
         """
