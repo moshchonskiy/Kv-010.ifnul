@@ -83,10 +83,8 @@ def test_click_on_all_dictionary(app):
     dp = DataProviderJSON('dictionaries_page_selecting_name.json')
     for s in dp.get_dict_value()["value"]:
         if s != u"Адміністративно-територіальні одиниці":
-            print s
             case_value.select_by_visible_text(s)
             assert dict_page.is_element_present(dict_page.SPINNER_OFF)
-            button = dict_page.try_get_button_10()
-            button.click()
+            dict_page.try_get_button_10().click()
             table = TestTable(dict_page.driver, dict_page.DICTIONARIES_PAGE_TABLE)
             assert table.try_get_table_data_height() <= 10
