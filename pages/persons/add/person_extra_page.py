@@ -42,6 +42,7 @@ class AddPersonExtraPage(AddPersonPage):
         :param person_sex_type: if person_sex_type exists in select menu, then method will click on it, else will leave default value
         :return:
         """
+        self.is_element_present(self.SEX_TYPES_SELECT)
         self.driver.find_element(*self.SEX_TYPES_SELECT).click()
         self.find_element_in_select(self.driver.find_elements(*self.ALL_SEX_TYPES_SELECT), person_sex_type).click()
 
@@ -51,6 +52,7 @@ class AddPersonExtraPage(AddPersonPage):
         :param person_martial_status: if person_martial_status exists in select menu, then method will click on it, else will leave default value
         :return:
         """
+        self.is_element_present(self.MARITAL_STATUS_SELECT)
         self.driver.find_element(*self.MARITAL_STATUS_SELECT).click()
         self.find_element_in_select(self.driver.find_elements(*self.ALL_MARITAL_STATUSES_SELECT), person_martial_status).click()
 
@@ -60,6 +62,7 @@ class AddPersonExtraPage(AddPersonPage):
         :param person_nationality: String format. If person_nationality exists in select menu, then method will click on it, else will leave default value
         :return:
         """
+        self.is_element_present(self.NATIONALITY_SELECT)
         self.driver.find_element(*self.NATIONALITY_SELECT).click()
         self.find_element_in_select(self.driver.find_elements(*self.ALL_NATIONALITIES_SELECT), person_nationality).click()
 

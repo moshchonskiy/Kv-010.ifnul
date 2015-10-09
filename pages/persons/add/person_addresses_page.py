@@ -14,7 +14,7 @@ class AddPersonAddressesPage(AddPersonPage):
     BIRTH_PLACE_LEVEL_SELECTOR = "div[ng-model='person.birthPlace']>div:nth-child(%s) label+div span"
     REG_ADDRESS_PLACE_SELECTOR = "div[ng-model='addresses.regAddresses.adminUnitId']>div:nth-child(%s) ul a div"
     REG_ADDRESS_LEVEL_SELECTOR = "div[ng-model='addresses.regAddresses.adminUnitId']>div:nth-child(%s) label+div span"
-    POST_PLACE_LABEL = "Мiсце проживання"
+    POST_PLACE_LABEL = "РњiСЃС†Рµ РїСЂРѕР¶РёРІР°РЅРЅСЏ"
     ALL_REGISTRATION_PLACES_SELECT = (By.XPATH, "//a[@class='ui-select-choices-row-inner']//div[@class='ng-binding ng-scope']")
     INDEX_INPUT = (By.ID, "inputZipCodeReg")
     ADDRESS_TYPE_CHOOSER = (By.ID, "inputStreetTypeReg")
@@ -51,6 +51,7 @@ class AddPersonAddressesPage(AddPersonPage):
         :param address_level: Integer number which means level in current block
         :return:
         """
+        self.is_element_present(self.get_selector_for_current_block_and_level(self.BIRTH_PLACE_LEVEL_SELECTOR, address_level+1))
         self.driver.find_element(*self.get_selector_for_current_block_and_level(self.BIRTH_PLACE_LEVEL_SELECTOR, address_level+1)).click()
         all_level_addresses = self.driver.find_elements(*self.get_selector_for_current_block_and_level(self.BIRTH_PLACE_SELECTOR, address_level+1))
         self.find_element_in_select(all_level_addresses, address).click()
@@ -63,6 +64,7 @@ class AddPersonAddressesPage(AddPersonPage):
         :param address_level: Integer number which means level in current block
         :return:
         """
+        self.is_element_present(self.get_selector_for_current_block_and_level(self.REG_ADDRESS_LEVEL_SELECTOR, address_level+1))
         self.driver.find_element(*self.get_selector_for_current_block_and_level(self.REG_ADDRESS_LEVEL_SELECTOR, address_level+1)).click()
         all_level_addresses = self.driver.find_elements(*self.get_selector_for_current_block_and_level(self.REG_ADDRESS_PLACE_SELECTOR, address_level+1))
         self.find_element_in_select(all_level_addresses, address).click()
@@ -82,6 +84,7 @@ class AddPersonAddressesPage(AddPersonPage):
         :param address_type: String address type. If type exists in select menu, then method will click on it, else will leave default value
         :return:
         """
+        self.is_element_present(self.ADDRESS_TYPE_CHOOSER)
         Select(self.driver.find_element(*self.ADDRESS_TYPE_CHOOSER)).select_by_visible_text(address_type)
 
     def set_street(self, street):
