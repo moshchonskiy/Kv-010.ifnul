@@ -30,6 +30,7 @@ class PersonCreator(object):
         person.surname_eng = json_person["surname_eng"]
         person.first_name_eng = json_person["first_name_eng"]
         person.birth_day = "%s-%s-%s" % (json_person["birth_day"]["year"], json_person["birth_day"]["month"], json_person["birth_day"]["day"])
+        person.birth_day_for_view = "%s-%s-%s" % (json_person["birth_day"]["day"], json_person["birth_day"]["month"], json_person["birth_day"]["year"])
         person.sex = json_person["sex"]
         person.marital_status = json_person["marital_status"]
         person.nationality = json_person["nationality"]
@@ -40,6 +41,7 @@ class PersonCreator(object):
         person.hostel_need = json_person["hostel_need"]
         person.burn_place = json_person["burn_place"]
         person.registration_place = json_person["registration_place"]
+        person.post_registration_place = json_person["post_registration_place"]
         person.photo = json_person["photo"]
         person.mobile_phone1 = json_person["mobile_phone1"]
         person.mobile_phone2 = json_person["mobile_phone2"]

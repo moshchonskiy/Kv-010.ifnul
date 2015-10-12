@@ -6,13 +6,13 @@ __author__ = 'Vadym'
 
 class PersonCurrentViewPage(PersonMainViewPage):
 
-    # >>>>>>>>>>>>>>>>>>>>>>>>>>> Global locators for information about person <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+    # Global locators for information about person
     FIO_PERSON_UKRANIAN = (By.XPATH, "//h2[@class='text-primary ng-binding']")
     FIO_PERSON_ENGLISH = (By.XPATH, "//h4[@class='ng-binding']")
     SERIAL_PERSONAL_RECORD = (By.XPATH, "//p[contains(.,'Серія')]")
     NUMBER_PERSONAL_RECORD = (By.XPATH, "//p[contains(.,'Номер')]")
 
-    # >>>>>>>>>>>>>>>>>>>>>>>>>>> Main locators for information about person <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+    # Main locators for information about person
     TYPE_OF_PERSON = (By.XPATH, "//p[contains(.,'Тип персони')]")
     DATE_OF_BIRTH = (By.XPATH, "//p[contains(.,'Дата народження')]")
     RESIDENT = (By.XPATH, "//p[contains(.,'Резидент')]")
@@ -26,7 +26,6 @@ class PersonCurrentViewPage(PersonMainViewPage):
     # Date of birth
     FOR_COUNT_ELEMENTS_DATE_OF_BIRTH = (By.CSS_SELECTOR, ".form-group.col-md-10>label+div .form-group.ng-scope")
 
-    # >>>>>>>>>>>>>>>>>>>>>>>>>>> Addreses <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
     # Address of registration
     FOR_COUNT_ELEMENTS_ADDRES_OF_REGISTRATION = (By.CSS_SELECTOR, ".row.form-group.ng-scope>div>label+div"
                                     "[ng-model='entirePerson.addresses.regAddresses.adminUnitId'] .form-group.ng-scope")
@@ -36,6 +35,7 @@ class PersonCurrentViewPage(PersonMainViewPage):
     REGISTRATION_STREET = (By.ID, "inputStreetReg")
     REGISTRATION_HOME = (By.ID, "inputHouseReg")
     REGISTRATION_APARTMENT = (By.ID, "inputApartmentReg")
+
     # Post addres
     FOR_COUNT_ELEMENTS_POST_ADDRES = (By.CSS_SELECTOR, ".row.form-group.ng-scope>div>label+div"
                                 "[ng-model='entirePerson.addresses.postAddresses.adminUnitId'] .form-group.ng-scope")
@@ -46,7 +46,6 @@ class PersonCurrentViewPage(PersonMainViewPage):
     POST_HOME = (By.ID, "inputHousePost")
     POST_APARTMENT = (By.ID, "inputApartmentPost")
 
-    # >>>>>>>>>>>>>>>>>>>>>>>>>>> Global information about person <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
     def get_fio_ukranian(self):
         return self.driver.find_element(*self.FIO_PERSON_UKRANIAN)
 
@@ -63,7 +62,6 @@ class PersonCurrentViewPage(PersonMainViewPage):
         value_without_spaces = self.__get_text_splited_by_colon(text_with_colon)
         return value_without_spaces
 
-    # >>>>>>>>>>>>>>>>>>>>>>>>>>> Main information about person <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
     def get_arr_main_info_about_person(self):
         result = []
         # add locators to the array
@@ -71,13 +69,11 @@ class PersonCurrentViewPage(PersonMainViewPage):
                        self.MILITARY_SERVICE, self.CITIZENSHIP, self.INDEX_MATERIAL_RESPONSIBLE, self.HOSTEL))
         for index, locator in enumerate(result):
             element_by_locator = self.driver.find_element(*locator)
-            # возможно стоит проверить, не пустое ли тут значение
             text_with_colon = element_by_locator.text
             value_without_spaces = self.__get_text_splited_by_colon(text_with_colon)
             result[index] = value_without_spaces #replace locator by value found by this locator
         return result
 
-    # >>>>>>>>>>>>>>>>>>>>>>>>>>>> Place of birth <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
     def get_arr_place_of_birth(self):
         result = []
         # add locators to the array
@@ -87,7 +83,6 @@ class PersonCurrentViewPage(PersonMainViewPage):
 
         for index, locator in enumerate(result):
             element_by_locator = self.driver.find_element(*locator).text
-            # возможно стоит проверить, не пустое ли тут значение
             result[index] = element_by_locator #replace locator by value found by this locator
         return result
 
@@ -95,7 +90,6 @@ class PersonCurrentViewPage(PersonMainViewPage):
         elements_place_of_birth = self.driver.find_elements(*self.FOR_COUNT_ELEMENTS_DATE_OF_BIRTH)
         return len(elements_place_of_birth)
 
-    # >>>>>>>>>>>>>>>>>>>>>>>>>>>> Address of registration <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
     # Address of registration
     def get_arr_addres_of_registration(self):
         result = []
@@ -136,7 +130,6 @@ class PersonCurrentViewPage(PersonMainViewPage):
 
         for index, locator in enumerate(result):
             element_by_locator = self.driver.find_element(*locator).text
-            # возможно стоит проверить, не пустое ли тут значение
             result[index] = element_by_locator #replace locator by value found by this locator
         return result
 
@@ -152,7 +145,6 @@ class PersonCurrentViewPage(PersonMainViewPage):
                       self.POST_HOME, self.POST_APARTMENT))
         for index, locator in enumerate(result):
             element_by_locator = self.driver.find_element(*locator).text
-            # возможно стоит проверить, не пустое ли тут значение
             result[index] = element_by_locator #replace locator by value found by this locator
         return result
 

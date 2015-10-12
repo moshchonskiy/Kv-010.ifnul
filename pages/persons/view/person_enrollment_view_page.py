@@ -7,6 +7,7 @@ __author__ = 'Vadym'
 class PersonEnrollmentViewPage(PersonMainViewPage):
 
     FOR_COUNT_ENROLLMENT_IN_PERSON = (By.XPATH, "//tbody[@class='pointer']/tr")
+    FOR_COUNT_VISIBLE_COLUMN = (By.XPATH, "//table/thead/tr/th[not(@class='ng-scope ng-hide')]")
     TEXT_CORRECT_PAGE_PERSON_PROFILE = (By.CSS_SELECTOR, ".content-header-title")
     TABLE_ON_THE_PAGE_ENROLLMENT = (By.CSS_SELECTOR, ".table.table-bordered")
 
@@ -14,14 +15,13 @@ class PersonEnrollmentViewPage(PersonMainViewPage):
         result = []
         # add locators to the array
         count_of_row = self.get_count_row_in_table_enrollment()
-        count_of_column = 8 # from 1 to 12. In table 13 column but last are buttons 'editing', don't need validate this
+        count_of_column = self.get_count_column_in_table_enrollment()
         for row in range(count_of_row):
             for column in range(count_of_column):
                 result.append(self.__get_locators_values_from_table(row, column))
 
         for index, locator in enumerate(result):
             element_by_locator = self.driver.find_element(*locator).text
-            # возможно стоит проверить, не пустое ли тут значение
             result[index] = element_by_locator # replace locator by value found by this locator
         return result
 
@@ -33,6 +33,10 @@ class PersonEnrollmentViewPage(PersonMainViewPage):
 
     def get_count_row_in_table_enrollment(self):
         elements_documents = self.driver.find_elements(*self.FOR_COUNT_ENROLLMENT_IN_PERSON)
+        return len(elements_documents)
+
+    def get_count_column_in_table_enrollment(self):
+        elements_documents = self.driver.find_elements(*self.FOR_COUNT_VISIBLE_COLUMN)
         return len(elements_documents)
 
     # private methods

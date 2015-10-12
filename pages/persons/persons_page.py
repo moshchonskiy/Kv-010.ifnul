@@ -51,6 +51,7 @@ class PersonsPage(InternalPage):
     EXPECTED_NUM_OS = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope']/td[11]")
     EXPECTED_SERIES_OS = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope']/td[10]")
     DELETE_FIRST_PERSON_IN_TABLE = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope'][1]/td[18]//button[3]")
+    VIEW_FIRST_PERSON_IN_TABLE = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope'][1]/td[18]//button[2]")
 
     # TO FILTER
     # There would be absolute passes. It is awful, it may be changed.
@@ -109,6 +110,13 @@ class PersonsPage(InternalPage):
         if self.is_element_visible(self.DELETE_FIRST_PERSON_IN_TABLE):
             self.driver.find_element(*self.DELETE_FIRST_PERSON_IN_TABLE).click()
             self.is_element_present(self.SPINNER_OFF)
+
+    @property
+    def view_first_person_in_page(self):
+        if self.is_element_visible(self.VIEW_FIRST_PERSON_IN_TABLE):
+            self.driver.find_element(*self.VIEW_FIRST_PERSON_IN_TABLE).click()
+            self.is_element_present(self.SPINNER_OFF)
+
 
     def searching_person_by_surname(self, given_surname):
         """
