@@ -66,7 +66,7 @@ class PersonCurrentViewPage(PersonMainViewPage):
         result = []
         # add locators to the array
         result.extend((self.TYPE_OF_PERSON, self.DATE_OF_BIRTH, self.RESIDENT, self.SEX, self.MARITAL_STATUS,
-                       self.MILITARY_SERVICE, self.CITIZENSHIP, self.INDEX_MATERIAL_RESPONSIBLE, self.HOSTEL))
+                       self.MILITARY_SERVICE, self.CITIZENSHIP, self.HOSTEL))
         for index, locator in enumerate(result):
             element_by_locator = self.driver.find_element(*locator)
             text_with_colon = element_by_locator.text
