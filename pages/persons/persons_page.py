@@ -23,6 +23,12 @@ class PersonsPage(InternalPage):
     #
     #TO FILTER
     #
+    BURGER_BUTTON                   = (By.XPATH, "//button[@class='field-chooser-button pull-right btn btn-primary']")
+    ADD_TO_TABLE_MILITARY_CHECKBOX  = (By.XPATH, "//li[15]/label/input[@id='showHideHeader']")
+    ADD_TO_TABLE_RESIDENT_CHECKBOX  = (By.XPATH, "//li[12]/label/input[@id='showHideHeader']")
+    CLOSE_AFTER_ADDITION_BUTTON     = (By.XPATH, "//div[@class='modal-footer']/button[@class='btn btn-danger']")
+
+
     REFRESH_UPPER_BUTTON            = (By.XPATH, "//div[@class='container-fluid admissionSystemApp-container']//div[@class='col-md-2 col-lg-2 filter']/p[1]/button")
     REFRESH_BOTTOM_BUTTON           = (By.XPATH, "//div[@class='container-fluid admissionSystemApp-container']//div[@class='col-md-2 col-lg-2 filter']/p[2]/button")
     GENDER_MALE_CHECKBOX            = (By.XPATH, "//div[@class='panel-group']/div[1]/div[2]/div[@class='panel-body']/div[1]/label/input")
@@ -48,17 +54,17 @@ class PersonsPage(InternalPage):
     FILTERED_BOUND_TO_MILITARY      = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope'][1]/td[15]")
     FILTERED_RESIDENT               = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope'][1]/td[12]")
 
-    ADD_PERSON_BUTTON = (By.XPATH, "//a[@ui-sref='root.person.new.main']")
-    SHOW_HIDE_FILTERS_BUTTON = (By.XPATH, "//button[contains(@ng-click,'hideFilterFunc')]")
-    ACTIVE_ITEMS_PER_PAGE_BUTTON = (By.XPATH, "//button[contains(@class, 'active')]")
-    PREVIOUS_PAGE = (By.XPATH, "//li[contains(@title, 'Previous Page')]")
-    LAST_NUMBERED_PAGE = (By.XPATH, "//li[contains(@title, 'Last Page')]/preceding-sibling::li[2]/span")
-    LAST_PAGE = (By.XPATH, "//li[contains(@title, 'Last Page')]")
-    FIELD_CHOOSER_BUTTON = (By.XPATH, "//button[contains(@class, 'field-chooser-button')]")
-    FIELD_CHOOSER_RED_CLOSE_BUTTON = (By.XPATH, "//button[parent::div[contains(@class, 'modal-footer')]]")
-    INACTIVE_COLUMNS_MODAL = (By.XPATH, "//ul[@class='list-group']/li/label/input[not(@checked)]")
+    ADD_PERSON_BUTTON               = (By.XPATH, "//a[@ui-sref='root.person.new.main']")
+    SHOW_HIDE_FILTERS_BUTTON        = (By.XPATH, "//button[contains(@ng-click,'hideFilterFunc')]")
+    ACTIVE_ITEMS_PER_PAGE_BUTTON    = (By.XPATH, "//button[contains(@class, 'active')]")
+    PREVIOUS_PAGE                   = (By.XPATH, "//li[contains(@title, 'Previous Page')]")
+    LAST_NUMBERED_PAGE              = (By.XPATH, "//li[contains(@title, 'Last Page')]/preceding-sibling::li[2]/span")
+    LAST_PAGE                       = (By.XPATH, "//li[contains(@title, 'Last Page')]")
+    FIELD_CHOOSER_BUTTON            = (By.XPATH, "//button[contains(@class, 'field-chooser-button')]")
+    FIELD_CHOOSER_RED_CLOSE_BUTTON  = (By.XPATH, "//button[parent::div[contains(@class, 'modal-footer')]]")
+    INACTIVE_COLUMNS_MODAL          = (By.XPATH, "//ul[@class='list-group']/li/label/input[not(@checked)]")
     # Columns dictionary binding number of column to it's name
-    DELETE_FIRST_PERSON_IN_TABLE = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope'][1]/td[18]//button[3]")
+    DELETE_FIRST_PERSON_IN_TABLE    = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope'][1]/td[18]//button[3]")
 
     COLUMNS_DICT = {
         1: '№',
@@ -100,15 +106,9 @@ class PersonsPage(InternalPage):
     @property
     def is_this_page(self):
         return self.is_element_visible(self.ADD_PERSON_BUTTON)
-
     @property
     def add_person_link(self):
         return self.driver.find_element(*self.ADD_PERSON_BUTTON).click()
-
-    #FILTER
-    #to all filters
-    def try_get_refresh_upper_button(self):
-        return self.is_element_visible(self.REFRESH_UPPER_BUTTON)
     @property
     def delete_first_person_in_page(self):
         if self.is_element_visible(self.DELETE_FIRST_PERSON_IN_TABLE):
@@ -129,10 +129,25 @@ class PersonsPage(InternalPage):
         else:
             return None
 
-    # to all filters
+    #FILTER
+    #to all filters
+    def try_get_refresh_upper_button(self):
+        return self.is_element_visible(self.REFRESH_UPPER_BUTTON)
 
     def try_get_refresh_bottom_button(self):
         return self.is_element_visible(self.REFRESH_BOTTOM_BUTTON)
+
+    def try_get_burger_button(self):
+        return self.is_element_visible(self.BURGER_BUTTON)
+
+    def try_get_add_to_table_military_checkbox(self):
+        return self.is_element_visible(self.ADD_TO_TABLE_MILITARY_CHECKBOX)
+
+    def try_get_add_to_table_resident_checkbox(self):
+        return self.is_element_visible(self.ADD_TO_TABLE_RESIDENT_CHECKBOX)
+
+    def try_get_close_after_addition_button(self):
+        return self.is_element_visible(self.CLOSE_AFTER_ADDITION_BUTTON)
 
     #gender (male, female, not defined)
     def try_get_gender_male_checkbox(self):
@@ -144,7 +159,8 @@ class PersonsPage(InternalPage):
     def try_get_gender_not_defined_checkbox(self):
         return self.is_element_visible(self.GENDER_NOT_DEFINED_CHECKBOX)
     #FILTERED
-    def try_get_filtered_gender(self):
+    def try_get_filtered_gender(self, given_person_gender):
+        self.wait.until(EC.text_to_be_present_in_element(self.FILTERED_GENDER, given_person_gender))
         return self.driver.find_element(*self.FILTERED_GENDER)
 
 
@@ -167,8 +183,9 @@ class PersonsPage(InternalPage):
     def try_get_type_outsider_checkbox(self):
         return self.is_element_visible(self.TYPE_OUTSIDER_CHECKBOX)
     #FILTERED
-
-
+    def try_get_filtered_type(self, given_person_type):
+        self.wait.until(EC.text_to_be_present_in_element(self.FILTERED_TYPE, given_person_type))
+        return self.driver.find_element(*self.FILTERED_TYPE)
 
     #need for hostel (need, doesn`t need)
     def try_get_need_hostel_checkbox(self):
@@ -177,6 +194,9 @@ class PersonsPage(InternalPage):
     def try_get_dont_need_hostel_checkbox(self):
         return self.is_element_visible(self.DONT_NEED_HOSTEL_CHECKBOX)
     #FILTERED
+    def try_get_filtered_need_of_hostel(self, given_need_of_hostel):
+        self.wait.until(EC.text_to_be_present_in_element(self.FILTERED_NEED_OF_HOSTEL, given_need_of_hostel))
+        return self.driver.find_element(*self.FILTERED_NEED_OF_HOSTEL)
 
 
 
@@ -187,6 +207,9 @@ class PersonsPage(InternalPage):
     def try_get_not_bound_to_military_checkbox(self):
         return self.is_element_visible(self.NOT_BOUND_TO_MILITARY_CHECKBOX)
     #FILTERED
+    def try_get_filtered_bound_to_military(self, given_bound_to_military):
+        self.wait.until(EC.text_to_be_present_in_element(self.FILTERED_BOUND_TO_MILITARY, given_bound_to_military))
+        return self.driver.find_element(*self.FILTERED_BOUND_TO_MILITARY)
 
 
     #resident(foreigner, isn`t foreigner)
@@ -196,10 +219,9 @@ class PersonsPage(InternalPage):
     def try_get_resident_not_foreigner_checkbox(self):
         return self.is_element_visible(self.RESIDENT_NOT_FOREIGNER_CHECKBOX)
     #FILTERED
-
-
-
-
+    def try_get_filtered_resident(self, given_resident):
+        self.wait.until(EC.text_to_be_present_in_element(self.FILTERED_RESIDENT, given_resident))
+        return self.driver.find_element(*self.FILTERED_RESIDENT)
 
     #SEARCH
     #to all searches

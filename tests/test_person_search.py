@@ -5,20 +5,10 @@ GIVEN_SURNAME    = u'Прізвище'
 GIVEN_PERSON_ID  = '14'
 GIVEN_NUM_OS     = '999999'
 GIVEN_SERIES_OS  = 'ss'
-GIVEN_GENDER     = u'Чоловіча'
-
 
 def login(app):
     app.ensure_logout()
     app.login(User.Admin(), True)
-
-#def test_gender_filter(app):
-#    login(app)
-#    person_page = app.persons_page
-#    person_page.try_get_gender_male_checkbox().click()
-#    person_page.try_get_refresh_upper_button().click()
-#    assert person_page.try_get_filtered_gender() == GIVEN_GENDER
-
 
 def test_surname_search(app):
     login(app)
