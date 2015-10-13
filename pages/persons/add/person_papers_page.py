@@ -72,12 +72,10 @@ class AddPersonPapersPage(AddPersonPage):
     def set_day_of_issue(self, day_of_issue):
         """
         Method sets documents day of issue
-        :param day_of_issue: Date, when document was issued in a String format "YYYY-MM-DD"
+        :param day_of_issue: Date, when document was issued in a datetime format
         :return:
         """
-        day_of_issue_elem = self.driver.find_element(*self.DOCUMENT_DAY_OF_ISSUE_CHOSER)
-        day_of_issue_elem.clear()
-        day_of_issue_elem.send_keys(day_of_issue)
+        self.set_date(self.DOCUMENT_DAY_OF_ISSUE_CHOSER, day_of_issue)
 
     def set_document_maker(self, maker):
         """
