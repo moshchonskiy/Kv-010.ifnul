@@ -3,13 +3,13 @@
 __author__ = 'acidroed'
 
 
-from utility.personCreator import PersonCreator
+from utils.personCreator import PersonCreator
 from model.user import User
 
-def test_add_person(app):
+def test_add_person(app, person):
     # Create person from JSON file
-    person_creator = PersonCreator()
-    person = person_creator.create_person_from_json("person.json")
+    # person_creator = PersonCreator()
+    # person = person_creator.create_person_from_json("person.json")
 
     # Login into system
     app.ensure_logout()

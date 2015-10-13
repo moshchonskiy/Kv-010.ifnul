@@ -8,22 +8,24 @@ import datetime
 
 class PersonCreator(object):
 
-    def file_path(self, file_name):
-        project_path = os.path.dirname(os.path.realpath(__file__))
-        path = os.path.normpath(os.path.abspath(project_path) + "/../resources/"+file_name)
-        return path
+    def __init__(self, file):
+        self.file = file
+
+    # def file_path(self, file_name):
+    #     project_path = os.path.dirname(os.path.realpath(__file__))
+    #     path = os.path.normpath(os.path.abspath(project_path) + "/../resources/"+file_name)
+    #     return path
 
     def parseJson(self, file):
         fl = open(self.file_path(file), 'r')
         st = fl.read()
         fl.close()
         person_json = json.loads(st)
-        aaa = person_json["person"]
-        return aaa
+        return person_json["person"]
 
-    def create_person_from_json(self, file):
+    def create_person_from_json(self):
         person = Person()
-        json_person = self.parseJson(file)
+        json_person = self.parseJson(self.file)
         person.person_type = json_person["person_type"]
         person.surname_ukr = json_person["surname_ukr"]
         person.first_name_ukr = json_person["first_name_ukr"]

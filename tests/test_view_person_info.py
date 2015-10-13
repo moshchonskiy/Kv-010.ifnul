@@ -1,6 +1,6 @@
 # coding=utf-8
 from model.user import User
-from utility.personCreator import PersonCreator
+from utils.personCreator import PersonCreator
 
 __author__ = 'Vadym'
 
