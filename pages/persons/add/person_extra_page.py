@@ -4,15 +4,13 @@ __author__ = 'Deorditsa'
 
 from person_base_page import AddPersonPage
 from selenium.webdriver.common.by import By
-from selenium.webdriver.remote.webelement import WebElement
-
 
 class AddPersonExtraPage(AddPersonPage):
+
     ACTIVATE_BIRTH_DAY_CHOOSER = (By.XPATH, "//input[@ng-model='person.begDate']")
     SEX_TYPES_SELECT = (By.XPATH, "//div[@id='genderTypeId']//div//span")
     ALL_SEX_TYPES_SELECT = (By.XPATH, "//div[@id='genderTypeId']//a//div")
-    MARITAL_STATUS_SELECT = (
-    By.XPATH, "//div[@id='marriedTypeId']//div//span//span[@class='ui-select-placeholder text-muted ng-binding']")
+    MARITAL_STATUS_SELECT = (By.XPATH, "//div[@id='marriedTypeId']//div//span//span[@class='ui-select-placeholder text-muted ng-binding']")
     ALL_MARITAL_STATUSES_SELECT = (By.XPATH, "//div[@id='marriedTypeId']//a//div")
     NATIONALITY_SELECT = (By.XPATH, "//div[@id='citizenCountryId']//div/span//span[@class='ng-binding ng-scope']")
     ALL_NATIONALITIES_SELECT = (By.XPATH, "//div[@id='citizenCountryId']//a//div")
@@ -26,15 +24,13 @@ class AddPersonExtraPage(AddPersonPage):
     def is_this_page(self):
         return self.is_element_visible(self.ACTIVATE_BIRTH_DAY_CHOOSER)
 
-    def set_persons_birth_day(self, birth_day):
+    def set_persons_birth_day(self, date):
         """
         Method sets persons birth day
-        :param birth_day: persons birthday in a String format "YYYY-MM-DD"
+        :param date: Date, when person was burn in a datetime format
         :return:
         """
-        birth_day_elem = self.driver.find_element(*self.ACTIVATE_BIRTH_DAY_CHOOSER)
-        birth_day_elem.clear()
-        birth_day_elem.send_keys(birth_day)
+        self.set_date(self.ACTIVATE_BIRTH_DAY_CHOOSER, date)
 
     def choose_person_sex_type(self, person_sex_type):
         """

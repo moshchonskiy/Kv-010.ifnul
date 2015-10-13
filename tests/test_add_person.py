@@ -5,7 +5,6 @@ __author__ = 'acidroed'
 
 from utility.personCreator import PersonCreator
 from model.user import User
-from time import *
 
 def test_add_person(app):
     # Create person from JSON file
