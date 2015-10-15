@@ -6,28 +6,29 @@ __author__ = 'acidroed'
 from utils.personCreator import PersonCreator
 from model.user import User
 
-def test_add_person(app, person):
+def test_add_person(add_person, person):
+    app = add_person
     # Create person from JSON file
     # person_creator = PersonCreator()
     # person = person_creator.create_person_from_json("person.json")
 
     # Login into system
-    app.ensure_logout()
-    app.login(User.Admin(), True)
+    # app.ensure_logout()
+    # app.login(User.Admin(), True)
 
     # Check that the added person doesn't exist
     person_page = app.persons_page
-    is_person_already_exists = True
-    while is_person_already_exists:
-        person_page.is_this_page
-        person_page.try_get_choose_surname().click()
-        person_page.try_get_input_group().clear()
-        person_page.try_get_input_group().send_keys(person.surname_ukr)
-        person_page.try_get_ok_button().click()
-        if person_page.searching_person_by_surname(person.surname_ukr) != None:
-            person_page.delete_first_person_in_page
-        else:
-            is_person_already_exists = False
+    # is_person_already_exists = True
+    # while is_person_already_exists:
+    #     person_page.is_this_page
+    #     person_page.try_get_choose_surname().click()
+    #     person_page.try_get_input_group().clear()
+    #     person_page.try_get_input_group().send_keys(person.surname_ukr)
+    #     person_page.try_get_ok_button().click()
+    #     if person_page.searching_person_by_surname(person.surname_ukr) != None:
+    #         person_page.delete_first_person_in_page
+    #     else:
+    #         is_person_already_exists = False
     person_page.is_this_page
     person_page.add_person_link
 
@@ -112,8 +113,8 @@ def test_add_person(app, person):
     person_page.try_get_input_group().send_keys(person.surname_ukr)
     person_page.try_get_ok_button().click()
     expected_person = person_page.try_get_expected_surname(person.surname_ukr).text.partition(' ')[0]
-    if expected_person:
-        person_page.delete_first_person_in_page
+    # if expected_person:
+    #     person_page.delete_first_person_in_page
 
     assert expected_person == person.surname_ukr
 

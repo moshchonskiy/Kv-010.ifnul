@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 from model.user import User
 from utils.personCreator import PersonCreator
 
@@ -7,7 +9,7 @@ import pytest
 from selenium import webdriver
 from model.application import Application
 import os
-from model.person import Person
+import time
 
 
 def pytest_addoption(parser):
@@ -37,9 +39,28 @@ def person(request, person_file):
     return person_creator.create_person_from_json()
 
 @pytest.yield_fixture()
-def add_person(app):
+def add_person(app, person):
     app.ensure_logout()
     app.login(User.Admin(), True)
+    person_page = app.persons_page
+    is_person_already_exists = True
+    while is_person_already_exists:
+        person_page.is_this_page
+        person_page.try_get_choose_surname().click()
+        person_page.try_get_input_group().clear()
+        person_page.try_get_input_group().send_keys(person.surname_ukr)
+        person_page.try_get_ok_button().click()
+        if person_page.searching_person_by_surname(person.surname_ukr) != None:
+            person_page.delete_first_person_in_page
+            print "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+        else:
+            print "#################################################################"
+            is_person_already_exists = False
+    yield app
+    person_page.is_this_page
+    expected_person = person_page.try_get_expected_surname(person.surname_ukr).text.partition(' ')[0]
+    if expected_person:
+        person_page.delete_first_person_in_page
 
 
 @pytest.fixture(scope="module")

@@ -44,7 +44,7 @@ class AddPersonMainPage(AddPersonPage):
         :return:
         """
         self.is_element_present(self.PERSON_FIRST_NAME_UKR_INPUT)
-        self.driver.find_element(*self.PERSON_FIRST_NAME_UKR_INPUT).send_keys(first_ukr_name)
+        self.emulation_of_input(self.PERSON_FIRST_NAME_UKR_INPUT, first_ukr_name)
 
     def set_ukr_surname(self, ukr_surname):
         """

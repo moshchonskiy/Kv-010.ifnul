@@ -1,9 +1,12 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 __author__ = 'Evgen'
+
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.expected_conditions import *
 
 from page import Page
-import datetime
+import sys
 
 
 class InternalPage(Page):
@@ -50,6 +53,16 @@ class InternalPage(Page):
             return self.wait.until(presence_of_element_located(locator))
         except WebDriverException:
             return False
+
+    def emulation_of_input(self, locator, value):
+        elem = self.driver.find_element(*locator)
+        elem.clear()
+        val = str(value)
+
+        # unicode(value, 'utf-8')
+        print type(val)
+        for i in len(val):
+            elem.send_keys(val[i])
 
     def choose_year(self, date):
         """

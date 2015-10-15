@@ -17,7 +17,7 @@ class PersonCreator(object):
     #     return path
 
     def parseJson(self, file):
-        fl = open(self.file_path(file), 'r')
+        fl = open(self.file, 'r')
         st = fl.read()
         fl.close()
         person_json = json.loads(st)
@@ -28,7 +28,7 @@ class PersonCreator(object):
         json_person = self.parseJson(self.file)
         person.person_type = json_person["person_type"]
         person.surname_ukr = json_person["surname_ukr"]
-        person.first_name_ukr = json_person["first_name_ukr"]
+        person.first_name_ukr = unicode(json_person["first_name_ukr"])
         person.second_name_ukr = json_person["second_name_ukr"]
         person.surname_eng = json_person["surname_eng"]
         person.first_name_eng = json_person["first_name_eng"]
