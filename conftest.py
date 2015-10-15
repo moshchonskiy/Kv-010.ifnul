@@ -1,3 +1,4 @@
+from model.user import User
 from utils.personCreator import PersonCreator
 
 __author__ = 'Evgen'
@@ -34,6 +35,11 @@ def person_file(request):
 def person(request, person_file):
     person_creator = PersonCreator(person_file)
     return person_creator.create_person_from_json()
+
+@pytest.yield_fixture()
+def add_person(app):
+    app.ensure_logout()
+    app.login(User.Admin(), True)
 
 
 @pytest.fixture(scope="module")
