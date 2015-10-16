@@ -44,7 +44,7 @@ class AddPersonMainPage(AddPersonPage):
         :return:
         """
         self.is_element_present(self.PERSON_FIRST_NAME_UKR_INPUT)
-        self.driver.find_element(*self.PERSON_FIRST_NAME_UKR_INPUT).send_keys(first_ukr_name)
+        self.emulation_of_input(self.PERSON_FIRST_NAME_UKR_INPUT, first_ukr_name)
 
     def set_ukr_surname(self, ukr_surname):
         """
@@ -52,7 +52,7 @@ class AddPersonMainPage(AddPersonPage):
         :param ukr_surname: persons surname on Ukranian language
         :return:
         """
-        self.driver.find_element(*self.PERSON_SURNAME_UKR_INPUT).send_keys(ukr_surname)
+        self.emulation_of_input(self.PERSON_SURNAME_UKR_INPUT, ukr_surname)
 
     def set_father_ukr_name(self, father_ukr_name):
         """
@@ -60,7 +60,7 @@ class AddPersonMainPage(AddPersonPage):
         :param father_ukr_name: fathers person name on Ukranian language
         :return:
         """
-        self.driver.find_element(*self.PERSON_FARTHER_NAME_UKR_INPUT).send_keys(father_ukr_name)
+        self.emulation_of_input(self.PERSON_FARTHER_NAME_UKR_INPUT, father_ukr_name)
 
     def set_eng_surname(self, eng_surname):
         """
@@ -68,7 +68,7 @@ class AddPersonMainPage(AddPersonPage):
         :param ukr_surname: persons surname on English language
         :return:
         """
-        self.driver.find_element(*self.PERSON_SURNAME_ENG_INPUT).send_keys(eng_surname)
+        self.emulation_of_input(self.PERSON_SURNAME_ENG_INPUT, eng_surname)
 
     def set_first_eng_name(self, first_eng_name):
         """
@@ -76,5 +76,5 @@ class AddPersonMainPage(AddPersonPage):
         :param first_eng_name: first person name on English language
         :return:
         """
-        self.driver.find_element(*self.PERSON_FIRST_NAME_ENG_INPUT).send_keys(first_eng_name)
+        self.emulation_of_input(self.PERSON_FIRST_NAME_ENG_INPUT, first_eng_name)
 

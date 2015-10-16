@@ -10,7 +10,8 @@ class AddPersonExtraPage(AddPersonPage):
     ACTIVATE_BIRTH_DAY_CHOOSER = (By.XPATH, "//input[@ng-model='person.begDate']")
     SEX_TYPES_SELECT = (By.XPATH, "//div[@id='genderTypeId']//div//span")
     ALL_SEX_TYPES_SELECT = (By.XPATH, "//div[@id='genderTypeId']//a//div")
-    MARITAL_STATUS_SELECT = (By.XPATH, "//div[@id='marriedTypeId']//div//span//span[@class='ui-select-placeholder text-muted ng-binding']")
+    MARITAL_STATUS_SELECT = (By.XPATH, "//div[@id='marriedTypeId']//div[@class='ui-select-match']/span")
+    # MARITAL_STATUS_SELECT = (By.ID, "marriedTypeId")
     ALL_MARITAL_STATUSES_SELECT = (By.XPATH, "//div[@id='marriedTypeId']//a//div")
     NATIONALITY_SELECT = (By.XPATH, "//div[@id='citizenCountryId']//div/span//span[@class='ng-binding ng-scope']")
     ALL_NATIONALITIES_SELECT = (By.XPATH, "//div[@id='citizenCountryId']//a//div")
@@ -68,7 +69,7 @@ class AddPersonExtraPage(AddPersonPage):
         :param chars: String format. Persons private case series
         :return:
         """
-        self.driver.find_element(*self.PRIVATE_CASE_CHARS_INPUT).send_keys(chars)
+        self.emulation_of_input(self.PRIVATE_CASE_CHARS_INPUT, chars)
 
     def set_private_case_numbers(self, numbers):
         """
@@ -76,7 +77,7 @@ class AddPersonExtraPage(AddPersonPage):
         :param numbers: String format. Persons private case number
         :return:
         """
-        self.driver.find_element(*self.PRIVATE_CASE_NUMBER_INPUT).send_keys(numbers)
+        self.emulation_of_input(self.PRIVATE_CASE_NUMBER_INPUT, numbers)
 
     def check_resident_status(self, is_outlander):
         """
