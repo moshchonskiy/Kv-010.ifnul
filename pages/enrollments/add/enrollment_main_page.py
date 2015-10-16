@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
 import datetime
+from time import sleep
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
 from pages.internal_page import InternalPage
@@ -34,7 +35,7 @@ class EnrollmentsMainPage(InternalPage):
     DOCUMENT = (By.XPATH, ".//*[@class='col-xs-5']/*[@id='inputStructure']//i[@class='caret pull-right']")
     TOTAL_SCORE = (By.ID, "inputMark")
     GRADING_SCALE = (By.XPATH, ".//*[@id='markScale']//i[@class='caret pull-right']")
-    CHECKBOX_DOCUMENT_IS_ORIGINAL = (By.XPATH, ".//*[@class='ng-pristine ng-untouched ng-valid']")
+    CHECKBOX_DOCUMENT_IS_ORIGINAL = (By.XPATH, ".//*[@ng-init='enrolment.isOriginal = 0']']")
     PRIORITY = (By.ID, "inputPriority")
     STRUCTURAL_UNIT = (By.XPATH, ".//*[@class='col-xs-3']/*[@id='inputStructure']//i[@class='caret pull-right']")
     DATE_OF_ENTRY_STATEMENTS = (By.ID, "begDate")
@@ -206,7 +207,7 @@ class EnrollmentsMainPage(InternalPage):
         self.choose_structural_unit(self.from_enrollment_json("structural_unit"))
         self.type_of_entry(self.from_enrollment_json("type_of_entry"))
         self.specification_of_entry(self.from_enrollment_json("detailing_start"))
-        date_of_entry = datetime.date(2015, 10, 17)
+        date_of_entry = datetime.date(2016, 10, 17)
         date_closing = datetime.date(2017, 11, 21)
         self.set_date(self.DATE_OF_ENTRY_STATEMENTS, date_of_entry)
         self.set_date(self.DATE_CLOSING_STATEMENTS, date_closing)
