@@ -124,6 +124,7 @@ class PersonsPage(InternalPage):
         :param given_surname: String parametr. Added persons surname.
         :return:
         """
+        self.is_element_present(self.SPINNER_OFF)
         if self.is_element_present(self.EXPECTED_SURNAME):
             elem = self.driver.find_element(*self.EXPECTED_SURNAME)
             s = "aaa"
@@ -160,6 +161,7 @@ class PersonsPage(InternalPage):
 
     # surname search
     def try_get_choose_surname(self):
+        self.is_element_present(self.CHOOSE_SURNAME_SEARCH)
         return self.is_element_visible(self.CHOOSE_SURNAME_SEARCH)
 
     def try_get_expected_surname(self, given_surname):

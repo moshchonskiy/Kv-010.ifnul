@@ -3,35 +3,28 @@
 __author__ = 'acidroed'
 
 
-from utility.personCreator import PersonCreator
-from model.user import User
-
-def test_add_person(app):
-    # Create person from JSON file
-    person_creator = PersonCreator()
-    person = person_creator.create_person_from_json("person.json")
-
-    # Login into system
-    app.ensure_logout()
-    app.login(User.Admin(), True)
-
-    # Check that the added person doesn't exist
+def search_added_person(app, person):
+    """
+    Method searchs new added person
+    :param person: persons model in Person format
+    :param app: application context in Application format
+    :return: finded persons surname
+    """
     person_page = app.persons_page
-    is_person_already_exists = True
-    while is_person_already_exists:
-        person_page.is_this_page
-        person_page.try_get_choose_surname().click()
-        person_page.try_get_input_group().clear()
-        person_page.try_get_input_group().send_keys(person.surname_ukr)
-        person_page.try_get_ok_button().click()
-        if person_page.searching_person_by_surname(person.surname_ukr) != None:
-            person_page.delete_first_person_in_page
-        else:
-            is_person_already_exists = False
     person_page.is_this_page
-    person_page.add_person_link
+    person_page.try_get_choose_surname().click()
+    person_page.try_get_input_group().clear()
+    person_page.try_get_input_group().send_keys(person.surname_ukr)
+    person_page.try_get_ok_button().click()
+    return person_page.try_get_expected_surname(person.surname_ukr).text.partition(' ')[0]
 
-    # Add persons data on main page
+def fill_in_main_person_page(app, person):
+    """
+    Method fill in data on the main persons page
+    :param person: persons model in Person format
+    :param app: application context in Application format
+    :return:
+    """
     main_page = app.main_page
     main_page.is_this_page
     main_page.person_type_select_click()
@@ -41,9 +34,14 @@ def test_add_person(app):
     main_page.set_father_ukr_name(person.second_name_ukr)
     main_page.set_eng_surname(person.surname_eng)
     main_page.set_first_eng_name(person.first_name_eng)
-    main_page.click_next_button
 
-    # Add persons data on extra page
+def fill_in_extra_person_page(app, person):
+    """
+    Method fill in data on the extra persons page
+    :param person: persons model in Person format
+    :param app: application context in Application format
+    :return:
+    """
     extra_page = app.extra_page
     extra_page.is_this_page
     extra_page.set_persons_birth_day(person.birth_day)
@@ -55,10 +53,14 @@ def test_add_person(app):
     extra_page.check_resident_status(person.is_outlander)
     extra_page.check_reservist_status(person.reservist)
     extra_page.check_needed_hostel_status(person.hostel_need)
-    extra_page.click_next_button
-    extra_page.click_next_button
 
-    # Add persons data on address page
+def fill_in_address_page(app, person):
+    """
+    Method fill in data on the address persons page
+    :param person: persons model in Person format
+    :param app: application context in Application format
+    :return:
+    """
     address_page = app.address_page
     address_page.is_this_page
     for i in range(0, len(person.burn_place)):
@@ -73,11 +75,14 @@ def test_add_person(app):
     address_page.set_house(person.registration_place["house"])
     address_page.set_apartment(person.registration_place["apartment"])
     address_page.check_is_reg_and_post_addresses_the_same(person.registration_place["is_addresses_match"])
-    address_page.click_next_button
-    address_page.click_next_button
-    address_page.click_next_button
 
-    # Add persons data on contact page
+def fill_in_contact_page(app, person):
+    """
+    Method fill in data on the contact persons page
+    :param person: persons model in Person format
+    :param app: application context in Application format
+    :return:
+    """
     contact_page = app.contact_page
     contact_page.is_this_page
     contact_page.set_first_mobile_phone(person.mobile_phone1)
@@ -88,9 +93,14 @@ def test_add_person(app):
     contact_page.set_skype(person.skype)
     contact_page.set_site(person.web_site)
     contact_page.set_icq(person.icq)
-    contact_page.click_next_button
 
-    # Add persons data on papers page
+def fill_in_document_page(app, person):
+    """
+    Method fill in data on the papers persons page
+    :param person: persons model in Person format
+    :param app: application context in Application format
+    :return:
+    """
     papers_page = app.papers_page
     papers_page.is_this_page
     papers_page.press_add_new_document_button
@@ -103,17 +113,30 @@ def test_add_person(app):
     papers_page.check_is_original_document(person.documents[0].document_is_original)
     papers_page.check_is_foreign_document(person.documents[0].document_is_foreign)
     papers_page.press_save_new_document_button
-    papers_page.save_new_person()
 
-    # Search added person
+def test_add_person(add_person, person):
+    person_page = add_person.persons_page
     person_page.is_this_page
-    person_page.try_get_choose_surname().click()
-    person_page.try_get_input_group().clear()
-    person_page.try_get_input_group().send_keys(person.surname_ukr)
-    person_page.try_get_ok_button().click()
-    expected_person = person_page.try_get_expected_surname(person.surname_ukr).text.partition(' ')[0]
-    if expected_person:
-        person_page.delete_first_person_in_page
+    person_page.add_person_link
+    base_page = add_person.person_base_page
 
-    assert expected_person == person.surname_ukr
+    fill_in_main_person_page(add_person, person)
+    base_page.click_next_button
+
+    fill_in_extra_person_page(add_person, person)
+    base_page.click_next_button
+    base_page.click_next_button
+
+    fill_in_address_page(add_person, person)
+    base_page.click_next_button
+    base_page.click_next_button
+    base_page.click_next_button
+
+    fill_in_contact_page(add_person, person)
+    base_page.click_next_button
+
+    fill_in_document_page(add_person, person)
+    base_page.save_new_person()
+
+    assert search_added_person(add_person, person) == person.surname_ukr
 

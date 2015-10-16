@@ -76,7 +76,7 @@ class AddPersonAddressesPage(AddPersonPage):
         :param index: Integer parametr.
         :return:
         """
-        self.driver.find_element(*self.INDEX_INPUT).send_keys(index)
+        self.emulation_of_input(self.INDEX_INPUT, index)
 
     def reg_address_type_select(self, address_type):
         """
@@ -93,7 +93,7 @@ class AddPersonAddressesPage(AddPersonPage):
         :param street: String parametr.
         :return:
         """
-        self.driver.find_element(*self.STREET_INPUT).send_keys(street)
+        self.emulation_of_input(self.STREET_INPUT, street)
 
     def set_house(self, house):
         """
@@ -101,7 +101,7 @@ class AddPersonAddressesPage(AddPersonPage):
         :param house: Integer parametr.
         :return:
         """
-        self.driver.find_element(*self.HOUSE_INPUT).send_keys(house)
+        self.emulation_of_input(self.HOUSE_INPUT, house)
 
     def set_apartment(self, apartment):
         """
@@ -109,7 +109,7 @@ class AddPersonAddressesPage(AddPersonPage):
         :param apartment: Integer parametr.
         :return:
         """
-        self.driver.find_element(*self.APARTMENT_INPUT).send_keys(apartment)
+        self.emulation_of_input(self.APARTMENT_INPUT, apartment)
 
     def check_is_reg_and_post_addresses_the_same(self, is_addresses_match):
         """
