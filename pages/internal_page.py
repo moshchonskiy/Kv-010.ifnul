@@ -91,7 +91,7 @@ class InternalPage(Page):
                 self.is_element_present(self.SELECT_FIRST_SHOWED_YEAR)
                 all_years = el.find_elements(*self.SELECT_ALL_VISIBLE_YEARS_MONTHS_OR_DAYS)
                 for year in all_years:
-                    if int(year.text) == date.year:
+                    if year.text != "" and int(year.text) == date.year:
                         year.click()
                         break
 
@@ -104,7 +104,7 @@ class InternalPage(Page):
         self.is_element_present(self.SELECT_ALL_VISIBLE_YEARS_MONTHS_OR_DAYS)
         all_months = el.find_elements(*self.SELECT_ALL_VISIBLE_YEARS_MONTHS_OR_DAYS)
         for month in all_months:
-            if month.text == date.strftime('%B'):
+            if month.text != "" and month.text == date.strftime('%B'):
                 month.click()
                 break
 
