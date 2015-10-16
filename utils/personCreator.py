@@ -1,7 +1,6 @@
 __author__ = 'odeortc'
 
 import json
-import os
 from model.person import Person
 from model.person import Document
 import datetime
@@ -10,11 +9,6 @@ class PersonCreator(object):
 
     def __init__(self, file):
         self.file = file
-
-    # def file_path(self, file_name):
-    #     project_path = os.path.dirname(os.path.realpath(__file__))
-    #     path = os.path.normpath(os.path.abspath(project_path) + "/../resources/"+file_name)
-    #     return path
 
     def parseJson(self, file):
         fl = open(self.file, 'r')
@@ -28,11 +22,10 @@ class PersonCreator(object):
         json_person = self.parseJson(self.file)
         person.person_type = json_person["person_type"]
         person.surname_ukr = json_person["surname_ukr"]
-        person.first_name_ukr = unicode(json_person["first_name_ukr"])
+        person.first_name_ukr = json_person["first_name_ukr"]
         person.second_name_ukr = json_person["second_name_ukr"]
         person.surname_eng = json_person["surname_eng"]
         person.first_name_eng = json_person["first_name_eng"]
-        # person.birth_day = "%s-%s-%s" % (json_person["birth_day"]["year"], json_person["birth_day"]["month"], json_person["birth_day"]["day"])
         person.birth_day = datetime.date(json_person["birth_day"]["year"], json_person["birth_day"]["month"], json_person["birth_day"]["day"])
         person.sex = json_person["sex"]
         person.marital_status = json_person["marital_status"]
@@ -65,7 +58,6 @@ class PersonCreator(object):
             document.document_is_original = doc["document_is_original"]
             document.issued_by = doc["issued_by"]
             document.type_of_reward = doc["type_of_reward"]
-            # document.day_of_issue = "%s-%s-%s" % (doc["day_of_issue"]["year"], doc["day_of_issue"]["month"], doc["day_of_issue"]["day"])
             document.day_of_issue = datetime.date(doc["day_of_issue"]["year"], doc["day_of_issue"]["month"], doc["day_of_issue"]["day"])
             person.documents.append(document)
         return person

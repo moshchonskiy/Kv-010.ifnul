@@ -8,8 +8,6 @@ __author__ = 'Evgen'
 import pytest
 from selenium import webdriver
 from model.application import Application
-import os
-import time
 
 
 def pytest_addoption(parser):
@@ -42,6 +40,7 @@ def person(request, person_file):
 def add_person(app, person):
     app.ensure_logout()
     app.login(User.Admin(), True)
+    # Check that the added person doesn't exist
     person_page = app.persons_page
     is_person_already_exists = True
     while is_person_already_exists:
@@ -52,11 +51,11 @@ def add_person(app, person):
         person_page.try_get_ok_button().click()
         if person_page.searching_person_by_surname(person.surname_ukr) != None:
             person_page.delete_first_person_in_page
-            print "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
         else:
-            print "#################################################################"
             is_person_already_exists = False
+
     yield app
+    #Delete new added person
     person_page.is_this_page
     expected_person = person_page.try_get_expected_surname(person.surname_ukr).text.partition(' ')[0]
     if expected_person:
