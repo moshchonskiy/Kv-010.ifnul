@@ -4,6 +4,13 @@
       "person_name": "Прізвище Ім'я Зіновійович",
       "series_of_statements": "1119111",
       "number_statements": "7778777",
+      "radiobutton_higher_education": "Є вища освіта",
+      "radiobutton_evaluation_of_the_interview": "Не пройшов співбесіду",
+      "checkbox_is_state": "True",
+      "checkbox_is_contract": "True",
+      "checkbox_is_privilege": "True",
+      "checkbox_is_hostel": "True",
+      "checkbox_document_is_original": "True",
       "offers": "Фізичний",
       "form_of_education": "Бакалавр",
       "document": "Атестат про повну загальну середню освіту",
@@ -13,6 +20,17 @@
       "structural_unit": "Фізичний",
       "type_of_entry": "За результатами іспитів",
       "detailing_start": "Учасник міжнародної олімпіади",
-      "date_closing": "2016-01-01"
+      "date_of_entry":
+      {
+          "day":21,
+          "month":11,
+          "year":2015
+      },
+      "date_closing":
+      {
+          "day":17,
+          "month":4,
+          "year":2016
+      }
   }
 }
