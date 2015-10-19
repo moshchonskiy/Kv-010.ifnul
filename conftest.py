@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 from model.user import User
 from utils.personCreator import PersonCreator
+from pyvirtualdisplay import Display
 
 __author__ = 'Evgen'
 
@@ -17,6 +18,7 @@ def pytest_addoption(parser):
     # parser.addoption("--base_url", action="store", default="http://localhost:9000/")
     parser.addoption("--base_url", action="store", default="http://194.44.198.221/")
     parser.addoption("--person_file", action="store", default="person.json")
+    parser.addoption("--jenkins_display", action="store_true")
 
 
 @pytest.fixture(scope="module")
@@ -63,9 +65,13 @@ def add_person(app, person):
     if expected_person:
         person_page.delete_first_person_in_page
 
+@pytest.fixture(scope="module")
+def jenkins_display(request):
+    return request.config.getoption("--jenkins_display")
+
 
 @pytest.fixture(scope="module")
-def app(request, browser_type, base_url):
+def app(request, browser_type, base_url, jenkins_display):
     """
     Fixture is used to perform all tests, use it in your tests like >>>  def test_method(app)
     It performs all tests in one browser, because of (scope="session")
@@ -73,6 +79,9 @@ def app(request, browser_type, base_url):
     you can write in the console something like >>> py.test --browser "chrome"
     :return: new Application with chosen or default params
     """
+    if jenkins_display:
+        display = Display(visible=0, size=(1366, 768))
+        display.start()
     if browser_type == "firefox":
         driver = webdriver.Firefox()
     elif browser_type == "chrome":

@@ -1,14 +1,7 @@
-colorama==0.3.3
-enum34==1.0.4
 lxml==3.4.4
-namedlist==1.7
-pluggy==0.3.1
-py==1.4.30
-pytest==2.8.1
+pytest==2.8.2
 pytest-allure-adaptor==1.6.7
 pyvirtualdisplay
-requests==2.8.0
 selenium==2.47.3
-six==1.9.0
-tox==2.1.1
 virtualenv==13.1.2
+
