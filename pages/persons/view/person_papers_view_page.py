@@ -7,6 +7,8 @@ __author__ = 'Vadym'
 class PersonPapersViewPage(PersonMainViewPage):
 
     FOR_COUNT_DOCUMENTS_IN_PERSON = (By.XPATH, "//table[@class='table table-hover']/tbody/tr")
+    FOR_COUNT_VISIBLE_COLUMN = (By.XPATH, "//table[@class='table table-hover']"
+                                          "/thead/tr/td[not(@class='ng-binding ng-hide')]")
     TEXT_CORRECT_PAGE_PERSON_PROFILE = (By.CSS_SELECTOR, ".content-header-title")
     TABLE = (By.XPATH, "//table[@class='table table-hover']")
 
@@ -14,14 +16,13 @@ class PersonPapersViewPage(PersonMainViewPage):
         result = []
         # add locators to the array
         count_of_row = self.get_count_row_in_table_documents()
-        count_of_column = 12 # from 1 to 12. In table 13 column but last are buttons 'editing', don't need validate this
+        count_of_column = self.get_count_column_in_table_documents()
         for row in range(count_of_row):
             for column in range(count_of_column):
                 result.append(self.__get_locators_values_from_table(row, column))
 
         for index, locator in enumerate(result):
             element_by_locator = self.driver.find_element(*locator).text
-            # возможно стоит проверить, не пустое ли тут значение
             result[index] = element_by_locator # replace locator by value found by this locator
         return result
 
@@ -30,6 +31,10 @@ class PersonPapersViewPage(PersonMainViewPage):
 
     def get_count_row_in_table_documents(self):
         elements_documents = self.driver.find_elements(*self.FOR_COUNT_DOCUMENTS_IN_PERSON)
+        return len(elements_documents)
+
+    def get_count_column_in_table_documents(self):
+        elements_documents = self.driver.find_elements(*self.FOR_COUNT_VISIBLE_COLUMN)
         return len(elements_documents)
 
     def is_table_present(self):

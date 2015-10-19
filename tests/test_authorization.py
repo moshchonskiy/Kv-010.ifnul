@@ -5,18 +5,18 @@ from selenium.webdriver.common.keys import Keys
 from model.user import User
 
 
-def test_invalid_login(app):
-    with pytest.allure.step('Inalid login test'):
-        app.ensure_logout()
-        app.login(User.random())
-        assert app.is_not_logged_in()
-
-
 def test_valid_login(app):
     with pytest.allure.step('Valid login test'):
         app.ensure_logout()
         app.login(User.Admin())
         assert app.is_logged_in()
+
+
+def test_invalid_login(app):
+    with pytest.allure.step('Inalid login test'):
+        app.ensure_logout()
+        app.login(User.random())
+        assert app.is_not_logged_in()
 
 
 def test_remember_me_checkbox(app):

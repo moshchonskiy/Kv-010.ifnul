@@ -51,6 +51,7 @@ class PersonsPage(InternalPage):
     EXPECTED_NUM_OS = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope']/td[11]")
     EXPECTED_SERIES_OS = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope']/td[10]")
     DELETE_FIRST_PERSON_IN_TABLE = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope'][1]/td[18]//button[3]")
+    VIEW_FIRST_PERSON_IN_TABLE = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope'][1]/td[18]//button[2]")
 
     # TO FILTER
     # There would be absolute passes. It is awful, it may be changed.
@@ -110,12 +111,20 @@ class PersonsPage(InternalPage):
             self.driver.find_element(*self.DELETE_FIRST_PERSON_IN_TABLE).click()
             self.is_element_present(self.SPINNER_OFF)
 
+    @property
+    def view_first_person_in_page(self):
+        if self.is_element_visible(self.VIEW_FIRST_PERSON_IN_TABLE):
+            self.driver.find_element(*self.VIEW_FIRST_PERSON_IN_TABLE).click()
+            self.is_element_present(self.SPINNER_OFF)
+
+
     def searching_person_by_surname(self, given_surname):
         """
         Method needs for "test_add_person". It checks that the added person doesn't exist in the system.
         :param given_surname: String parametr. Added persons surname.
         :return:
         """
+        self.is_element_present(self.SPINNER_OFF)
         if self.is_element_present(self.EXPECTED_SURNAME):
             elem = self.driver.find_element(*self.EXPECTED_SURNAME)
             s = "aaa"
@@ -152,6 +161,7 @@ class PersonsPage(InternalPage):
 
     # surname search
     def try_get_choose_surname(self):
+        self.is_element_present(self.CHOOSE_SURNAME_SEARCH)
         return self.is_element_visible(self.CHOOSE_SURNAME_SEARCH)
 
     def try_get_expected_surname(self, given_surname):

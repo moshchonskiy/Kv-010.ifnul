@@ -23,7 +23,7 @@ class AddPersonPapersPage(AddPersonPage):
 
     @property
     def is_this_page(self):
-        return self.is_element_visible(self.DOCUMENT_NAME_SELECT)
+        return self.is_element_visible(self.ADD_DOCUMENT_BUTTON)
 
     @property
     def press_add_new_document_button(self):
@@ -59,7 +59,7 @@ class AddPersonPapersPage(AddPersonPage):
         :param chars: String parametr.
         :return:
         """
-        self.driver.find_element(*self.DOCUMENT_SERIES_INPUT).send_keys(chars)
+        self.emulation_of_input(self.DOCUMENT_SERIES_INPUT, chars)
 
     def set_document_number(self, number):
         """
@@ -67,25 +67,23 @@ class AddPersonPapersPage(AddPersonPage):
         :param number: Integer parametr.
         :return:
         """
-        self.driver.find_element(*self.DOCUMENT_NUMBER_INPUT).send_keys(number)
+        self.emulation_of_input(self.DOCUMENT_NUMBER_INPUT, number)
 
     def set_day_of_issue(self, day_of_issue):
         """
         Method sets documents day of issue
-        :param day_of_issue: Date, when document was issued in a String format "YYYY-MM-DD"
+        :param day_of_issue: Date, when document was issued in a datetime format
         :return:
         """
-        day_of_issue_elem = self.driver.find_element(*self.DOCUMENT_DAY_OF_ISSUE_CHOSER)
-        day_of_issue_elem.clear()
-        day_of_issue_elem.send_keys(day_of_issue)
+        self.set_date(self.DOCUMENT_DAY_OF_ISSUE_CHOSER, day_of_issue)
 
     def set_document_maker(self, maker):
         """
         Method sets the organization which document was issued by
-        :param number: String parametr.
+        :param maker: String parametr.
         :return:
         """
-        self.driver.find_element(*self.DOCUMENT_ISSUED_BY).send_keys(maker)
+        self.emulation_of_input(self.DOCUMENT_ISSUED_BY, maker)
 
     def check_is_original_document(self, is_original):
         """
