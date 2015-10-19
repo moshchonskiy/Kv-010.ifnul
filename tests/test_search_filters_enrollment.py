@@ -41,9 +41,12 @@ class TestSearchFilters(object):
 
     def test_search_by_proposal_id(self, app):
         en_page = app.enrollments_page
+        expected_in_search = "5"
+        actual_search_results = en_page.search_enrollment(en_page.SEARCH_METHOD["proposal_id"], "5")
+
         with pytest.allure.step("Searching by proposal ID"):
             try:
-                assert "5" in en_page.search_enrollment(en_page.SEARCH_METHOD["proposal_id"], "5")
+                assert expected_in_search in actual_search_results
             except AssertionError:
                 allure.attach('screenshot', en_page.driver.get_screenshot_as_png(), type=AttachmentType.PNG)
                 _, _, tb = sys.exc_info()
@@ -51,7 +54,8 @@ class TestSearchFilters(object):
                 tb_info = traceback.extract_tb(tb)
                 filename, line, func, text = tb_info[-1]
                 print('An error occurred on line {} in statement {}'.format(line, text))
-
+            finally:
+                assert expected_in_search in actual_search_results
 
     # def test_filter_by_budget(self, app):
     #     with pytest.allure.step("Authorize on the site with admin credentials"):
