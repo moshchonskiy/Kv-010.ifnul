@@ -2,6 +2,7 @@
 from pages.internal_page import InternalPage
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
+import time
 
 
 class PersonsPage(InternalPage):
@@ -53,6 +54,17 @@ class PersonsPage(InternalPage):
     FILTERED_NEED_OF_HOSTEL         = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope'][1]/td[16]")
     FILTERED_BOUND_TO_MILITARY      = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope'][1]/td[15]")
     FILTERED_RESIDENT               = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope'][1]/td[12]")
+
+
+    FILTERED_TYPE_COLUMN            = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope']/td[6]")
+    FILTERED_GENDER_COLUMN          = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope']/td[7]")
+    FILTERED_HOSTEL_COLUMN          = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope']/td[16]")
+    FILTERED_MILITARY_COLUMN        = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope']/td[15]")
+    FILTERED_RESIDENT_COLUMN        = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope']/td[12]")
+
+    RID_OUT_OF_FILTER_BUTTON        = (By.XPATH, "//div[@class='col-md-2 col-lg-2 filter']//button[@class='close']")
+
+    TO_NEXT_TABLE_PAGE_BUTTON       = (By.XPATH, "//ul[@class='pagination']/li[8]/span")
 
     ADD_PERSON_BUTTON               = (By.XPATH, "//a[@ui-sref='root.person.new.main']")
     SHOW_HIDE_FILTERS_BUTTON        = (By.XPATH, "//button[contains(@ng-click,'hideFilterFunc')]")
@@ -149,6 +161,10 @@ class PersonsPage(InternalPage):
     def try_get_close_after_addition_button(self):
         return self.is_element_visible(self.CLOSE_AFTER_ADDITION_BUTTON)
 
+    def try_get_close_filter(self):
+        return self.is_element_visible(self.RID_OUT_OF_FILTER_BUTTON)
+
+
     #gender (male, female, not defined)
     def try_get_gender_male_checkbox(self):
         return self.is_element_visible(self.GENDER_MALE_CHECKBOX)
@@ -162,6 +178,17 @@ class PersonsPage(InternalPage):
     def try_get_filtered_gender(self, given_person_gender):
         self.wait.until(EC.text_to_be_present_in_element(self.FILTERED_GENDER, given_person_gender))
         return self.driver.find_element(*self.FILTERED_GENDER)
+
+    def try_get_filtered_gender_column(self, given_person_gender):
+
+        cells_texts = []
+
+        for i in range(1,len(self.FILTERED_GENDER_COLUMN),1):
+            cell_path = "//tbody[@class='pointer']/tr[@class='ng-scope'][%d]/td[7]" % i
+            self.wait.until(EC.text_to_be_present_in_element((By.XPATH, cell_path), given_person_gender))
+            cells_texts.append((self.driver.find_element(*(By.XPATH, cell_path))).text)
+
+        return cells_texts
 
 
     #type (applicant, student, scientist, employee, graduate, outsider)
@@ -183,9 +210,20 @@ class PersonsPage(InternalPage):
     def try_get_type_outsider_checkbox(self):
         return self.is_element_visible(self.TYPE_OUTSIDER_CHECKBOX)
     #FILTERED
-    def try_get_filtered_type(self, given_person_type):
+    def try_get_one_filtered_type(self, given_person_type):
         self.wait.until(EC.text_to_be_present_in_element(self.FILTERED_TYPE, given_person_type))
         return self.driver.find_element(*self.FILTERED_TYPE)
+
+    def try_get_filtered_type_column(self, given_person_type):
+
+        cells_texts = []
+
+        for i in range(1,len(self.FILTERED_TYPE_COLUMN),1):
+            cell_path = "//tbody[@class='pointer']/tr[@class='ng-scope'][%d]/td[6]" % i
+            self.wait.until(EC.text_to_be_present_in_element((By.XPATH, cell_path), given_person_type))
+            cells_texts.append((self.driver.find_element(*(By.XPATH, cell_path))).text)
+
+        return cells_texts
 
     #need for hostel (need, doesn`t need)
     def try_get_need_hostel_checkbox(self):
@@ -197,6 +235,16 @@ class PersonsPage(InternalPage):
     def try_get_filtered_need_of_hostel(self, given_need_of_hostel):
         self.wait.until(EC.text_to_be_present_in_element(self.FILTERED_NEED_OF_HOSTEL, given_need_of_hostel))
         return self.driver.find_element(*self.FILTERED_NEED_OF_HOSTEL)
+
+    def try_get_filtered_need_hostel_column(self, given_need_of_hostel):
+        cells_texts = []
+
+        for i in range(1,len(self.FILTERED_HOSTEL_COLUMN),1):
+            cell_path = "//tbody[@class='pointer']/tr[@class='ng-scope'][%d]/td[16]" % i
+            self.wait.until(EC.text_to_be_present_in_element((By.XPATH, cell_path), given_need_of_hostel))
+            cells_texts.append((self.driver.find_element(*(By.XPATH, cell_path))).text)
+
+        return cells_texts
 
 
 
@@ -212,6 +260,18 @@ class PersonsPage(InternalPage):
         return self.driver.find_element(*self.FILTERED_BOUND_TO_MILITARY)
 
 
+    def try_get_filtered_military_column(self, given_bound_to_military):
+
+        cells_texts = []
+
+        for i in range(1,len(self.FILTERED_MILITARY_COLUMN),1):
+            cell_path = "//tbody[@class='pointer']/tr[@class='ng-scope'][%d]/td[15]" % i
+            self.wait.until(EC.text_to_be_present_in_element((By.XPATH, cell_path), given_bound_to_military))
+            cells_texts.append((self.driver.find_element(*(By.XPATH, cell_path))).text)
+
+        return cells_texts
+
+
     #resident(foreigner, isn`t foreigner)
     def try_get_resident_foreigner_checkbox(self):
         return self.is_element_visible(self.RESIDENT_FOREIGNER_CHECKBOX)
@@ -222,6 +282,16 @@ class PersonsPage(InternalPage):
     def try_get_filtered_resident(self, given_resident):
         self.wait.until(EC.text_to_be_present_in_element(self.FILTERED_RESIDENT, given_resident))
         return self.driver.find_element(*self.FILTERED_RESIDENT)
+
+    def try_get_filtered_resident_column(self, given_resident):
+        cells_texts = []
+
+        for i in range(1,len(self.FILTERED_RESIDENT_COLUMN),1):
+            cell_path = "//tbody[@class='pointer']/tr[@class='ng-scope'][%d]/td[12]" % i
+            self.wait.until(EC.text_to_be_present_in_element((By.XPATH, cell_path), given_resident))
+            cells_texts.append((self.driver.find_element(*(By.XPATH, cell_path))).text)
+
+        return cells_texts
 
     #SEARCH
     #to all searches
@@ -296,3 +366,5 @@ class PersonsPage(InternalPage):
 
     def get_number_from_selector(self, selector):
         return self.driver.find_element(*selector).text
+
+
