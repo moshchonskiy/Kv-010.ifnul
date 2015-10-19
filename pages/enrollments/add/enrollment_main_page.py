@@ -35,6 +35,7 @@ class EnrollmentsMainPage(InternalPage):
     TYPE_OF_ENTRY_MENU = (By.ID, "inputChiefEnrolTypes")
     DETAILING_START_MENU = (By.ID, "inputEnrolmentTypeId")
     DATE_CLOSING_STATEMENTS = (By.XPATH, ".//*[@id='endDate']")
+    DATE_BEGINING_STATEMENTS = (By.XPATH, ".//*[@id='begDate']")
     BUTTON_SAVE = (By.XPATH, ".//*[@class='btn btn-primary'][@ng-click='sendToServer()']")
 
     @property
@@ -209,6 +210,9 @@ class EnrollmentsMainPage(InternalPage):
         self.find_element_in_select(
             Select(self.driver.find_element_by_id("inputEnrolmentTypeId")).options,
             self.from_enrollment_json("detailing_start"))
-        self.date_closing_statements.send_keys(self.from_enrollment_json("date_closing"))
+        # self.date_closing_statements.send_keys(self.from_enrollment_json("date_closing"))
+        d = datetime.date(1951, 2, 5)
+        self.set_date(self.DATE_CLOSING_STATEMENTS, d)
+        self.set_date(self.DATE_BEGINING_STATEMENTS, d)
         self.is_element_present(self.SPINNER_OFF)
         self.button_save.click()
