@@ -3,6 +3,8 @@ __author__ = 'Evgen'
 import pytest
 
 from model.user import User
+from allure.constants import AttachmentType
+import allure
 
 
 class TestSearchFilters(object):
@@ -20,21 +22,25 @@ class TestSearchFilters(object):
         en_page = app.enrollments_page
         with pytest.allure.step("Searching by person ID"):
             assert "9" in en_page.search_enrollment(en_page.SEARCH_METHOD["person_id"], "9")
+            allure.attach('screenshot', en_page.driver.get_screenshot_as_png(), type=AttachmentType.PNG)
 
     def test_search_by_document_series(self, app):
         en_page = app.enrollments_page
         with pytest.allure.step("Searching by document's series"):
             assert u'авіа' in en_page.search_enrollment(en_page.SEARCH_METHOD["document_series"], u'аві')
+            allure.attach('screenshot', en_page.driver.get_screenshot_as_png(), type=AttachmentType.PNG)
 
     def test_search_by_document_number(self, app):
         en_page = app.enrollments_page
         with pytest.allure.step("Searching by document's number"):
             assert "3333" in en_page.search_enrollment(en_page.SEARCH_METHOD["document_number"], "3333")
+            allure.attach('screenshot', en_page.driver.get_screenshot_as_png(), type=AttachmentType.PNG)
 
     def test_search_by_proposal_id(self, app):
         en_page = app.enrollments_page
         with pytest.allure.step("Searching by proposal ID"):
             assert "5" in en_page.search_enrollment(en_page.SEARCH_METHOD["proposal_id"], "5")
+            allure.attach('screenshot', en_page.driver.get_screenshot_as_png(), type=AttachmentType.PNG)
 
     def test_filter_by_budget(self, app):
         with pytest.allure.step("Authorize on the site with admin credentials"):
@@ -53,6 +59,7 @@ class TestSearchFilters(object):
             actual = enr_page.get_columns_text(enr_page.BUDGET_COLUMN)
             expected = {enr_page.FILTER_RESULTS["budget"]}
             assert actual == expected
+            allure.attach('screenshot', enr_page.driver.get_screenshot_as_png(), type=AttachmentType.PNG)
 
     def test_filter_by_not_budget(self, app):
         with pytest.allure.step("Authorize on the site with admin credentials"):
@@ -69,6 +76,7 @@ class TestSearchFilters(object):
             actual = enr_page.get_columns_text(enr_page.BUDGET_COLUMN)
             expected = {enr_page.FILTER_RESULTS["not_budget"]}
             assert actual == expected
+            allure.attach('screenshot', enr_page.driver.get_screenshot_as_png(), type=AttachmentType.PNG)
 
     def test_filter_by_privileges(self, app):
         with pytest.allure.step("Authorize on the site with admin credentials"):
@@ -85,6 +93,7 @@ class TestSearchFilters(object):
             actual = enr_page.get_columns_text(enr_page.PRIVILEGES_COLUMN)
             expected = {enr_page.FILTER_RESULTS["privileged"]}
             assert actual == expected
+            allure.attach('screenshot', enr_page.driver.get_screenshot_as_png(), type=AttachmentType.PNG)
 
     def test_filter_by_not_privileges(self, app):
         with pytest.allure.step("Authorize on the site with admin credentials"):
@@ -101,6 +110,7 @@ class TestSearchFilters(object):
             actual = enr_page.get_columns_text(enr_page.PRIVILEGES_COLUMN)
             expected = {enr_page.FILTER_RESULTS["not_privileged"]}
             assert actual == expected
+            allure.attach('screenshot', enr_page.driver.get_screenshot_as_png(), type=AttachmentType.PNG)
 
     def test_filter_mix(self, app):
         with pytest.allure.step("Authorize on the site with admin credentials"):
@@ -120,6 +130,7 @@ class TestSearchFilters(object):
             expected = {enr_page.FILTER_RESULTS["not_privileged"], enr_page.FILTER_RESULTS["budget"],
                         enr_page.FILTER_RESULTS["accommodation"]}
             assert actual == expected
+            allure.attach('screenshot', enr_page.driver.get_screenshot_as_png(), type=AttachmentType.PNG)
 
     def test_delete_filters(self, app):
         with pytest.allure.step("Authorize on the site with admin credentials"):
@@ -136,3 +147,4 @@ class TestSearchFilters(object):
             enr.delete_all_filters()
         with pytest.allure.step("Check the results"):
             assert len(enr.driver.find_elements(*enr.DELETE_FILTER_BUTTON)) == 0
+            allure.attach('screenshot', enr.driver.get_screenshot_as_png(), type=AttachmentType.PNG)
