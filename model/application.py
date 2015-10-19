@@ -24,6 +24,7 @@ from pages.persons.add.person_extra_page import *
 from pages.persons.add.person_addresses_page import *
 from pages.persons.add.person_contacts_page import *
 from pages.persons.add.person_papers_page import *
+from pages.persons.add.person_base_page import *
 
 
 class Application:
@@ -48,6 +49,7 @@ class Application:
         self.address_page = AddPersonAddressesPage(driver, base_url)
         self.contact_page = AddPersonContactsPage(driver, base_url)
         self.papers_page = AddPersonPapersPage(driver, base_url)
+        self.person_base_page = AddPersonPage(driver, base_url)
 
     def login(self, user, checkbox=False):
         """
@@ -64,8 +66,10 @@ class Application:
         if checkbox:
             lp.login_checkbox.click()
             lp.submit_button.click()
+            self.internal_page.is_element_present(self.internal_page.SPINNER_OFF)
         else:
             lp.submit_button.click()
+            self.internal_page.is_element_present(self.internal_page.SPINNER_OFF)
 
     def ensure_logged_in(self):
         """
