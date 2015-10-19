@@ -49,11 +49,7 @@ class TestSearchFilters(object):
                 assert expected_in_search in actual_search_results
             except AssertionError:
                 allure.attach('screenshot', en_page.driver.get_screenshot_as_png(), type=AttachmentType.PNG)
-                _, _, tb = sys.exc_info()
-                traceback.print_tb(tb) # Fixed format
-                tb_info = traceback.extract_tb(tb)
-                filename, line, func, text = tb_info[-1]
-                print('An error occurred on line {} in statement {}'.format(line, text))
+                traceback.print_exc(file=sys.stdout)
                 exit(1)
 
 
