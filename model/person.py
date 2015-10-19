@@ -1,4 +1,5 @@
 __author__ = 'odeortc'
+import datetime
 
 class Person(object):
 
@@ -9,7 +10,7 @@ class Person(object):
         self.second_name_ukr = ""
         self.surname_eng = ""
         self.first_name_eng = ""
-        self.birth_day = ""
+        self.birth_day = datetime.date(1, 1, 1)
         self.sex = ""
         self.marital_status = ""
         self.nationality = ""
@@ -20,6 +21,7 @@ class Person(object):
         self.hostel_need = False
         self.burn_place = []
         self.registration_place = {"area": [], "index": 0, "type": "", "street": "", "house": 0, "apartment": 0, "is_addresses_match": True}
+        self.post_registration_place = {"area": [], "index": 0, "type": "", "street": "", "house": 0, "apartment": 0}
         self.photo = ""
         self.mobile_phone1 = ""
         self.mobile_phone2 = ""
@@ -38,7 +40,7 @@ class Document(object):
         self.document_name = ""
         self.document_case_char = ""
         self.document_case_number = ""
-        self.day_of_issue = ""
+        self.day_of_issue = datetime.date(1, 1, 1)
         self.issued_by = ""
         self.average_rate = 0.0
         self.type_of_reward = ""

@@ -29,7 +29,7 @@ class AddPersonContactsPage(AddPersonPage):
         :param phone: String parametr. Pattern is "(xxx) xxx-xx-xx"
         :return:
         """
-        self.driver.find_element(*self.MOBILE_PHONE1_INPUT).send_keys(phone)
+        self.emulation_of_input(self.MOBILE_PHONE1_INPUT, phone)
 
     def set_second_mobile_phone(self, phone):
         """
@@ -37,7 +37,7 @@ class AddPersonContactsPage(AddPersonPage):
         :param phone: String parametr. Pattern is "(xxx) xxx-xx-xx"
         :return:
         """
-        self.driver.find_element(*self.MOBILE_PHONE2_INPUT).send_keys(phone)
+        self.emulation_of_input(self.MOBILE_PHONE2_INPUT, phone)
 
     def set_home_phone(self, phone):
         """
@@ -45,7 +45,7 @@ class AddPersonContactsPage(AddPersonPage):
         :param phone: String parametr. Pattern is "(xxx) xxx-xx-xx"
         :return:
         """
-        self.driver.find_element(*self.HOME_PHONE_INPUT).send_keys(phone)
+        self.emulation_of_input(self.HOME_PHONE_INPUT, phone)
 
     def set_work_phone(self, phone):
         """
@@ -53,7 +53,7 @@ class AddPersonContactsPage(AddPersonPage):
         :param phone: String parametr. Pattern is "(xxx) xxx-xx-xx"
         :return:
         """
-        self.driver.find_element(*self.WORK_PHONE_INPUT).send_keys(phone)
+        self.emulation_of_input(self.WORK_PHONE_INPUT, phone)
 
     def set_email(self, email):
         """
@@ -61,7 +61,7 @@ class AddPersonContactsPage(AddPersonPage):
         :param email: String parametr.
         :return:
         """
-        self.driver.find_element(*self.EMAIL_INPUT).send_keys(email)
+        self.emulation_of_input(self.EMAIL_INPUT, email)
 
     def set_skype(self, skype):
         """
@@ -69,7 +69,7 @@ class AddPersonContactsPage(AddPersonPage):
         :param skype: String parametr.
         :return:
         """
-        self.driver.find_element(*self.SKYPE_INPUT).send_keys(skype)
+        self.emulation_of_input(self.SKYPE_INPUT, skype)
 
     def set_site(self, site):
         """
@@ -77,7 +77,7 @@ class AddPersonContactsPage(AddPersonPage):
         :param site: String parametr.
         :return:
         """
-        self.driver.find_element(*self.HOME_PHONE_INPUT).send_keys(site)
+        self.emulation_of_input(self.HOME_PHONE_INPUT, site)
 
     def set_icq(self, icq):
         """
@@ -85,4 +85,4 @@ class AddPersonContactsPage(AddPersonPage):
         :param icq: Integer parametr.
         :return:
         """
-        self.driver.find_element(*self.ICQ_INPUT).send_keys(icq)
+        self.emulation_of_input(self.ICQ_INPUT, icq)

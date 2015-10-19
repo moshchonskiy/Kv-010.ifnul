@@ -127,12 +127,20 @@ class PersonsPage(InternalPage):
             self.driver.find_element(*self.DELETE_FIRST_PERSON_IN_TABLE).click()
             self.is_element_present(self.SPINNER_OFF)
 
+    @property
+    def view_first_person_in_page(self):
+        if self.is_element_visible(self.VIEW_FIRST_PERSON_IN_TABLE):
+            self.driver.find_element(*self.VIEW_FIRST_PERSON_IN_TABLE).click()
+            self.is_element_present(self.SPINNER_OFF)
+
+
     def searching_person_by_surname(self, given_surname):
         """
         Method needs for "test_add_person". It checks that the added person doesn't exist in the system.
         :param given_surname: String parametr. Added persons surname.
         :return:
         """
+        self.is_element_present(self.SPINNER_OFF)
         if self.is_element_present(self.EXPECTED_SURNAME):
             elem = self.driver.find_element(*self.EXPECTED_SURNAME)
             s = "aaa"
@@ -303,6 +311,7 @@ class PersonsPage(InternalPage):
 
     # surname search
     def try_get_choose_surname(self):
+        self.is_element_present(self.CHOOSE_SURNAME_SEARCH)
         return self.is_element_visible(self.CHOOSE_SURNAME_SEARCH)
 
     def try_get_searched_surname(self, given_surname):
@@ -366,5 +375,3 @@ class PersonsPage(InternalPage):
 
     def get_number_from_selector(self, selector):
         return self.driver.find_element(*selector).text
-
-

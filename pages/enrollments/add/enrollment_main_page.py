@@ -4,13 +4,15 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
 from pages.internal_page import InternalPage
 from utils.data_provider_from_json import DataProviderJSON
+import datetime
 
 __author__ = 'Stako'
 
 
 class EnrollmentsMainPage(InternalPage):
     OK_FOR_INPUT_FIELD = (By.CSS_SELECTOR, "div[class='input-group'] * button[class='btn btn-primary']")
-    SECOND_PERSON = (By.XPATH, "html/body/div[5]/div/div/div[2]/div[2]/table/tbody/tr[6]/td[2]")
+    SEARCH_NAME_FIELD = (By.XPATH, "//div[@class='modal-body ng-scope']//input[contains (@type, 'search')]")
+    FIRST_PERSON = (By.XPATH, "//*[@class='table-responsive']//tbody[@class='pointer']//tr[1]/td[2]")
     SERIES_OF_STATEMENTS = (By.XPATH, "//*[@id='inputDocSeries']")
     NUMBER_STATEMENTS = (By.XPATH, ".//*[@id='inputdocNum']")
     CHECKBOX_IS_STATE = (By.XPATH, ".//input[@ng-model='enrolment.isState']")
@@ -43,6 +45,10 @@ class EnrollmentsMainPage(InternalPage):
     def choose_first_specialties(self):
         return self.is_element_visible(self.CHOOSE_FIRST_SPECIALTIES)
 
+    @property
+    def search_name_field(self):
+        return self.is_element_visible(self.SEARCH_NAME_FIELD)
+
     def list_form_ui_select(self):
         self.is_element_visible(self.LIST_FROM_UI_SELECT)
         return self.driver.find_elements(*self.LIST_FROM_UI_SELECT)
@@ -52,8 +58,8 @@ class EnrollmentsMainPage(InternalPage):
         return self.is_element_visible(self.CHOOSE_FORM_OF_EDUCATION)
 
     @property
-    def second_person(self):
-        return self.is_element_visible(self.SECOND_PERSON)
+    def first_person(self):
+        return self.is_element_visible(self.FIRST_PERSON)
 
     @property
     def ok_for_input_field(self):
@@ -155,16 +161,11 @@ class EnrollmentsMainPage(InternalPage):
                 sel.click()
                 break
 
-    def file_path(self, file_name):
-        project_path = os.path.dirname(os.path.realpath(__file__))
-        path = os.path.normpath(os.path.abspath(project_path) + "/../../../resources/" + file_name)
-        return path
-
     def from_enrollment_json(self, key):
         """
         This method returns value by key from json file according to UTF-8 encoding.
         """
-        db = DataProviderJSON(str(self.file_path("fill_enrollment_main.json")))
+        db = DataProviderJSON("fill_enrollment_main.json")
         return db.get_value_by_ij("fill_data_enrollment", key).encode('utf8')
 
     def fill_enrollment(self):
@@ -174,7 +175,8 @@ class EnrollmentsMainPage(InternalPage):
         self.is_element_present(self.SPINNER_OFF)
         self.ok_for_input_field.click()
         self.is_element_present(self.SPINNER_OFF)
-        self.second_person.click()
+        self.search_name_field.send_keys(self.from_enrollment_json("person_name").decode('utf8'))
+        self.first_person.click()
         self.is_element_present(self.SPINNER_OFF)
         self.series_of_statements.send_keys(self.from_enrollment_json("series_of_statements"))
         self.number_statements.send_keys(self.from_enrollment_json("number_statements"))
