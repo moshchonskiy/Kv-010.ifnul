@@ -2,7 +2,7 @@
 from pages.internal_page import InternalPage
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
-import time
+
 
 
 class PersonsPage(InternalPage):

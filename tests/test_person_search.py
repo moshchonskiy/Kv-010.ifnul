@@ -10,6 +10,7 @@ def login(app):
     app.ensure_logout()
     app.login(User.Admin(), True)
 
+
 def test_surname_search(app):
     login(app)
     person_page = app.persons_page
