@@ -54,8 +54,8 @@ class TestSearchFilters(object):
                 tb_info = traceback.extract_tb(tb)
                 filename, line, func, text = tb_info[-1]
                 print('An error occurred on line {} in statement {}'.format(line, text))
-            finally:
-                assert expected_in_search in actual_search_results
+                exit(1)
+
 
     # def test_filter_by_budget(self, app):
     #     with pytest.allure.step("Authorize on the site with admin credentials"):
