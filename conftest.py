@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 from model.user import User
 from utils.personCreator import PersonCreator
+from pyvirtualdisplay import Display
 #
 
 __author__ = 'Evgen'
@@ -13,12 +14,12 @@ import os
 import time
 
 
-def pytest_addoption(parser):
+# def pytest_addoption(parser):
     # parser.addoption("--browser", action="store", default="firefox")
     # # parser.addoption("--base_url", action="store", default="http://localhost:9000/")
     # parser.addoption("--base_url", action="store", default="http://194.44.198.221/")
     # parser.addoption("--person_file", action="store", default="person.json")
-    parser.addoption("--jenkins_display", action="store_true")
+    # parser.addoption("--jenkins_display", action="store_true")
 
 
 @pytest.fixture(scope="module")
@@ -71,7 +72,7 @@ def jenkins_display(request):
 
 
 @pytest.fixture(scope="module")
-def app(request, jenkins_display):
+def app(request):
     """
     Fixture is used to perform all tests, use it in your tests like >>>  def test_method(app)
     It performs all tests in one browser, because of (scope="session")
@@ -79,9 +80,8 @@ def app(request, jenkins_display):
     you can write in the console something like >>> py.test --browser "chrome"
     :return: new Application with chosen or default params
     """
-    if jenkins_display:
-        display = Display(visible=0, size=(1366, 768))
-        display.start()
+    display = Display(visible=0, size=(1366, 768))
+    display.start()
     driver = webdriver.Firefox()
     request.addfinalizer(driver.quit)
     return Application(driver, "http://194.44.198.221/")
