@@ -4,4 +4,4 @@ pytest-allure-adaptor==1.6.7
 pyvirtualdisplay
 selenium==2.47.3
 virtualenv==13.1.2
-
+pytest-xdist

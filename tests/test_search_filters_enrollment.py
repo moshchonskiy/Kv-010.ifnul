@@ -1,13 +1,12 @@
 # -*- coding: utf-8 -*-
-__author__ = 'Evgen'
-import pytest
-
 from model.user import User
 from allure.constants import AttachmentType
+import pytest
 import allure
 import sys
 import traceback
 
+__author__ = 'Evgen'
 
 
 class TestSearchFilters(object):
