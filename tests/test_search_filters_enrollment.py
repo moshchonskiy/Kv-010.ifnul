@@ -54,10 +54,10 @@ class TestSearchFilters(object):
             except AssertionError:
                 allure.attach('screenshot', en_page.driver.get_screenshot_as_png(), type=AttachmentType.PNG)
                 _, _, tb = sys.exc_info()
-                traceback.print_tb(tb) # Fixed format
                 tb_info = traceback.extract_tb(tb)
                 filename, line, func, text = tb_info[-1]
-                print('An error occurred on line {} in statement {}'.format(line, text))
+                print('An error occurred on line: {}, in statement: {}. The filename is: {}, and function is {}.'
+                      .format(line, text, filename, func))
                 raise
 
 
