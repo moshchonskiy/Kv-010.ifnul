@@ -15,7 +15,7 @@ import time
 
 def pytest_addoption(parser):
     print "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-    parser.addoption("--browser")
+    parser.addoption("--browser", action="store", default="firefox")
     # parser.addoption("--base_url", action="store", default="http://localhost:9000/")
     parser.addoption("--base_url", action="store", default="http://194.44.198.221/")
     parser.addoption("--person_file", action="store", default="person.json")
