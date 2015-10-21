@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 from model.user import User
 from utils.personCreator import PersonCreator
-from pyvirtualdisplay import Display
+# from pyvirtualdisplay import Display
 
 __author__ = 'Evgen'
 
