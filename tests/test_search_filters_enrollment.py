@@ -49,9 +49,7 @@ class TestSearchFilters(object):
                 assert expected_in_search in actual_search_results
             except AssertionError:
                 allure.attach('screenshot', en_page.driver.get_screenshot_as_png(), type=AttachmentType.PNG)
-                # traceback.print_exc(file=sys.stdout)
-                # pytest.fail(pytrace=True)
-                pytest.fail("It is a fail)))")
+                pytest.fail(traceback.print_exc(file=sys.stdout))
 
 
 
