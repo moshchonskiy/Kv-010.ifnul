@@ -30,7 +30,7 @@ class TestSearchFilters(object):
                 allure.attach('screenshot', en_page.driver.get_screenshot_as_png(), type=AttachmentType.PNG)
             except AssertionError:
                 allure.attach('screenshot', en_page.driver.get_screenshot_as_png(), type=AttachmentType.PNG)
-                self.print_stacktrace()
+                self.print_simple_stacktrace()
                 raise
 
     def test_search_by_document_series(self, app):
@@ -43,7 +43,7 @@ class TestSearchFilters(object):
                 allure.attach('screenshot', en_page.driver.get_screenshot_as_png(), type=AttachmentType.PNG)
             except AssertionError:
                 allure.attach('screenshot', en_page.driver.get_screenshot_as_png(), type=AttachmentType.PNG)
-                self.print_stacktrace()
+                self.print_simple_stacktrace()
                 raise
 
     def test_search_by_document_number(self, app):
@@ -56,7 +56,7 @@ class TestSearchFilters(object):
                 allure.attach('screenshot', en_page.driver.get_screenshot_as_png(), type=AttachmentType.PNG)
             except AssertionError:
                 allure.attach('screenshot', en_page.driver.get_screenshot_as_png(), type=AttachmentType.PNG)
-                self.print_stacktrace()
+                self.print_simple_stacktrace()
                 raise
 
     def test_search_by_proposal_id(self, app):
@@ -68,7 +68,7 @@ class TestSearchFilters(object):
                 assert expected_id in actual_search_results
             except AssertionError:
                 allure.attach('screenshot', en_page.driver.get_screenshot_as_png(), type=AttachmentType.PNG)
-                self.print_stacktrace()
+                self.print_simple_stacktrace()
                 raise
 
     def test_filter_by_budget(self, app):
@@ -92,7 +92,7 @@ class TestSearchFilters(object):
                 allure.attach('screenshot', enr_page.driver.get_screenshot_as_png(), type=AttachmentType.PNG)
             except AssertionError:
                 allure.attach('screenshot', enr_page.driver.get_screenshot_as_png(), type=AttachmentType.PNG)
-                self.print_stacktrace()
+                self.print_simple_stacktrace()
                 raise
 
 
@@ -116,7 +116,7 @@ class TestSearchFilters(object):
                 allure.attach('screenshot', enr_page.driver.get_screenshot_as_png(), type=AttachmentType.PNG)
             except AssertionError:
                 allure.attach('screenshot', enr_page.driver.get_screenshot_as_png(), type=AttachmentType.PNG)
-                self.print_stacktrace()
+                self.print_simple_stacktrace()
                 raise
 
     def test_filter_by_privileges(self, app):
@@ -138,7 +138,7 @@ class TestSearchFilters(object):
                 allure.attach('screenshot', enr_page.driver.get_screenshot_as_png(), type=AttachmentType.PNG)
             except AssertionError:
                 allure.attach('screenshot', enr_page.driver.get_screenshot_as_png(), type=AttachmentType.PNG)
-                self.print_stacktrace()
+                self.print_simple_stacktrace()
                 raise
 
     def test_filter_by_not_privileges(self, app):
@@ -160,7 +160,7 @@ class TestSearchFilters(object):
                 allure.attach('screenshot', enr_page.driver.get_screenshot_as_png(), type=AttachmentType.PNG)
             except AssertionError:
                 allure.attach('screenshot', enr_page.driver.get_screenshot_as_png(), type=AttachmentType.PNG)
-                self.print_stacktrace()
+                self.print_simple_stacktrace()
                 raise
 
     def test_filter_mix(self, app):
@@ -185,7 +185,7 @@ class TestSearchFilters(object):
                 allure.attach('screenshot', enr_page.driver.get_screenshot_as_png(), type=AttachmentType.PNG)
             except AssertionError:
                 allure.attach('screenshot', enr_page.driver.get_screenshot_as_png(), type=AttachmentType.PNG)
-                self.print_stacktrace()
+                self.print_simple_stacktrace()
                 raise
 
     def test_delete_filters(self, app):
@@ -209,11 +209,11 @@ class TestSearchFilters(object):
                 allure.attach('screenshot', enr_page.driver.get_screenshot_as_png(), type=AttachmentType.PNG)
             except AssertionError:
                 allure.attach('screenshot', enr_page.driver.get_screenshot_as_png(), type=AttachmentType.PNG)
-                self.print_stacktrace()
+                self.print_simple_stacktrace()
                 raise
 
 
-    def print_stacktrace(self):
+    def print_simple_stacktrace(self):
         _, _, tb = sys.exc_info()
         tb_info = traceback.extract_tb(tb)
         filename, line, func, text = tb_info[-1]
