@@ -81,9 +81,9 @@ def app(request, browser_type, base_url, jenkins_display):
     :return: new Application with chosen or default params
     """
     print "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"
-    if jenkins_display:
-        display = Display(visible=0, size=(1366, 768))
-        display.start()
+    # if jenkins_display:
+    #     display = Display(visible=0, size=(1366, 768))
+    #     display.start()
     if browser_type == "firefox":
         driver = webdriver.Firefox()
     elif browser_type == "chrome":
