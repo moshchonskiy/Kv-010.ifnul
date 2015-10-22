@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
+import datetime
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.support.expected_conditions import *
 from pages.internal_page import InternalPage
+from utils.fill_enrollment import FillEnrollment
 
 __author__ = 'Evgen'
 
@@ -73,8 +75,26 @@ class EnrollmentsPage(InternalPage):
         By.XPATH, "//div[@class ='panel panel-default ng-isolate-scope'][5]/div[2]/div/div[14]/label")
     FILTER_SUBDIVISION_HEADER = (By.XPATH, "//div[@class ='panel panel-default ng-isolate-scope'][6]/div[1]//a")
     COLUMN_CHOOSER_BUTTON = (By.XPATH, "//button[contains(@class,'field-chooser-button')]")
+    COLUMN_NUMBER_ADD = (By.XPATH, "//li[1]//*[@id='showHideHeader']")
+    COLUMN_PERSON_ID_ADD = (By.XPATH, "//li[2]//*[@id='showHideHeader']")
+    COLUMN_STATEMENT_ID_ADD = (By.XPATH, "//li[3]//*[@id='showHideHeader']")
     COLUMN_BUDGET_ADD = (By.XPATH, "//li[4]//*[@id='showHideHeader']")
+    COLUMN_CONTRACT_ADD = (By.XPATH, "//li[5]//*[@id='showHideHeader']")
+    COLUMN_UNIT_ADD = (By.XPATH, "//li[6]//*[@id='showHideHeader']")
+    COLUMN_PERSON_DOC_ADD = (By.XPATH, "//li[7]//*[@id='showHideHeader']")
+    COLUMN_TOTAL_SCORE_ADD = (By.XPATH, "//li[8]//*[@id='showHideHeader']")
+    COLUMN_IS_PRIVILEGES_ADD = (By.XPATH, "//li[9]//*[@id='showHideHeader']")
+    COLUMN_DOC_SERIES_ADD = (By.XPATH, "//li[10]//*[@id='showHideHeader']")
+    COLUMN_DOC_NUMBER_ADD = (By.XPATH, "//li[11]//*[@id='showHideHeader']")
+    COLUMN_IS_HOSTEL_ADD = (By.XPATH, "//li[12]//*[@id='showHideHeader']")
+    COLUMN_TYPE_OF_ENTRY_ADD = (By.XPATH, "//li[13]//*[@id='showHideHeader']")
+    COLUMN_DATE_CREATE_ADD = (By.XPATH, "//li[14]//*[@id='showHideHeader']")
+    COLUMN_DATE_FROM_ADD = (By.XPATH, "//li[15]//*[@id='showHideHeader']")
+    COLUMN_DATE_TO_ADD = (By.XPATH, "//li[16]//*[@id='showHideHeader']")
+    COLUMN_HIERARCHY_ADD = (By.XPATH, "//li[17]//*[@id='showHideHeader']")
     COLUMN_CHOOSER_CLOSE_BUTTON = (By.XPATH, "//div[@class='modal-footer']/button")
+    TABLE_HEAD = (By.XPATH, "//div[@class='table-responsive']//thead/tr/th")
+    TABLE_FIRST_ROW = (By.XPATH, "//tbody[@class='pointer']/tr[1]/td")
 
     @property
     def is_this_page(self):
@@ -268,3 +288,96 @@ class EnrollmentsPage(InternalPage):
             element.click()
         self.filter_refresh_button_enr.click()
         self.is_element_present(self.SPINNER_OFF)
+
+    def search_enrollment_in_table(self):
+        """
+        This method creates instance of TableEnrollment and return one.
+        :return: instance of TableEnrollment with data from table.
+        """
+        self.add_table_columns(self.COLUMN_CONTRACT_ADD,
+                               self.COLUMN_BUDGET_ADD,
+                               self.COLUMN_UNIT_ADD,
+                               self.COLUMN_PERSON_DOC_ADD,
+                               self.COLUMN_TOTAL_SCORE_ADD,
+                               self.COLUMN_DOC_SERIES_ADD,
+                               self.COLUMN_DOC_SERIES_ADD,
+                               self.COLUMN_TYPE_OF_ENTRY_ADD,
+                               self.COLUMN_DATE_CREATE_ADD,
+                               self.COLUMN_DATE_TO_ADD,
+                               self.COLUMN_HIERARCHY_ADD)
+        head_list = []
+        row_list = []
+        elements_from_table_head = self.driver.find_elements(*self.TABLE_HEAD)
+        elements_from_table_first_row = self.driver.find_elements(*self.TABLE_FIRST_ROW)
+        for t in elements_from_table_head:
+            head_list.append(t.text)
+        for b in elements_from_table_first_row[:-1]:
+            row_list.append(b.text)
+        table_dict = dict(zip(head_list, row_list))
+        table_dict = self.reformat_dictionary(table_dict)
+        fill_enrollment = FillEnrollment()
+        table_enrollment = fill_enrollment.get_enrollment_from_table(table_dict)
+        return table_enrollment
+
+    def reformat_dictionary(self, dictionary):
+        """
+        This method reformats dictionary for create instance of TableEnrollment.
+        :param dictionary: for reformat.
+        :return: reformated dictionary.
+        """
+        dictionary = self.is_privileges(dictionary)
+        dictionary = self.is_hostel(dictionary)
+        dictionary = self.parse_date(dictionary)
+        dictionary = self.tick_to_string(dictionary, "Бюджет".decode('utf8'))
+        dictionary = self.tick_to_string(dictionary, "Контракт".decode('utf8'))
+        return dictionary
+
+    def is_privileges(self, dictionary):
+        """
+        This method reformats privileges in dictionary.
+        :param dictionary: for reformat.
+        :return: reformated dictionary.
+        """
+        if dictionary["Наявність пільг".decode('utf8')] == "є пільги".decode('utf8'):
+            dictionary["Наявність пільг".decode('utf8')] = "True"
+        elif dictionary["Наявність пільг".decode('utf8')] == "пільги відсутні".decode('utf8'):
+            dictionary["Наявність пільг".decode('utf8')] = "False"
+        return dictionary
+
+    def is_hostel(self, dictionary):
+        """
+        This method reformats data in key "Потреб. гуртож" in dictionary.
+        :param dictionary: for reformat.
+        :return: reformated dictionary.
+        """
+        if dictionary["Потреб. гуртож".decode('utf8')] == "потреб. гуртож.".decode('utf8'):
+            dictionary["Потреб. гуртож".decode('utf8')] = "True"
+        elif dictionary["Потреб. гуртож".decode('utf8')] == "не потреб. гуртож.".decode('utf8'):
+            dictionary["Потреб. гуртож".decode('utf8')] = "False"
+        return dictionary
+
+    def parse_date(self, dictionary):
+        """
+        This method reformats data in keys "Дата створення", "Дата дії (з)", "Дата дії (по)" in dictionary.
+        :param dictionary: for reformat.
+        :return: reformated dictionary.
+        """
+        date = dictionary["Дата створення".decode('utf8')]
+        dictionary["Дата створення".decode('utf8')] = datetime.date(int(date[0:4]), int(date[5:7]), int(date[8:]))
+        date = dictionary["Дата дії (з)".decode('utf8')]
+        dictionary["Дата дії (з)".decode('utf8')] = datetime.date(int(date[0:4]), int(date[5:7]), int(date[8:]))
+        date = dictionary["Дата дії (по)".decode('utf8')]
+        dictionary["Дата дії (по)".decode('utf8')] = datetime.date(int(date[0:4]), int(date[5:7]), int(date[8:]))
+        return dictionary
+
+    def tick_to_string(self, dictionary, name):
+        """
+        This method reformats data in dictionary from ✓ and ✘ to True and False.
+        :param dictionary: for reformat.
+        :return: reformated dictionary.
+        """
+        if dictionary[name] == u'✓':
+            dictionary[name] = "True"
+        elif dictionary[name] == u'✘':
+            dictionary[name] = "False"
+        return dictionary
