@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+import json
+import threading
 from model.user import User
 from utils.personCreator import PersonCreator
 from pyvirtualdisplay import Display
@@ -10,8 +12,12 @@ import pytest
 from selenium import webdriver
 from model.application import Application
 import os
-import time
+import sys
+import sauceclient
+from sys import stdout
 
+SAUCE_USER_NAME = os.environ['SAUCE_USER_NAME']
+SAUCE_API_KEY = os.environ['SAUCE_API_KEY']
 
 def pytest_addoption(parser):
     parser.addoption("--browser", action="store", default="firefox")
@@ -19,7 +25,6 @@ def pytest_addoption(parser):
     parser.addoption("--base_url", action="store", default="http://194.44.198.221/")
     parser.addoption("--person_file", action="store", default="person_test_view.json")
     parser.addoption("--jenkins_display", action="store_true")
-
 
 @pytest.fixture(scope="module")
 def browser_type(request):
@@ -29,16 +34,19 @@ def browser_type(request):
 def base_url(request):
     return request.config.getoption("--base_url")
 
+
 @pytest.fixture(scope="module")
 def person_file(request):
     project_path = os.path.dirname(os.path.realpath(__file__))
     path = os.path.normpath(os.path.abspath(project_path) + "/resources/" + request.config.getoption("--person_file"))
     return path
 
+
 @pytest.fixture(scope="module")
 def person(request, person_file):
     person_creator = PersonCreator(person_file)
     return person_creator.create_person_from_json()
+
 
 @pytest.yield_fixture()
 def add_person(app, person):
@@ -59,7 +67,7 @@ def add_person(app, person):
             is_person_already_exists = False
 
     yield app
-    #Delete new added person
+    # Delete new added person
     person_page.is_this_page
     expected_person = person_page.try_get_expected_surname(person.surname_ukr).text.partition(' ')[0]
     if expected_person:
@@ -90,3 +98,39 @@ def app(request, browser_type, base_url, jenkins_display):
         driver = webdriver.Ie()
     request.addfinalizer(driver.quit)
     return Application(driver, base_url)
+
+
+def get_remote_saucelabs_webdriver():
+    SAUCE_ONDEMAND_BROWSERS = os.environ['SAUCE_ONDEMAND_BROWSERS']
+    different_settings = json.loads(SAUCE_ONDEMAND_BROWSERS)
+    SAUCE_URL = "http://%s:%s@ondemand.saucelabs.com:80/wd/hub"
+    drivers = []
+    for setting in different_settings:
+        SELENIUM_PLATFORM = setting["platform"]
+        SELENIUM_VERSION = setting["browser-version"]
+        SELENIUM_BROWSER = setting["browser"]
+        desired_cap = {'browserName': SELENIUM_BROWSER, 'platform': SELENIUM_PLATFORM, 'version': SELENIUM_VERSION, 'name': "Kv-010.ifnul"}
+        driver = webdriver.Remote(
+            command_executor=SAUCE_URL % (SAUCE_USER_NAME, SAUCE_API_KEY),
+            desired_capabilities=desired_cap)
+        drivers.append(driver)
+    return drivers
+
+
+@pytest.yield_fixture(scope="module", params=get_remote_saucelabs_webdriver())
+def generator_app_for_sauce(request, base_url):
+    test_result = sauceclient.SauceClient(SAUCE_USER_NAME, SAUCE_API_KEY)
+    driver = request.param
+    yield Application(driver, base_url)
+    print("Link to your job: https://saucelabs.com/jobs/%s" % driver.session_id)
+    try:
+        if sys.exc_info() == (None, None, None):
+            test_result.jobs.update_job(driver.session_id, passed=True)
+        else:
+            test_result.jobs.update_job(driver.session_id, passed=False)
+    finally:
+        driver.quit()
+
+
+
+
