@@ -1,3 +1,4 @@
+# coding=utf-8
 from datetime import date
 
 __author__ = 'stako'
@@ -26,6 +27,21 @@ class AddEnrollment(object):
         self.detailing_start = ""
         self.date_of_entry = date(1, 1, 1)
         self.date_closing = date(1, 1, 1)
+
+    def get_day_of_entry_str_for_view(self):
+        return self.date_of_entry.strftime("%Y-%m-%d")
+
+    def get_text_hostel_for_view(self, boolean):
+        if(boolean == "True"):
+            return u'потреб. гуртож.'
+        else:
+            return u'не потреб. гуртож.'
+
+    def get_text_privilege_for_view(self, boolean):
+        if(boolean == "True"):
+            return u'є пільги'
+        else:
+            return u'немає пільг'
 
 
 class TableEnrollment(object):

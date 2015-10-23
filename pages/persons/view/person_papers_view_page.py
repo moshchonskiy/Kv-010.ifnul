@@ -1,4 +1,5 @@
 # coding=utf-8
+from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
 from pages.persons.view.person_main_view_page import PersonMainViewPage
 
@@ -11,6 +12,12 @@ class PersonPapersViewPage(PersonMainViewPage):
                                           "/thead/tr/td[not(@class='ng-binding ng-hide')]")
     TEXT_CORRECT_PAGE_PERSON_PROFILE = (By.CSS_SELECTOR, ".content-header-title")
     TABLE = (By.XPATH, "//table[@class='table table-hover']")
+    ROW = "/tbody/tr[./td[not(@class='ng-binding ng-hide')]]"
+    CELL = "/td[not(@class='editing')]"
+    TEXT_DOES_NOT_HAVE_PAPERS = (By.XPATH, "//div[@class='col-xs-10']/h4")
+
+    def get_text_not_have_papers(self):
+        return self.driver.find_element(*self.TEXT_DOES_NOT_HAVE_PAPERS)
 
     def get_data_from_table(self):
         result = []
@@ -38,7 +45,11 @@ class PersonPapersViewPage(PersonMainViewPage):
         return len(elements_documents)
 
     def is_table_present(self):
-        return self.driver.find_element(*self.TABLE).is_displayed()
+        try:
+            self.driver.find_element(*self.TABLE)
+        except NoSuchElementException:
+            return False
+        return True
 
     # private methods
     def __get_locators_values_from_table(self, row, column):

@@ -50,16 +50,18 @@ class PersonCreator(object):
         for doc in json_person["documents"]:
             document = Document()
             document.category = doc["category"]
-            document.average_rate = doc["average_rate"]
+            document.document_name = doc["document_name"]
             document.document_case_char = doc["document_case_char"]
             document.document_case_number = doc["document_case_number"]
-            document.document_is_foreign = doc["document_is_foreign"]
-            document.document_name = doc["document_name"]
-            document.document_is_original = doc["document_is_original"]
-            document.issued_by = doc["issued_by"]
-            document.type_of_reward = doc["type_of_reward"]
             document.day_of_issue = datetime.date(doc["day_of_issue"]["year"], doc["day_of_issue"]["month"], doc["day_of_issue"]["day"])
+            document.issued_by = doc["issued_by"]
+            document.document_is_original = doc["document_is_original"]
+            document.document_is_foreign = doc["document_is_foreign"]
+            document.category_reward = doc["category_reward"]
+            document.reward = doc["reward"]
+            document.type_of_reward = doc["type_of_reward"]
+            document.average_rate = doc["average_rate"]
+            document.pincode = doc["pincode"]
             person.documents.append(document)
         return person
-
 

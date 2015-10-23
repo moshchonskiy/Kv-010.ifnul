@@ -17,7 +17,7 @@ def pytest_addoption(parser):
     parser.addoption("--browser", action="store", default="firefox")
     # parser.addoption("--base_url", action="store", default="http://localhost:9000/")
     parser.addoption("--base_url", action="store", default="http://194.44.198.221/")
-    parser.addoption("--person_file", action="store", default="person.json")
+    parser.addoption("--person_file", action="store", default="person_test_view.json")
     parser.addoption("--jenkins_display", action="store_true")
 
 
