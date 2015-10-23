@@ -77,6 +77,7 @@ class PersonsPage(InternalPage):
     INACTIVE_COLUMNS_MODAL          = (By.XPATH, "//ul[@class='list-group']/li/label/input[not(@checked)]")
     # Columns dictionary binding number of column to it's name
     DELETE_FIRST_PERSON_IN_TABLE    = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope'][1]/td[18]//button[3]")
+    VIEW_FIRST_PERSON_IN_TABLE    = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope'][1]/td[18]//button[2]")
 
     COLUMNS_DICT = {
         1: '№',
@@ -141,8 +142,8 @@ class PersonsPage(InternalPage):
         :return:
         """
         self.is_element_present(self.SPINNER_OFF)
-        if self.is_element_present(self.EXPECTED_SURNAME):
-            elem = self.driver.find_element(*self.EXPECTED_SURNAME)
+        if self.is_element_present(self.SEARCHED_SURNAME):
+            elem = self.driver.find_element(*self.SEARCHED_SURNAME)
             s = "aaa"
             if elem.text.__contains__(given_surname):
                 return elem

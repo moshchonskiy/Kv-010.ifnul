@@ -1,4 +1,5 @@
 # coding=utf-8
+from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
 from pages.persons.view.person_main_view_page import PersonMainViewPage
 
@@ -10,6 +11,13 @@ class PersonEnrollmentViewPage(PersonMainViewPage):
     FOR_COUNT_VISIBLE_COLUMN = (By.XPATH, "//table/thead/tr/th[not(@class='ng-scope ng-hide')]")
     TEXT_CORRECT_PAGE_PERSON_PROFILE = (By.CSS_SELECTOR, ".content-header-title")
     TABLE_ON_THE_PAGE_ENROLLMENT = (By.CSS_SELECTOR, ".table.table-bordered")
+    TEXT_DOES_NOT_HAVE_ENROLLMENT = (By.XPATH, "//h4[@ng-show='personId && !enrolments.length']")
+    TABLE = (By.XPATH, "//table")
+    ROW = "/tbody/tr[./td[not(@class='ng-binding ng-hide')]]"
+    CELL = "/td[not(@ng-show='isChange') and not(@class='ng-binding ng-scope ng-hide')]"
+
+    def get_text_not_have_enrollment(self):
+        return self.driver.find_element(*self.TEXT_DOES_NOT_HAVE_ENROLLMENT)
 
     def get_data_from_table(self):
         result = []
@@ -26,7 +34,11 @@ class PersonEnrollmentViewPage(PersonMainViewPage):
         return result
 
     def is_table_enrollment_present(self):
-        return self.driver.find_element(*self.TABLE_ON_THE_PAGE_ENROLLMENT).is_displayed()
+        try:
+            self.driver.find_element(*self.TABLE_ON_THE_PAGE_ENROLLMENT)
+        except NoSuchElementException:
+            return False
+        return True
 
     def get_text_person_profile(self):
         return self.driver.find_element(*self.TEXT_CORRECT_PAGE_PERSON_PROFILE).text
