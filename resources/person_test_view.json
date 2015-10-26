@@ -9,9 +9,9 @@
       "first_name_eng":"Test",
       "birth_day":
         {
-          "day":"29",
-          "month":"04",
-          "year":"1992"
+          "day":29,
+          "month":4,
+          "year":1992
         },
       "sex":"Чоловіча",
       "marital_status":"не одружений",
@@ -60,15 +60,18 @@
               "document_case_number":328754,
               "day_of_issue":
                 {
-                  "day":"14",
-                  "month":"06",
-                  "year":"2008"
+                  "day":14,
+                  "month":6,
+                  "year":2008
                 },
               "issued_by":"женщиной в розовой кофточке",
-              "average_rate":11.2,
-              "type_of_reward":"Золота медаль",
               "document_is_original":true,
-              "document_is_foreign":false
+              "document_is_foreign":false,
+              "category_reward":"",
+              "reward":"",
+              "type_of_reward":"",
+              "average_rate":"",
+              "pincode":""
             }
         ]
     }

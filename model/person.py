@@ -1,3 +1,4 @@
+# coding=utf-8
 __author__ = 'odeortc'
 import datetime
 
@@ -33,6 +34,15 @@ class Person(object):
         self.icq = 0
         self.documents = []
 
+    def get_birthday_str_for_view(self):
+        return self.birth_day.strftime("%d.%m.%Y") + u" р."
+
+    def get_specific_symbol_for_view(self, boolean):
+        if(boolean == True):
+            return u'✓'
+        else:
+            return u'✘'
+
 class Document(object):
 
     def __init__(self):
@@ -42,9 +52,16 @@ class Document(object):
         self.document_case_number = ""
         self.day_of_issue = datetime.date(1, 1, 1)
         self.issued_by = ""
-        self.average_rate = 0.0
-        self.type_of_reward = ""
         self.document_is_original = False
         self.document_is_foreign = False
+        self.category_reward = ""
+        self.reward = ""
+        self.average_rate = 0.0
+        self.type_of_reward = ""
+        self.pincode = ""
+
+
+    def get_day_of_issue_str_for_view(self):
+        return self.day_of_issue.strftime("%Y-%m-%d")
 
 

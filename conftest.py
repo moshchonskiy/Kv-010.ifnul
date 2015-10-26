@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+import json
+import threading
 from model.user import User
 from utils.personCreator import PersonCreator
 from pyvirtualdisplay import Display
@@ -10,37 +12,38 @@ import pytest
 from selenium import webdriver
 from model.application import Application
 import os
-import time
 
 
 def pytest_addoption(parser):
     parser.addoption("--browser", action="store", default="firefox")
     # parser.addoption("--base_url", action="store", default="http://localhost:9000/")
     parser.addoption("--base_url", action="store", default="http://194.44.198.221/")
-    parser.addoption("--person_file", action="store", default="person.json")
+    parser.addoption("--person_file", action="store", default="person_test_view.json")
     parser.addoption("--jenkins_display", action="store_true")
 
-
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="session")
 def browser_type(request):
     return request.config.getoption("--browser")
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="session")
 def base_url(request):
     return request.config.getoption("--base_url")
 
-@pytest.fixture(scope="module")
+
+@pytest.fixture(scope="session")
 def person_file(request):
     project_path = os.path.dirname(os.path.realpath(__file__))
     path = os.path.normpath(os.path.abspath(project_path) + "/resources/" + request.config.getoption("--person_file"))
     return path
 
-@pytest.fixture(scope="module")
+
+@pytest.fixture(scope="session")
 def person(request, person_file):
     person_creator = PersonCreator(person_file)
     return person_creator.create_person_from_json()
 
-@pytest.yield_fixture()
+
+@pytest.yield_fixture(scope="session")
 def add_person(app, person):
     app.ensure_logout()
     app.login(User.Admin(), True)
@@ -59,18 +62,18 @@ def add_person(app, person):
             is_person_already_exists = False
 
     yield app
-    #Delete new added person
+    # Delete new added person
     person_page.is_this_page
-    expected_person = person_page.try_get_expected_surname(person.surname_ukr).text.partition(' ')[0]
+    expected_person = person_page.try_get_searched_surname(person.surname_ukr).text.partition(' ')[0]
     if expected_person:
         person_page.delete_first_person_in_page
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="session")
 def jenkins_display(request):
     return request.config.getoption("--jenkins_display")
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="session")
 def app(request, browser_type, base_url, jenkins_display):
     """
     Fixture is used to perform all tests, use it in your tests like >>>  def test_method(app)
@@ -90,3 +93,9 @@ def app(request, browser_type, base_url, jenkins_display):
         driver = webdriver.Ie()
     request.addfinalizer(driver.quit)
     return Application(driver, base_url)
+
+
+
+
+
+

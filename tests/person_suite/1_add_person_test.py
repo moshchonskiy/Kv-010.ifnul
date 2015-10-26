@@ -16,7 +16,7 @@ def search_added_person(app, person):
     person_page.try_get_input_group().clear()
     person_page.try_get_input_group().send_keys(person.surname_ukr)
     person_page.try_get_ok_button().click()
-    return person_page.try_get_expected_surname(person.surname_ukr).text.partition(' ')[0]
+    return person_page.try_get_searched_surname(person.surname_ukr).text.partition(' ')[0]
 
 def fill_in_main_person_page(app, person):
     """
