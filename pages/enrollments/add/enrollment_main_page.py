@@ -29,6 +29,7 @@ class EnrollmentsMainPage(InternalPage):
     LIST_FROM_UI_SELECT = (By.XPATH, "//div[contains(@id, 'ui-select-choices-row')]/a/div")
     BUTTON_CHOOSE_SPECIALTIES = (By.CSS_SELECTOR, "button[class='btn btn-primary'] >i")
     CHOOSE_FIRST_SPECIALTIES = (By.XPATH, "//div[@class='table-responsive']//tbody[@class='pointer']/tr[1]/td[2]")
+    COUNT_SPECIALISTS = (By.XPATH, "//div[@class='table-responsive']//tbody[@class='pointer']/tr")
     DOCUMENT = (By.XPATH, ".//*[@class='col-xs-5']/*[@id='inputStructure']//i[@class='caret pull-right']")
     TOTAL_SCORE = (By.ID, "inputMark")
     GRADING_SCALE = (By.XPATH, ".//*[@id='markScale']//i[@class='caret pull-right']")
@@ -340,3 +341,15 @@ class EnrollmentsMainPage(InternalPage):
             self.checkbox_is_hostel.click()
         if document == "True":
             self.checkbox_document_is_original.click()
+
+    def get_arr_structural_subdivision_choose_offer(self):
+        count_specialists = self.driver.find_elements(*self.COUNT_SPECIALISTS)
+        structural_subdivision = []
+        for structural
+
+    def __get_structural_subdivision_specialist_by_number_in_table(self, number):
+        return (By.CSS_SELECTOR, "//div[@class='table-responsive']//tbody[@class='pointer']/tr[" + str(number) + "]/td[4]")
+
+    def __get_type_offer_specialist_by_number_in_table(self, number):
+        return (By.CSS_SELECTOR, "//div[@class='table-responsive']//tbody[@class='pointer']/tr[" + str(number) + "]/td[6]")
+
