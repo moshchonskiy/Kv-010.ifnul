@@ -41,6 +41,31 @@ class EnrollmentsMainPage(InternalPage):
     ID_DETAILING_START_MENU = "inputEnrolmentTypeId"
     ID_TYPE_OF_ENTRY_MENU = "inputChiefEnrolTypes"
 
+    SEARCH_PERSON_BY_SELECT = (By.XPATH, "//select[@ng-model='fieldSearchBy']")
+    SEARCH_PERSON_BY_INPUT = (By.XPATH, "//input[@ng-model='querySearchBy']")
+    ALL_FOUND_PERSONS_PIB = (By.XPATH, "//tbody[@class='pointer']//tr//td[2]")
+
+
+    def search_person_by(self, index):
+        self.is_element_visible(self.SEARCH_PERSON_BY_SELECT)
+        Select(self.driver.find_element(*self.SEARCH_PERSON_BY_SELECT)).select_by_index(index)
+
+
+    def set_search_person_by(self, searched_value):
+        """
+        Method sets the searched value
+        :param searched_value: String parametr.
+        :return:
+        """
+        self.emulation_of_input(self.SEARCH_PERSON_BY_INPUT, searched_value)
+
+    def get_all_found_persons_pib(self):
+        return self.driver.find_elements(*self.ALL_FOUND_PERSONS_PIB)
+
+    @property
+    def is_this_page(self):
+        return self.is_element_visible(self.SEARCH_PERSON_BY_SELECT)
+
     @property
     def search_offers_field(self):
         return self.is_element_visible(self.SEARCH_OFFERS_FIELD)
@@ -67,7 +92,8 @@ class EnrollmentsMainPage(InternalPage):
 
     @property
     def ok_for_input_field(self):
-        return self.is_element_visible(self.OK_FOR_INPUT_FIELD)
+        self.is_element_visible(self.OK_FOR_INPUT_FIELD).click()
+        self.is_element_present(self.SPINNER_OFF)
 
     @property
     def series_of_statements(self):
