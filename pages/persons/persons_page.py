@@ -78,6 +78,7 @@ class PersonsPage(InternalPage):
     # Columns dictionary binding number of column to it's name
     DELETE_FIRST_PERSON_IN_TABLE    = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope'][1]/td[18]//button[3]")
     VIEW_FIRST_PERSON_IN_TABLE    = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope'][1]/td[18]//button[2]")
+    EDIT_FIRST_PERSON_IN_TABLE    = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope'][1]/td[18]//button[1]")
 
     COLUMNS_DICT = {
         1: '№',
@@ -132,6 +133,12 @@ class PersonsPage(InternalPage):
     def view_first_person_in_page(self):
         if self.is_element_visible(self.VIEW_FIRST_PERSON_IN_TABLE):
             self.driver.find_element(*self.VIEW_FIRST_PERSON_IN_TABLE).click()
+            self.is_element_present(self.SPINNER_OFF)
+
+    @property
+    def edit_first_person_in_page(self):
+        if self.is_element_visible(self.EDIT_FIRST_PERSON_IN_TABLE):
+            self.driver.find_element(*self.EDIT_FIRST_PERSON_IN_TABLE).click()
             self.is_element_present(self.SPINNER_OFF)
 
 
@@ -332,6 +339,8 @@ class PersonsPage(InternalPage):
         return self.is_element_visible(self.CHOOSE_NUM_OS_SEARCH)
 
     def try_get_searched_num_os(self, given_num_os):
+        if type(given_num_os) == int:
+            given_num_os = str(given_num_os)
         self.wait.until(EC.text_to_be_present_in_element(self.SEARCHED_NUM_OS, given_num_os))
         return self.driver.find_element(*self.SEARCHED_NUM_OS)
 
