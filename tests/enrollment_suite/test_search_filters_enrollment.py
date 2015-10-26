@@ -1,8 +1,12 @@
 # -*- coding: utf-8 -*-
-__author__ = 'Evgen'
-import pytest
-
 from model.user import User
+from allure.constants import AttachmentType
+import pytest
+import allure
+import sys
+import traceback
+
+__author__ = 'Evgen'
 
 
 class TestSearchFilters(object):
@@ -17,24 +21,55 @@ class TestSearchFilters(object):
         with pytest.allure.step("Go to enrollments page"):
             app.internal_page.enrollments_page_link.click()
             app.enrollments_page.is_this_page
-        en_page = app.enrollments_page
         with pytest.allure.step("Searching by person ID"):
-            assert "9" in en_page.search_enrollment(en_page.SEARCH_METHOD["person_id"], "9")
+            en_page = app.enrollments_page
+            expected_id = "9"
+            actual_search = en_page.search_enrollment(en_page.SEARCH_METHOD["person_id"], "9")
+            try:
+                assert expected_id in actual_search
+                allure.attach('screenshot', en_page.driver.get_screenshot_as_png(), type=AttachmentType.PNG)
+            except AssertionError:
+                allure.attach('screenshot', en_page.driver.get_screenshot_as_png(), type=AttachmentType.PNG)
+                self.print_simple_stacktrace()
+                raise
 
     def test_search_by_document_series(self, app):
         en_page = app.enrollments_page
         with pytest.allure.step("Searching by document's series"):
-            assert u'авіа' in en_page.search_enrollment(en_page.SEARCH_METHOD["document_series"], u'аві')
+            expected_document_series = u'авіа'
+            actual_search = en_page.search_enrollment(en_page.SEARCH_METHOD["document_series"], u'аві')
+            try:
+                assert expected_document_series in actual_search
+                allure.attach('screenshot', en_page.driver.get_screenshot_as_png(), type=AttachmentType.PNG)
+            except AssertionError:
+                allure.attach('screenshot', en_page.driver.get_screenshot_as_png(), type=AttachmentType.PNG)
+                self.print_simple_stacktrace()
+                raise
 
     def test_search_by_document_number(self, app):
         en_page = app.enrollments_page
         with pytest.allure.step("Searching by document's number"):
-            assert "3333" in en_page.search_enrollment(en_page.SEARCH_METHOD["document_number"], "3333")
+            expected_number = "3333"
+            actual_search = en_page.search_enrollment(en_page.SEARCH_METHOD["document_number"], "3333")
+            try:
+                assert expected_number in actual_search
+                allure.attach('screenshot', en_page.driver.get_screenshot_as_png(), type=AttachmentType.PNG)
+            except AssertionError:
+                allure.attach('screenshot', en_page.driver.get_screenshot_as_png(), type=AttachmentType.PNG)
+                self.print_simple_stacktrace()
+                raise
 
     def test_search_by_proposal_id(self, app):
         en_page = app.enrollments_page
         with pytest.allure.step("Searching by proposal ID"):
-            assert "5" in en_page.search_enrollment(en_page.SEARCH_METHOD["proposal_id"], "5")
+            expected_id = "5"
+            actual_search_results = en_page.search_enrollment(en_page.SEARCH_METHOD["proposal_id"], "5")
+            try:
+                assert expected_id in actual_search_results
+            except AssertionError:
+                allure.attach('screenshot', en_page.driver.get_screenshot_as_png(), type=AttachmentType.PNG)
+                self.print_simple_stacktrace()
+                raise
 
     def test_filter_by_budget(self, app):
         with pytest.allure.step("Authorize on the site with admin credentials"):
@@ -52,7 +87,15 @@ class TestSearchFilters(object):
         with pytest.allure.step("Check the results"):
             actual = enr_page.get_columns_text(enr_page.BUDGET_COLUMN)
             expected = {enr_page.FILTER_RESULTS["budget"]}
-            assert actual == expected
+            try:
+                assert actual == expected
+                allure.attach('screenshot', enr_page.driver.get_screenshot_as_png(), type=AttachmentType.PNG)
+            except AssertionError:
+                allure.attach('screenshot', enr_page.driver.get_screenshot_as_png(), type=AttachmentType.PNG)
+                self.print_simple_stacktrace()
+                raise
+
+
 
     def test_filter_by_not_budget(self, app):
         with pytest.allure.step("Authorize on the site with admin credentials"):
@@ -68,7 +111,13 @@ class TestSearchFilters(object):
         with pytest.allure.step("Check the results"):
             actual = enr_page.get_columns_text(enr_page.BUDGET_COLUMN)
             expected = {enr_page.FILTER_RESULTS["not_budget"]}
-            assert actual == expected
+            try:
+                assert actual == expected
+                allure.attach('screenshot', enr_page.driver.get_screenshot_as_png(), type=AttachmentType.PNG)
+            except AssertionError:
+                allure.attach('screenshot', enr_page.driver.get_screenshot_as_png(), type=AttachmentType.PNG)
+                self.print_simple_stacktrace()
+                raise
 
     def test_filter_by_privileges(self, app):
         with pytest.allure.step("Authorize on the site with admin credentials"):
@@ -84,7 +133,13 @@ class TestSearchFilters(object):
         with pytest.allure.step("Check the results"):
             actual = enr_page.get_columns_text(enr_page.PRIVILEGES_COLUMN)
             expected = {enr_page.FILTER_RESULTS["privileged"]}
-            assert actual == expected
+            try:
+                assert actual == expected
+                allure.attach('screenshot', enr_page.driver.get_screenshot_as_png(), type=AttachmentType.PNG)
+            except AssertionError:
+                allure.attach('screenshot', enr_page.driver.get_screenshot_as_png(), type=AttachmentType.PNG)
+                self.print_simple_stacktrace()
+                raise
 
     def test_filter_by_not_privileges(self, app):
         with pytest.allure.step("Authorize on the site with admin credentials"):
@@ -100,7 +155,13 @@ class TestSearchFilters(object):
         with pytest.allure.step("Check the results"):
             actual = enr_page.get_columns_text(enr_page.PRIVILEGES_COLUMN)
             expected = {enr_page.FILTER_RESULTS["not_privileged"]}
-            assert actual == expected
+            try:
+                assert actual == expected
+                allure.attach('screenshot', enr_page.driver.get_screenshot_as_png(), type=AttachmentType.PNG)
+            except AssertionError:
+                allure.attach('screenshot', enr_page.driver.get_screenshot_as_png(), type=AttachmentType.PNG)
+                self.print_simple_stacktrace()
+                raise
 
     def test_filter_mix(self, app):
         with pytest.allure.step("Authorize on the site with admin credentials"):
@@ -119,7 +180,13 @@ class TestSearchFilters(object):
                                                enr_page.ACCOMMODATION_COLUMN)
             expected = {enr_page.FILTER_RESULTS["not_privileged"], enr_page.FILTER_RESULTS["budget"],
                         enr_page.FILTER_RESULTS["accommodation"]}
-            assert actual == expected
+            try:
+                assert actual == expected
+                allure.attach('screenshot', enr_page.driver.get_screenshot_as_png(), type=AttachmentType.PNG)
+            except AssertionError:
+                allure.attach('screenshot', enr_page.driver.get_screenshot_as_png(), type=AttachmentType.PNG)
+                self.print_simple_stacktrace()
+                raise
 
     def test_delete_filters(self, app):
         with pytest.allure.step("Authorize on the site with admin credentials"):
@@ -130,9 +197,25 @@ class TestSearchFilters(object):
             app.internal_page.enrollments_page_link.click()
             app.enrollments_page.is_this_page
         with pytest.allure.step("In the filters section add necessary filters"):
-            enr = app.enrollments_page
-            enr.add_filters(enr.FILTER_NEED_ACCOMMODATION, enr.FILTER_BUDGET, enr.FILTER_CONTRACT)
+            enr_page = app.enrollments_page
+            enr_page.add_filters(enr_page.FILTER_NEED_ACCOMMODATION, enr_page.FILTER_BUDGET, enr_page.FILTER_CONTRACT)
         with pytest.allure.step("Delete all the filters"):
-            enr.delete_all_filters()
+            enr_page.delete_all_filters()
         with pytest.allure.step("Check the results"):
-            assert len(enr.driver.find_elements(*enr.DELETE_FILTER_BUTTON)) == 0
+            actual = len(enr_page.driver.find_elements(*enr_page.DELETE_FILTER_BUTTON))
+            expected = 0
+            try:
+                assert actual == expected
+                allure.attach('screenshot', enr_page.driver.get_screenshot_as_png(), type=AttachmentType.PNG)
+            except AssertionError:
+                allure.attach('screenshot', enr_page.driver.get_screenshot_as_png(), type=AttachmentType.PNG)
+                self.print_simple_stacktrace()
+                raise
+
+
+    def print_simple_stacktrace(self):
+        _, _, tb = sys.exc_info()
+        tb_info = traceback.extract_tb(tb)
+        filename, line, func, text = tb_info[-1]
+        print('An error occurred on line: {}, in statement: {}. The filename is: {}, and function is: {}.'
+              .format(line, text, filename, func))

@@ -186,11 +186,11 @@ class EnrollmentsMainPage(InternalPage):
         fill_enrollment = FillEnrollment()
         return fill_enrollment.create_enrollment_from_json(json_file, name_of_dict)
 
-    def fill_enrollment(self):
+    def fill_enrollment(self, json_file, name_of_dictionary):
         """
         This method fill enrollment and save one.
         """
-        enrollment = self.get_enrollment("fill_enrollment_main.json", "fill_data_enrollment")
+        enrollment = self.get_enrollment(json_file, name_of_dictionary)
         self.add_person_in_enrollment(enrollment.person_name)
         self.emulation_of_input(self.SERIES_OF_STATEMENTS, enrollment.series_of_statements)
         self.emulation_of_input(self.NUMBER_STATEMENTS, enrollment.number_statements)
@@ -241,7 +241,7 @@ class EnrollmentsMainPage(InternalPage):
     def radiobutton_evaluation_of_the_interview(self, evaluation):
         """
         This method is to select the radiobutton "Відмітка про співбесіду" on its value.
-        :param education: is value for radiobutton select.
+        :param evaluation: is value for radiobutton select.
         """
         if evaluation == "Не пройшов співбесіду":
             self.radiobutton_not_passed_interview.click()
