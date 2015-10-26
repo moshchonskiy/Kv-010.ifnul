@@ -41,7 +41,7 @@ class AddPersonPapersPage(AddPersonPage):
         :param document_type: String document type. If type exists in select menu, then method will click on it, else will leave default value
         :return:
         """
-        self.is_element_present(self.DOCUMENT_CATEGORY_SELECT)
+        self.is_element_visible(self.DOCUMENT_CATEGORY_SELECT)
         Select(self.driver.find_element(*self.DOCUMENT_CATEGORY_SELECT)).select_by_visible_text(document_type)
 
     def document_name_select(self, document_name):
@@ -50,7 +50,7 @@ class AddPersonPapersPage(AddPersonPage):
         :param document_name: String document name. If name exists in select menu, then method will click on it, else will leave default value
         :return:
         """
-        self.is_element_present(self.DOCUMENT_NAME_SELECT)
+        self.is_element_visible(self.DOCUMENT_NAME_SELECT)
         Select(self.driver.find_element(*self.DOCUMENT_NAME_SELECT)).select_by_visible_text(document_name)
 
     def set_document_series(self, chars):
