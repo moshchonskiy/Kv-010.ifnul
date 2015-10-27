@@ -19,11 +19,14 @@ def pytest_addoption(parser):
     # parser.addoption("--base_url", action="store", default="http://localhost:9000/")
     parser.addoption("--base_url", action="store", default="http://194.44.198.221/")
     parser.addoption("--person_file", action="store", default="person_test_view.json")
+    # parser.addoption("--person_file", action="store", default="person_incorrect.json")
     parser.addoption("--jenkins_display", action="store_true")
+
 
 @pytest.fixture(scope="session")
 def browser_type(request):
     return request.config.getoption("--browser")
+
 
 @pytest.fixture(scope="session")
 def base_url(request):
@@ -67,6 +70,7 @@ def add_person(app, person):
     expected_person = person_page.try_get_searched_surname(person.surname_ukr).text.partition(' ')[0]
     if expected_person:
         person_page.delete_first_person_in_page
+
 
 @pytest.fixture(scope="session")
 def jenkins_display(request):

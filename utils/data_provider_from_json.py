@@ -8,7 +8,7 @@ __author__ = 'dmakstc'
 class DataProviderJSON():
     def __init__(self, file_name):
         project_path = os.path.dirname(os.path.realpath(__file__))
-        self.path = os.path.normpath(os.path.abspath(project_path) + "/../resources/"+file_name)
+        self.path = os.path.normpath(os.path.abspath(project_path) + "/../resources/" + file_name)
         self.json_data = self.__get_json_object()
 
     def __get_json_object(self):
