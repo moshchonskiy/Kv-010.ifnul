@@ -3,6 +3,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
 from pages.internal_page import InternalPage
 from utils.fill_enrollment import FillEnrollment
+from time import sleep
 
 __author__ = 'Stako'
 
@@ -42,15 +43,16 @@ class EnrollmentsMainPage(InternalPage):
     ID_TYPE_OF_ENTRY_MENU = "inputChiefEnrolTypes"
 
     SEARCH_PERSON_BY_SELECT = (By.XPATH, "//select[@ng-model='fieldSearchBy']")
+    # SEARCH_PERSON_BY_OPTION_IN_SELECT = "//select[@ng-model='fieldSearchBy']//option[%s]"
     SEARCH_PERSON_BY_INPUT = (By.XPATH, "//input[@ng-model='querySearchBy']")
     ALL_FOUND_PERSONS_PIB = (By.XPATH, "//tbody[@class='pointer']//tr//td[2]")
+    ALL_FOUND_PERSONS_ID = (By.XPATH, "//tbody[@class='pointer']//tr//td[1]")
     CANCEL_BUTTON = (By.XPATH, "//div[@class='modal-footer ng-scope']//button[@ng-click='cancel()']")
 
 
     def search_person_by(self, index):
-        self.is_element_visible(self.SEARCH_PERSON_BY_SELECT)
+        self.is_element_present(self.SPINNER_OFF)
         Select(self.driver.find_element(*self.SEARCH_PERSON_BY_SELECT)).select_by_index(index)
-
 
     def set_search_person_by(self, searched_value):
         """
@@ -62,6 +64,9 @@ class EnrollmentsMainPage(InternalPage):
 
     def get_all_found_persons_pib(self):
         return self.driver.find_elements(*self.ALL_FOUND_PERSONS_PIB)
+
+    def get_all_found_persons_id(self):
+        return self.driver.find_elements(*self.ALL_FOUND_PERSONS_ID)
 
     @property
     def is_this_page(self):
