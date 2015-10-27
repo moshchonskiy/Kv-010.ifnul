@@ -44,6 +44,7 @@ class EnrollmentsMainPage(InternalPage):
     SEARCH_PERSON_BY_SELECT = (By.XPATH, "//select[@ng-model='fieldSearchBy']")
     SEARCH_PERSON_BY_INPUT = (By.XPATH, "//input[@ng-model='querySearchBy']")
     ALL_FOUND_PERSONS_PIB = (By.XPATH, "//tbody[@class='pointer']//tr//td[2]")
+    CANCEL_BUTTON = (By.XPATH, "//div[@class='modal-footer ng-scope']//button[@ng-click='cancel()']")
 
 
     def search_person_by(self, index):
@@ -65,6 +66,10 @@ class EnrollmentsMainPage(InternalPage):
     @property
     def is_this_page(self):
         return self.is_element_visible(self.SEARCH_PERSON_BY_SELECT)
+
+    @property
+    def cancel_click(self):
+        self.driver.find_element(*self.CANCEL_BUTTON).click()
 
     @property
     def search_offers_field(self):
