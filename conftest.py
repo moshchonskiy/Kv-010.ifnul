@@ -5,13 +5,14 @@ import threading
 from model.user import User
 from utils.personCreator import PersonCreator
 from pyvirtualdisplay import Display
-
-__author__ = 'Evgen'
-
 import pytest
 from selenium import webdriver
 from model.application import Application
 import os
+
+__author__ = 'Evgen'
+
+
 
 
 def pytest_addoption(parser):
@@ -21,9 +22,11 @@ def pytest_addoption(parser):
     parser.addoption("--person_file", action="store", default="person_test_view.json")
     parser.addoption("--jenkins_display", action="store_true")
 
+
 @pytest.fixture(scope="session")
 def browser_type(request):
     return request.config.getoption("--browser")
+
 
 @pytest.fixture(scope="session")
 def base_url(request):
@@ -68,6 +71,7 @@ def add_person(app, person):
     if expected_person:
         person_page.delete_first_person_in_page
 
+
 @pytest.fixture(scope="session")
 def jenkins_display(request):
     return request.config.getoption("--jenkins_display")
@@ -93,9 +97,3 @@ def app(request, browser_type, base_url, jenkins_display):
         driver = webdriver.Ie()
     request.addfinalizer(driver.quit)
     return Application(driver, base_url)
-
-
-
-
-
-

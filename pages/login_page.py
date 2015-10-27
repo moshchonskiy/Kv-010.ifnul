@@ -1,7 +1,7 @@
-__author__ = 'Evgen'
 from selenium.webdriver.common.by import By
-
 from page import Page
+
+__author__ = 'Evgen'
 
 
 class LoginPage(Page):
@@ -27,6 +27,5 @@ class LoginPage(Page):
     def submit_button(self):
         return self.driver.find_element(*self.SUBMIT_BUTTON)
 
-    @property
     def is_this_page(self):
         return self.is_element_visible(self.LOGIN_PAGE)

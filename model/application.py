@@ -1,19 +1,11 @@
 from pages.dictionaries_page import DictionariesPage
-
 from pages.persons.view.person_current_view_page import PersonCurrentViewPage
 from pages.persons.view.person_enrollment_view_page import PersonEnrollmentViewPage
 from pages.persons.view.person_main_view_page import PersonMainViewPage
 from pages.persons.view.person_papers_view_page import PersonPapersViewPage
-
-__author__ = 'Evgen'
-
-from selenium.webdriver.remote.webelement import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support.expected_conditions import *
-
 from pages.login_page import LoginPage
-from pages.persons.persons_page import PersonsPage
-from pages.internal_page import InternalPage
 from pages.enrollments.enrollments_page import EnrollmentsPage
 from pages.enrollments.add.enrollment_main_page import EnrollmentsMainPage
 from pages.enrollments.add.enrollment_base_page import EnrollmentsBasePage
@@ -26,30 +18,38 @@ from pages.persons.add.person_contacts_page import *
 from pages.persons.add.person_papers_page import *
 from pages.persons.add.person_base_page import *
 
+__author__ = 'Evgen'
+
 
 class Application:
     def __init__(self, driver, base_url):
-        driver.get(base_url)
-        driver.maximize_window()
-        self.wait = WebDriverWait(driver, 15)
-        self.login_page = LoginPage(driver, base_url)
-        self.persons_page = PersonsPage(driver, base_url)
-        self.internal_page = InternalPage(driver, base_url)
-        self.person_main_page = AddPersonMainPage(driver, base_url)
-        self.enrollments_page = EnrollmentsPage(driver, base_url)
-        self.dictionaries_page = DictionariesPage(driver,base_url)
-        self.person_current_view_page = PersonCurrentViewPage(driver, base_url)
-        self.person_main_view_page = PersonMainViewPage(driver, base_url)
-        self.person_papers_view_page = PersonPapersViewPage(driver, base_url)
-        self.person_enrollment_view_page = PersonEnrollmentViewPage(driver, base_url)
-        self.enrollments_main_page = EnrollmentsMainPage(driver, base_url)
-        self.enrollments_base_page = EnrollmentsBasePage(driver, base_url)
-        self.main_page = AddPersonMainPage(driver, base_url)
-        self.extra_page = AddPersonExtraPage(driver, base_url)
-        self.address_page = AddPersonAddressesPage(driver, base_url)
-        self.contact_page = AddPersonContactsPage(driver, base_url)
-        self.papers_page = AddPersonPapersPage(driver, base_url)
-        self.person_base_page = AddPersonPage(driver, base_url)
+        """
+
+        :type self: object
+        """
+        self.base_url = base_url
+        self.driver = driver
+        self.driver.get(base_url)
+        self.driver.maximize_window()
+        self.wait = WebDriverWait(self.driver, 15)
+        self.login_page = LoginPage(self.driver)
+        self.persons_page = PersonsPage(self.driver)
+        self.internal_page = InternalPage(self.driver)
+        self.person_main_page = AddPersonMainPage(self.driver)
+        self.enrollments_page = EnrollmentsPage(self.driver)
+        self.dictionaries_page = DictionariesPage(self.driver)
+        self.person_current_view_page = PersonCurrentViewPage(self.driver)
+        self.person_main_view_page = PersonMainViewPage(self.driver)
+        self.person_papers_view_page = PersonPapersViewPage(self.driver)
+        self.person_enrollment_view_page = PersonEnrollmentViewPage(self.driver)
+        self.enrollments_main_page = EnrollmentsMainPage(self.driver)
+        self.enrollments_base_page = EnrollmentsBasePage(self.driver)
+        self.main_page = AddPersonMainPage(self.driver)
+        self.extra_page = AddPersonExtraPage(self.driver)
+        self.address_page = AddPersonAddressesPage(self.driver)
+        self.contact_page = AddPersonContactsPage(self.driver)
+        self.papers_page = AddPersonPapersPage(self.driver)
+        self.person_base_page = AddPersonPage(self.driver)
 
     def login(self, user, checkbox=False):
         """
@@ -58,7 +58,7 @@ class Application:
         :param checkbox: True with checkbox remember me and False without it. Default value is False
         """
         lp = self.login_page
-        lp.is_this_page
+        lp.is_this_page()
         lp.username_field.clear()
         lp.username_field.send_keys(user.username)
         lp.password_field.clear()
@@ -84,7 +84,7 @@ class Application:
         Method performs logout from application
         """
         ip = self.internal_page
-        ip.is_this_page
+        ip.is_this_page()
         ip.user_dropdown.click()
         ip.logout_button.click()
 
