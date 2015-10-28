@@ -1,9 +1,7 @@
-# -*- coding: utf-8 -*-
+# /coding=utf-8
 import pytest
 
 author = "Vadym"
-
-# class TestTotalScoreEnrollment(object):
 
 data_provider_numbers = [1, 3, 5, 6, 11, 12, 13, 50, 60, 61, 75, 100, 101, 154, 200, 201, 1024, 0, -1,
                          -3, -5, -6, -11, -12, -13, -50, -60, -61, -75, -100, -154, -200, -201, -1024]
@@ -33,7 +31,7 @@ def test_open_add_enrollment(app):
     enr_page = app.enrollments_main_page
 
     enr_page.is_element_present(app.person_current_view_page.SPINNER_OFF)
-    assert app.enrollments_main_page.get_text_add_enrollment() == u"Додавання заяви"
+    assert app.enrollments_main_page.get_text_add_enrollment().text == u"Додавання заяви"
 
 def test_field_total_score_on_numbers(app, number):
     enr_page = app.enrollments_main_page
@@ -56,7 +54,8 @@ def test_field_total_score_on_characters(app, character):
 def test_twelve_scale(app, number_and_character):
     enr_page = app.enrollments_main_page
 
-    enr_page.choose_grading_scale("дванадцятибальна")
+    if(enr_page.get_text_choose_grading_scale().text != u"дванадцятибальна"):
+        enr_page.choose_grading_scale("дванадцятибальна")
 
     enr_page.add_total_score(enr_page.TOTAL_SCORE, number_and_character)
     element = enr_page.get_form_input_total_score()
@@ -72,7 +71,8 @@ def test_twelve_scale(app, number_and_character):
 def test_sixty_scale(app, number_and_character):
     enr_page = app.enrollments_main_page
 
-    enr_page.choose_grading_scale("шестидесятибальна")
+    if(enr_page.get_text_choose_grading_scale().text != u"шестидесятибальна"):
+        enr_page.choose_grading_scale("шестидесятибальна")
 
     enr_page.add_total_score(enr_page.TOTAL_SCORE, number_and_character)
     element = enr_page.get_form_input_total_score()
@@ -88,7 +88,8 @@ def test_sixty_scale(app, number_and_character):
 def test_one_hundred_scale(app, number_and_character):
     enr_page = app.enrollments_main_page
 
-    enr_page.choose_grading_scale("стобальна")
+    if(enr_page.get_text_choose_grading_scale().text != u"стобальна"):
+        enr_page.choose_grading_scale("стобальна")
 
     enr_page.add_total_score(enr_page.TOTAL_SCORE, number_and_character)
     element = enr_page.get_form_input_total_score()
@@ -104,7 +105,8 @@ def test_one_hundred_scale(app, number_and_character):
 def test_two_hundred_scale(app, number_and_character):
     enr_page = app.enrollments_main_page
 
-    enr_page.choose_grading_scale("двохсотбальна")
+    if(enr_page.get_text_choose_grading_scale().text != u"двохсотбальна"):
+        enr_page.choose_grading_scale("двохсотбальна")
 
     enr_page.add_total_score(enr_page.TOTAL_SCORE, number_and_character)
     element = enr_page.get_form_input_total_score()
@@ -120,7 +122,8 @@ def test_two_hundred_scale(app, number_and_character):
 def test_ECTS_scale(app, number_and_character):
     enr_page = app.enrollments_main_page
 
-    enr_page.choose_grading_scale("ECTS")
+    if(enr_page.get_text_choose_grading_scale().text != "ECTS"):
+        enr_page.choose_grading_scale("ECTS")
     ECTS_DATA = ['A', 'B', 'C', 'D', 'E', 'Fx', 'F']
 
     enr_page.add_total_score(enr_page.TOTAL_SCORE, number_and_character)
@@ -137,7 +140,8 @@ def test_ECTS_scale(app, number_and_character):
 def test_five_point_scale(app, number_and_character):
     enr_page = app.enrollments_main_page
 
-    enr_page.choose_grading_scale("двохсотбальна")
+    if(enr_page.get_text_choose_grading_scale().text != u"п'ятибальна"):
+        enr_page.choose_grading_scale("п'ятибальна")
 
     enr_page.add_total_score(enr_page.TOTAL_SCORE, number_and_character)
     element = enr_page.get_form_input_total_score()
@@ -152,7 +156,8 @@ def test_five_point_scale(app, number_and_character):
 
 def test_interview_scale(app, number_and_character):
     enr_page = app.enrollments_main_page
-    enr_page.choose_grading_scale("співбесіда")
+    if(enr_page.get_text_choose_grading_scale().text != u"співбесіда"):
+        enr_page.choose_grading_scale("співбесіда")
     enr_page.add_total_score(enr_page.TOTAL_SCORE, number_and_character)
     element = enr_page.get_form_input_total_score()
     status_form_right_now = enr_page.get_atrribute_of_element_by(element, "class").split(' ')

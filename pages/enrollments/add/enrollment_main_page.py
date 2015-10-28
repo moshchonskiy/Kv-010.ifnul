@@ -34,6 +34,7 @@ class EnrollmentsMainPage(InternalPage):
     DOCUMENT = (By.XPATH, ".//*[@class='col-xs-5']/*[@id='inputStructure']//i[@class='caret pull-right']")
     TOTAL_SCORE = (By.ID, "inputMark")
     GRADING_SCALE = (By.XPATH, ".//*[@id='markScale']//i[@class='caret pull-right']")
+    TEXT_FROM_GRADING_SCALE = (By.XPATH, ".//*[@id='markScale']//span[@class='ng-binding ng-scope']")
     CHECKBOX_DOCUMENT_IS_ORIGINAL = (By.XPATH, ".//*[@ng-init='enrolment.isOriginal = 0']")
     PRIORITY = (By.ID, "inputPriority")
     STRUCTURAL_UNIT = (By.XPATH, ".//*[@class='col-xs-3']/*[@id='inputStructure']//i[@class='caret pull-right']")
@@ -156,7 +157,7 @@ class EnrollmentsMainPage(InternalPage):
         return self.is_element_visible(self.BUTTON_SAVE)
 
     def get_text_add_enrollment(self):
-        return self.driver.find_element(*self.TEXT_CORRECT_PAGE_ENROLLMENT_ADD).text
+        return self.driver.find_element(*self.TEXT_CORRECT_PAGE_ENROLLMENT_ADD)
 
     def get_form_input_total_score(self):
         return self.driver.find_element(*self.TOTAL_SCORE)
@@ -296,6 +297,9 @@ class EnrollmentsMainPage(InternalPage):
         """
         self.grading_scale.click()
         self.find_element_in_ui_select(self.list_form_ui_select(), scale).click()
+
+    def get_text_choose_grading_scale(self):
+        return self.driver.find_element(*self.TEXT_FROM_GRADING_SCALE)
 
     def add_total_score(self, locator, score):
         """
