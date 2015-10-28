@@ -1,0 +1,9 @@
+{
+  "search_by":
+  {
+      "invalid_pib":"СтоПудовоНеІснуючич",
+      "valid_person_id":169,
+      "invalid_person_id":1677777777,
+      "invalid_document_number":12365478
+    }
+}

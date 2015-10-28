@@ -35,13 +35,28 @@ class EnrollmentsMainPage(InternalPage):
     CHECKBOX_DOCUMENT_IS_ORIGINAL = (By.XPATH, ".//*[@ng-init='enrolment.isOriginal = 0']")
     PRIORITY = (By.ID, "inputPriority")
     STRUCTURAL_UNIT = (By.XPATH, ".//*[@class='col-xs-3']/*[@id='inputStructure']//i[@class='caret pull-right']")
+    DATE_OF_CREATION_STATEMENTS = (By.ID, "evDate")
     DATE_OF_ENTRY_STATEMENTS = (By.ID, "begDate")
     DATE_CLOSING_STATEMENTS = (By.ID, "endDate")
     BUTTON_SAVE = (By.XPATH, ".//*[@class='btn btn-primary'][@ng-click='sendToServer()']")
     ID_DETAILING_START_MENU = "inputEnrolmentTypeId"
     ID_TYPE_OF_ENTRY_MENU = "inputChiefEnrolTypes"
+    IS_ENROLLMENT_IN_PERSON = (By.XPATH, ".//*[@id='movieForm']/div[1]/div[2]/table/tbody/tr/td[1]")
+    SEARCH_PERSON_BY_SELECT = (By.XPATH, "//select[@ng-model='fieldSearchBy']")
+    SEARCH_PERSON_BY_INPUT = (By.XPATH, "//input[@ng-model='querySearchBy']")
+    ALL_FOUND_PERSONS_PIB = (By.XPATH, "//tbody[@class='pointer']//tr//td[2]")
+    ALL_FOUND_PERSONS_ID = (By.XPATH, "//tbody[@class='pointer']//tr//td[1]")
+    CANCEL_BUTTON = (By.XPATH, "//div[@class='modal-footer ng-scope']//button[@ng-click='cancel()']")
     IS_ENROLLMENT_IN_PERSON = (By.XPATH, ".//*[@class='pointer']/tr/td[1]")
 
+    @property
+    def cancel_click(self):
+        self.driver.find_element(*self.CANCEL_BUTTON).click()
+
+    @property
+    def is_this_page(self):
+        return self.is_element_visible(self.SEARCH_PERSON_BY_SELECT)
+    
     @property
     def is_enrollment_in_person(self):
         return self.is_element_visible(self.IS_ENROLLMENT_IN_PERSON)
@@ -72,7 +87,8 @@ class EnrollmentsMainPage(InternalPage):
 
     @property
     def ok_for_input_field(self):
-        return self.is_element_visible(self.OK_FOR_INPUT_FIELD)
+        self.is_element_visible(self.OK_FOR_INPUT_FIELD).click()
+        self.is_element_present(self.SPINNER_OFF)
 
     @property
     def series_of_statements(self):
@@ -347,3 +363,72 @@ class EnrollmentsMainPage(InternalPage):
             self.checkbox_is_hostel.click()
         if document == "True":
             self.checkbox_document_is_original.click()
+
+    def select_person_by(self, index):
+        """
+        Method select searching type by index
+        :param index: Searching type in Integer. 0 - by PIB, 1 - by surname, 2 - by person id, 3 - by documents number
+        :return:
+        """
+        self.is_element_present(self.SPINNER_OFF)
+        Select(self.driver.find_element(*self.SEARCH_PERSON_BY_SELECT)).select_by_index(index)
+
+    def set_search_person_by(self, searched_value):
+        """
+        Method sets the searched value
+        :param searched_value: String parametr.
+        :return:
+        """
+        self.emulation_of_input(self.SEARCH_PERSON_BY_INPUT, searched_value)
+
+    def get_all_found_persons_pib(self):
+        """
+        Method find all elements with persons PIB
+        :return: list of elements with persons PIB
+        """
+        return self.driver.find_elements(*self.ALL_FOUND_PERSONS_PIB)
+
+    def get_all_found_persons_id(self):
+        """
+        Method find all elements with persons ID
+        :return: list of elements with persons ID
+        """
+        return self.driver.find_elements(*self.ALL_FOUND_PERSONS_ID)
+
+    def find_date_of_creation(self):
+        """
+        Method find date of creation input field
+        :return: element of date of creation input field
+        """
+        self.is_element_visible(self.DATE_OF_CREATION_STATEMENTS)
+        return self.driver.find_element(*self.DATE_OF_CREATION_STATEMENTS)
+
+    def set_begin_date(self, date):
+        """
+        Method sets date in the date of beginning input field
+        :return: element of date of creation input field
+        """
+        self.set_date(self.DATE_OF_ENTRY_STATEMENTS, date)
+
+    def set_end_date(self, date):
+        """
+        Method sets date in the date of closing input field
+        :return: element of date of closing input field
+        """
+        self.set_date(self.DATE_CLOSING_STATEMENTS, date)
+
+    def find_date_of_begining(self):
+        """
+        Method find date of beginning input field
+        :return: element of date of beginning input field
+        """
+        self.is_element_visible(self.DATE_OF_ENTRY_STATEMENTS)
+        return self.driver.find_element(*self.DATE_OF_ENTRY_STATEMENTS)
+
+    def find_date_of_ending(self):
+        """
+        Method find date of closing input field
+        :return: element of date of closing input field
+        """
+        self.is_element_visible(self.DATE_CLOSING_STATEMENTS)
+        return self.driver.find_element(*self.DATE_CLOSING_STATEMENTS)
