@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import Select
 from pages.internal_page import InternalPage
 from utils.fill_enrollment import FillEnrollment
@@ -8,6 +9,7 @@ __author__ = 'Stako'
 
 
 class EnrollmentsMainPage(InternalPage):
+    TEXT_CORRECT_PAGE_ENROLLMENT_ADD = (By.XPATH, "//h2[@class='content-header-title top-buffer bottom-buffer']")
     OK_FOR_INPUT_FIELD = (By.CSS_SELECTOR, "div[class='input-group'] * button[class='btn btn-primary']")
     SEARCH_NAME_FIELD = (By.XPATH, "//div[@class='modal-body ng-scope']//input[contains (@type, 'search')]")
     FIRST_PERSON = (By.XPATH, "//*[@class='table-responsive']//tbody[@class='pointer']//tr[1]/td[2]")
@@ -152,6 +154,20 @@ class EnrollmentsMainPage(InternalPage):
     @property
     def button_save(self):
         return self.is_element_visible(self.BUTTON_SAVE)
+
+    def get_text_add_enrollment(self):
+        return self.driver.find_element(*self.TEXT_CORRECT_PAGE_ENROLLMENT_ADD).text
+
+    def get_form_input_total_score(self):
+        return self.driver.find_element(*self.TOTAL_SCORE)
+
+    def clear_form_input_total_score(self):
+        toClear = self.driver.find_element(*self.TOTAL_SCORE)
+        toClear.send_keys(Keys.CONTROL + "a")
+        toClear.send_keys(Keys.DELETE)
+
+    def get_atrribute_of_element_by(self, element, value):
+        return element.get_attribute(value)
 
     def find_element_in_ui_select(self, elements, string):
         """
