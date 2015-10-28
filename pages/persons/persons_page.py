@@ -430,3 +430,22 @@ class PersonsPage(InternalPage):
         self.driver.find_element(*PersonsPage.FIELD_CHOOSER_RED_CLOSE_BUTTON).click()
         self.is_element_present(self.SPINNER_OFF)
         sleep(2) #only sleep can help in this case.
+
+    def return_added_person_surname(self, person):
+        """
+        Method searches new added person
+        :param person: persons model in Person format
+        :return: finded person's surname
+        """
+        self.is_this_page
+        self.try_get_choose_surname().click()
+        self.try_get_input_group().clear()
+        self.try_get_input_group().send_keys(person.surname_ukr)
+        self.try_get_ok_button().click()
+        return self.try_get_searched_surname(person.surname_ukr).text.partition(' ')[0]
+
+    def del_newly_created_person(self, person):
+        self.is_this_page
+        expected_person = self.try_get_searched_surname(person.surname_ukr).text.partition(' ')[0]
+        if expected_person:
+            self.delete_first_person_in_page
