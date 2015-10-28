@@ -1,4 +1,6 @@
 from functools import wraps
+import allure
+from allure.constants import AttachmentType
 
 __author__ = 'Den'
 
