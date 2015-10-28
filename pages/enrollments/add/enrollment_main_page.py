@@ -40,7 +40,7 @@ class EnrollmentsMainPage(InternalPage):
     BUTTON_SAVE = (By.XPATH, ".//*[@class='btn btn-primary'][@ng-click='sendToServer()']")
     ID_DETAILING_START_MENU = "inputEnrolmentTypeId"
     ID_TYPE_OF_ENTRY_MENU = "inputChiefEnrolTypes"
-    IS_ENROLLMENT_IN_PERSON = (By.XPATH, ".//*[@id='movieForm']/div[1]/div[2]/table/tbody/tr/td[1]")
+    IS_ENROLLMENT_IN_PERSON = (By.XPATH, ".//*[@class='pointer']/tr/td[1]")
 
     @property
     def is_enrollment_in_person(self):
