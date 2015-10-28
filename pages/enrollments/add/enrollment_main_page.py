@@ -36,6 +36,7 @@ class EnrollmentsMainPage(InternalPage):
     CHECKBOX_DOCUMENT_IS_ORIGINAL = (By.XPATH, ".//*[@ng-init='enrolment.isOriginal = 0']")
     PRIORITY = (By.ID, "inputPriority")
     STRUCTURAL_UNIT = (By.XPATH, ".//*[@class='col-xs-3']/*[@id='inputStructure']//i[@class='caret pull-right']")
+    DATE_OF_CREATION_STATEMENTS = (By.ID, "evDate")
     DATE_OF_ENTRY_STATEMENTS = (By.ID, "begDate")
     DATE_CLOSING_STATEMENTS = (By.ID, "endDate")
     BUTTON_SAVE = (By.XPATH, ".//*[@class='btn btn-primary'][@ng-click='sendToServer()']")
@@ -43,7 +44,6 @@ class EnrollmentsMainPage(InternalPage):
     ID_TYPE_OF_ENTRY_MENU = "inputChiefEnrolTypes"
 
     SEARCH_PERSON_BY_SELECT = (By.XPATH, "//select[@ng-model='fieldSearchBy']")
-    # SEARCH_PERSON_BY_OPTION_IN_SELECT = "//select[@ng-model='fieldSearchBy']//option[%s]"
     SEARCH_PERSON_BY_INPUT = (By.XPATH, "//input[@ng-model='querySearchBy']")
     ALL_FOUND_PERSONS_PIB = (By.XPATH, "//tbody[@class='pointer']//tr//td[2]")
     ALL_FOUND_PERSONS_ID = (By.XPATH, "//tbody[@class='pointer']//tr//td[1]")
@@ -67,6 +67,10 @@ class EnrollmentsMainPage(InternalPage):
 
     def get_all_found_persons_id(self):
         return self.driver.find_elements(*self.ALL_FOUND_PERSONS_ID)
+
+    def find_date_of_creation(self):
+        self.is_element_visible(self.DATE_OF_CREATION_STATEMENTS)
+        return self.driver.find_elements(*self.DATE_OF_CREATION_STATEMENTS)
 
     @property
     def is_this_page(self):
