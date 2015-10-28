@@ -1,8 +1,12 @@
 # coding: utf8
-from time import sleep
-from pages.internal_page import InternalPage
+
+
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.expected_conditions import visibility_of_element_located
+
+from decorators.error_handling_dec import ErrorHandler
+from pages.internal_page import InternalPage
 
 
 class PersonsPage(InternalPage):
@@ -31,9 +35,11 @@ class PersonsPage(InternalPage):
     CLOSE_AFTER_ADDITION_BUTTON = (By.XPATH, "//div[@class='modal-footer']/button[@class='btn btn-danger']")
 
     REFRESH_UPPER_BUTTON = (
-        By.XPATH, "//div[@class='container-fluid admissionSystemApp-container']//div[@class='col-md-2 col-lg-2 filter']/p[1]/button")
+        By.XPATH,
+        "//div[@class='container-fluid admissionSystemApp-container']//div[@class='col-md-2 col-lg-2 filter']/p[1]/button")
     REFRESH_BOTTOM_BUTTON = (
-        By.XPATH, "//div[@class='container-fluid admissionSystemApp-container']//div[@class='col-md-2 col-lg-2 filter']/p[2]/button")
+        By.XPATH,
+        "//div[@class='container-fluid admissionSystemApp-container']//div[@class='col-md-2 col-lg-2 filter']/p[2]/button")
     GENDER_MALE_CHECKBOX = (
         By.XPATH, "//div[@class='panel-group']/div[1]/div[2]/div[@class='panel-body']/div[1]/label/input")
     GENDER_FEMALE_CHECKBOX = (
@@ -114,7 +120,6 @@ class PersonsPage(InternalPage):
     COLUMN_HOSTEL_ADD = (By.XPATH, "//li[16]//*[@id='showHideHeader']")
     COLUMN_MATERIAL_LIABILITY_ADD = (By.XPATH, "//li[17]//*[@id='showHideHeader']")
 
-
     COLUMNS_DICT = {
         1: '№',
         2: 'ПІБ',
@@ -152,31 +157,31 @@ class PersonsPage(InternalPage):
     # END OF SELECTORS SECTION
     #
 
-    @property
+    @ErrorHandler("current page is not Persons page")
+    def is_current_page(self):
+        return self.wait.until(visibility_of_element_located(self.PERSON_PAGE_LINK))
+
+
     def is_this_page(self):
         return self.is_element_visible(self.ADD_PERSON_BUTTON)
 
-    @property
     def rows_in_body(self):
         return self.driver.find_elements(*self.ROWS_IN_RABLE)
 
-    @property
     def add_person_link(self):
         return self.driver.find_element(*self.ADD_PERSON_BUTTON).click()
 
-    @property
     def delete_first_person_in_page(self):
         if self.is_element_visible(self.DELETE_FIRST_PERSON_IN_TABLE):
             self.driver.find_element(*self.DELETE_FIRST_PERSON_IN_TABLE).click()
             self.is_element_present(self.SPINNER_OFF)
 
-    @property
     def view_first_person_in_page(self):
         if self.is_element_visible(self.VIEW_FIRST_PERSON_IN_TABLE):
             self.driver.find_element(*self.VIEW_FIRST_PERSON_IN_TABLE).click()
             self.is_element_present(self.SPINNER_OFF)
 
-    @property
+
     def edit_first_person_in_page(self):
         return self.is_element_visible(self.EDIT_FIRST_PERSON_IN_TABLE)
 
@@ -198,6 +203,14 @@ class PersonsPage(InternalPage):
 
     # FILTER
     # to all filters
+    @ErrorHandler(message='in person page last page ref is not found')
+    def try_get_last_page_ref(self):
+        return self.driver.find_element(*self.LAST_PAGE)
+
+    @ErrorHandler(message='Red button is not found in field chooser')
+    def try_field_chooser_red_close_button(self):
+        return self.driver.find_element(*self.FIELD_CHOOSER_RED_CLOSE_BUTTON)
+
     def try_get_refresh_upper_button(self):
         return self.is_element_visible(self.REFRESH_UPPER_BUTTON)
 
@@ -364,7 +377,7 @@ class PersonsPage(InternalPage):
         self.wait.until(EC.text_to_be_present_in_element(self.SEARCHED_SURNAME, given_surname))
         return self.is_element_visible(self.SEARCHED_SURNAME)
 
-    # persone_id search
+    # person_id search
     def try_get_choose_person_id(self):
         return self.is_element_visible(self.CHOOSE_PERSON_ID_SEARCH)
 
@@ -396,7 +409,7 @@ class PersonsPage(InternalPage):
         list_of_column_text = []
         list_of_column_elements = self.driver.find_elements_by_xpath("//tbody/tr/td[" + str(column_number) + "]")
         for element in list_of_column_elements:
-            list_of_column_text.append(element.text)
+            list_of_column_text.append(int(element.text))
         return list_of_column_text
 
     def get_all_hidden_columns(self):
@@ -427,6 +440,5 @@ class PersonsPage(InternalPage):
         self.driver.find_element(*PersonsPage.FIELD_CHOOSER_BUTTON).click()
         for checkbox in list_all_unchecked_checkboxes:
             self.is_element_visible(checkbox).click()
-        self.driver.find_element(*PersonsPage.FIELD_CHOOSER_RED_CLOSE_BUTTON).click()
-        self.is_element_present(self.SPINNER_OFF)
-        sleep(2) #only sleep can help in this case.
+        self.try_field_chooser_red_close_button().click()
+        self.wait_until_page_generate()

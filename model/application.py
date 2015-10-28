@@ -27,6 +27,7 @@ from pages.persons.add.person_base_page import *
 
 class Application:
     def __init__(self, driver, base_url):
+        self.driver = driver
         driver.get(base_url)
         driver.maximize_window()
         self.wait = WebDriverWait(driver, 15)
