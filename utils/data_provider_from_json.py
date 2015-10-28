@@ -20,5 +20,8 @@ class DataProviderJSON():
     def get_value_by_ij(self, i, j):
         return self.json_data[i][j]
 
+    def get_value_by_key(self, key):
+        return self.json_data[key]
+
     def get_dict_value(self):
         return self.json_data

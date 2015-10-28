@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+from utils.add_person_pattern import AddPersonPattern
+from utils.personCreator import PersonCreator
+
 __author__ = 'acidroed'
 
 
@@ -18,6 +21,7 @@ def search_added_person(app, person):
     person_page.try_get_ok_button().click()
     return person_page.try_get_searched_surname(person.surname_ukr).text.partition(' ')[0]
 
+
 def fill_in_main_person_page(app, person):
     """
     Method fill in data on the main persons page
@@ -34,6 +38,7 @@ def fill_in_main_person_page(app, person):
     main_page.set_father_ukr_name(person.second_name_ukr)
     main_page.set_eng_surname(person.surname_eng)
     main_page.set_first_eng_name(person.first_name_eng)
+
 
 def fill_in_extra_person_page(app, person):
     """
@@ -53,6 +58,7 @@ def fill_in_extra_person_page(app, person):
     extra_page.check_resident_status(person.is_outlander)
     extra_page.check_reservist_status(person.reservist)
     extra_page.check_needed_hostel_status(person.hostel_need)
+
 
 def fill_in_address_page(app, person):
     """
@@ -76,6 +82,7 @@ def fill_in_address_page(app, person):
     address_page.set_apartment(person.registration_place["apartment"])
     address_page.check_is_reg_and_post_addresses_the_same(person.registration_place["is_addresses_match"])
 
+
 def fill_in_contact_page(app, person):
     """
     Method fill in data on the contact persons page
@@ -93,6 +100,7 @@ def fill_in_contact_page(app, person):
     contact_page.set_skype(person.skype)
     contact_page.set_site(person.web_site)
     contact_page.set_icq(person.icq)
+
 
 def fill_in_document_page(app, person):
     """
@@ -114,29 +122,40 @@ def fill_in_document_page(app, person):
     papers_page.check_is_foreign_document(person.documents[0].document_is_foreign)
     papers_page.press_save_new_document_button
 
-def test_add_person(add_person, person):
-    person_page = add_person.persons_page
+
+def test_add_person(app, dictionary_with_json_files):
+    # create person
+    create_person = PersonCreator(dictionary_with_json_files["person"])
+    person = create_person.create_person_from_json()
+    add_person_pattern = AddPersonPattern()
+    add_person_pattern.add_person(app, person)
+    person_page = app.persons_page
     person_page.is_this_page
     person_page.add_person_link
-    base_page = add_person.person_base_page
+    base_page = app.person_base_page
 
-    fill_in_main_person_page(add_person, person)
-    base_page.click_next_button
+    fill_in_main_person_page(app, person)
+    base_page.click_extra_tab
 
-    fill_in_extra_person_page(add_person, person)
-    base_page.click_next_button
-    base_page.click_next_button
+    fill_in_extra_person_page(app, person)
+    base_page.click_addresses_tab
 
-    fill_in_address_page(add_person, person)
-    base_page.click_next_button
-    base_page.click_next_button
-    base_page.click_next_button
+    fill_in_address_page(app, person)
+    base_page.click_contacts_tab
 
-    fill_in_contact_page(add_person, person)
-    base_page.click_next_button
+    fill_in_contact_page(app, person)
+    base_page.click_papers_tab
 
-    fill_in_document_page(add_person, person)
+    fill_in_document_page(app, person)
     base_page.save_new_person()
 
-    assert search_added_person(add_person, person) == person.surname_ukr
+    assert search_added_person(app, person) == person.surname_ukr
+    # add_person_pattern.del_created_person(app, person)
 
+
+# посмотреть почему так долго ждет в поиск del person in the end of test suit
+"""
+delete
+    create_person = PersonCreator(dictionary_with_json_files["person"])
+    person = create_person.create_person_from_json()
+"""

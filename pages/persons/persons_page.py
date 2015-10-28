@@ -1,83 +1,119 @@
 # coding: utf8
+from time import sleep
 from pages.internal_page import InternalPage
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 
 
-
 class PersonsPage(InternalPage):
     #
-    #TO SEARCH
+    # TO SEARCH
     #
-    ADD_PERSON_BUTTON               = (By.XPATH, "//button[contains(@class,'btn-success')]")
-    CHOOSE_SURNAME_SEARCH           = (By.XPATH, "//div[@class='col-sm-12']//option[@value='0']")
-    CHOOSE_PERSON_ID_SEARCH         = (By.XPATH, "//div[@class='col-sm-12']//option[@value='1']")
-    CHOOSE_NUM_OS_SEARCH            = (By.XPATH, "//div[@class='col-sm-12']//option[@value='2']")
-    CHOOSE_SERIES_OS_SEARCH         = (By.XPATH, "//div[@class='col-sm-12']//option[@value='3']")
-    INPUT_GROUP_SEARCH_BUTTON       = (By.XPATH, "//div[@class='input-group']/input")
-    OK_GROUP_SEARCH_BUTTON          = (By.XPATH, "//div[@class='input-group']/span/button")
-    #in table
-    SEARCHED_SURNAME                = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope'][1]/td[2]")
-    SEARCHED_PERSON_ID              = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope'][1]/td[1]")
-    SEARCHED_NUM_OS                 = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope'][1]/td[11]")
-    SEARCHED_SERIES_OS              = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope'][1]/td[10]")
+    ADD_PERSON_BUTTON = (By.XPATH, "//button[contains(@class,'btn-success')]")
+    CHOOSE_SURNAME_SEARCH = (By.XPATH, "//div[@class='col-sm-12']//option[@value='0']")
+    CHOOSE_PERSON_ID_SEARCH = (By.XPATH, "//div[@class='col-sm-12']//option[@value='1']")
+    CHOOSE_NUM_OS_SEARCH = (By.XPATH, "//div[@class='col-sm-12']//option[@value='2']")
+    CHOOSE_SERIES_OS_SEARCH = (By.XPATH, "//div[@class='col-sm-12']//option[@value='3']")
+    INPUT_GROUP_SEARCH_BUTTON = (By.XPATH, "//div[@class='input-group']/input")
+    OK_GROUP_SEARCH_BUTTON = (By.XPATH, "//div[@class='input-group']/span/button")
+    # in table
+    SEARCHED_SURNAME = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope'][1]/td[2]")
+    SEARCHED_PERSON_ID = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope'][1]/td[1]")
+    SEARCHED_NUM_OS = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope'][1]/td[11]")
+    SEARCHED_SERIES_OS = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope'][1]/td[10]")
+    ROWS_IN_RABLE = (By.XPATH, "//tbody[@class='pointer']/tr")
     #
-    #TO FILTER
+    # TO FILTER
     #
-    BURGER_BUTTON                   = (By.XPATH, "//button[@class='field-chooser-button pull-right btn btn-primary']")
-    ADD_TO_TABLE_MILITARY_CHECKBOX  = (By.XPATH, "//li[15]/label/input[@id='showHideHeader']")
-    ADD_TO_TABLE_RESIDENT_CHECKBOX  = (By.XPATH, "//li[12]/label/input[@id='showHideHeader']")
-    CLOSE_AFTER_ADDITION_BUTTON     = (By.XPATH, "//div[@class='modal-footer']/button[@class='btn btn-danger']")
+    BURGER_BUTTON = (By.XPATH, "//button[@class='field-chooser-button pull-right btn btn-primary']")
+    ADD_TO_TABLE_MILITARY_CHECKBOX = (By.XPATH, "//li[15]/label/input[@id='showHideHeader']")
+    ADD_TO_TABLE_RESIDENT_CHECKBOX = (By.XPATH, "//li[12]/label/input[@id='showHideHeader']")
+    CLOSE_AFTER_ADDITION_BUTTON = (By.XPATH, "//div[@class='modal-footer']/button[@class='btn btn-danger']")
 
+    REFRESH_UPPER_BUTTON = (
+        By.XPATH, "//div[@class='container-fluid admissionSystemApp-container']//div[@class='col-md-2 col-lg-2 filter']/p[1]/button")
+    REFRESH_BOTTOM_BUTTON = (
+        By.XPATH, "//div[@class='container-fluid admissionSystemApp-container']//div[@class='col-md-2 col-lg-2 filter']/p[2]/button")
+    GENDER_MALE_CHECKBOX = (
+        By.XPATH, "//div[@class='panel-group']/div[1]/div[2]/div[@class='panel-body']/div[1]/label/input")
+    GENDER_FEMALE_CHECKBOX = (
+        By.XPATH, "//div[@class='panel-group']/div[1]/div[2]/div[@class='panel-body']/div[2]/label/input")
+    GENDER_NOT_DEFINED_CHECKBOX = (
+        By.XPATH, "//div[@class='panel-group']/div[1]/div[2]/div[@class='panel-body']/div[3]/label/input")
+    TYPE_APPLICANT_CHECKBOX = (
+        By.XPATH, "//div[@class='panel-group']/div[2]/div[2]/div[@class='panel-body']/div[1]/label/input")
+    TYPE_STUDENT_CHECKBOX = (
+        By.XPATH, "//div[@class='panel-group']/div[2]/div[2]/div[@class='panel-body']/div[2]/label/input")
+    TYPE_SCIENTIST_CHECKBOX = (
+        By.XPATH, "//div[@class='panel-group']/div[2]/div[2]/div[@class='panel-body']/div[3]/label/input")
+    TYPE_EMPLOYEE_CHECKBOX = (
+        By.XPATH, "//div[@class='panel-group']/div[2]/div[2]/div[@class='panel-body']/div[4]/label/input")
+    TYPE_GRADUATE_CHECKBOX = (
+        By.XPATH, "//div[@class='panel-group']/div[2]/div[2]/div[@class='panel-body']/div[5]/label/input")
+    TYPE_OUTSIDER_CHECKBOX = (
+        By.XPATH, "//div[@class='panel-group']/div[2]/div[2]/div[@class='panel-body']/div[6]/label/input")
+    NEED_HOSTEL_CHECKBOX = (
+        By.XPATH, "//div[@class='panel-group']/div[3]/div[2]/div[@class='panel-body']/div[1]/label/input")
+    DONT_NEED_HOSTEL_CHECKBOX = (
+        By.XPATH, "//div[@class='panel-group']/div[3]/div[2]/div[@class='panel-body']/div[2]/label/input")
+    BOUND_TO_MILITARY_CHECKBOX = (
+        By.XPATH, "//div[@class='panel-group']/div[4]/div[2]/div[@class='panel-body']/div[1]/label/input")
+    NOT_BOUND_TO_MILITARY_CHECKBOX = (
+        By.XPATH, "//div[@class='panel-group']/div[4]/div[2]/div[@class='panel-body']/div[2]/label/input")
+    RESIDENT_FOREIGNER_CHECKBOX = (
+        By.XPATH, "//div[@class='panel-group']/div[5]/div[2]/div[@class='panel-body']/div[1]/label/input")
+    RESIDENT_NOT_FOREIGNER_CHECKBOX = (
+        By.XPATH, "//div[@class='panel-group']/div[5]/div[2]/div[@class='panel-body']/div[2]/label/input")
+    # in table
+    # the 1 value
+    FILTERED_GENDER = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope'][1]/td[7]")
+    FILTERED_TYPE = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope'][1]/td[6]")
+    FILTERED_NEED_OF_HOSTEL = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope'][1]/td[16]")
+    FILTERED_BOUND_TO_MILITARY = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope'][1]/td[15]")
+    FILTERED_RESIDENT = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope'][1]/td[12]")
 
-    REFRESH_UPPER_BUTTON            = (By.XPATH, "//div[@class='container-fluid admissionSystemApp-container']//div[@class='col-md-2 col-lg-2 filter']/p[1]/button")
-    REFRESH_BOTTOM_BUTTON           = (By.XPATH, "//div[@class='container-fluid admissionSystemApp-container']//div[@class='col-md-2 col-lg-2 filter']/p[2]/button")
-    GENDER_MALE_CHECKBOX            = (By.XPATH, "//div[@class='panel-group']/div[1]/div[2]/div[@class='panel-body']/div[1]/label/input")
-    GENDER_FEMALE_CHECKBOX          = (By.XPATH, "//div[@class='panel-group']/div[1]/div[2]/div[@class='panel-body']/div[2]/label/input")
-    GENDER_NOT_DEFINED_CHECKBOX     = (By.XPATH, "//div[@class='panel-group']/div[1]/div[2]/div[@class='panel-body']/div[3]/label/input")
-    TYPE_APPLICANT_CHECKBOX         = (By.XPATH, "//div[@class='panel-group']/div[2]/div[2]/div[@class='panel-body']/div[1]/label/input")
-    TYPE_STUDENT_CHECKBOX           = (By.XPATH, "//div[@class='panel-group']/div[2]/div[2]/div[@class='panel-body']/div[2]/label/input")
-    TYPE_SCIENTIST_CHECKBOX         = (By.XPATH, "//div[@class='panel-group']/div[2]/div[2]/div[@class='panel-body']/div[3]/label/input")
-    TYPE_EMPLOYEE_CHECKBOX          = (By.XPATH, "//div[@class='panel-group']/div[2]/div[2]/div[@class='panel-body']/div[4]/label/input")
-    TYPE_GRADUATE_CHECKBOX          = (By.XPATH, "//div[@class='panel-group']/div[2]/div[2]/div[@class='panel-body']/div[5]/label/input")
-    TYPE_OUTSIDER_CHECKBOX          = (By.XPATH, "//div[@class='panel-group']/div[2]/div[2]/div[@class='panel-body']/div[6]/label/input")
-    NEED_HOSTEL_CHECKBOX            = (By.XPATH, "//div[@class='panel-group']/div[3]/div[2]/div[@class='panel-body']/div[1]/label/input")
-    DONT_NEED_HOSTEL_CHECKBOX       = (By.XPATH, "//div[@class='panel-group']/div[3]/div[2]/div[@class='panel-body']/div[2]/label/input")
-    BOUND_TO_MILITARY_CHECKBOX      = (By.XPATH, "//div[@class='panel-group']/div[4]/div[2]/div[@class='panel-body']/div[1]/label/input")
-    NOT_BOUND_TO_MILITARY_CHECKBOX  = (By.XPATH, "//div[@class='panel-group']/div[4]/div[2]/div[@class='panel-body']/div[2]/label/input")
-    RESIDENT_FOREIGNER_CHECKBOX     = (By.XPATH, "//div[@class='panel-group']/div[5]/div[2]/div[@class='panel-body']/div[1]/label/input")
-    RESIDENT_NOT_FOREIGNER_CHECKBOX = (By.XPATH, "//div[@class='panel-group']/div[5]/div[2]/div[@class='panel-body']/div[2]/label/input")
-    #in table
-    #the 1 value
-    FILTERED_GENDER                 = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope'][1]/td[7]")
-    FILTERED_TYPE                   = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope'][1]/td[6]")
-    FILTERED_NEED_OF_HOSTEL         = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope'][1]/td[16]")
-    FILTERED_BOUND_TO_MILITARY      = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope'][1]/td[15]")
-    FILTERED_RESIDENT               = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope'][1]/td[12]")
+    FILTERED_TYPE_COLUMN = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope']/td[6]")
+    FILTERED_GENDER_COLUMN = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope']/td[7]")
+    FILTERED_HOSTEL_COLUMN = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope']/td[16]")
+    FILTERED_MILITARY_COLUMN = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope']/td[15]")
+    FILTERED_RESIDENT_COLUMN = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope']/td[12]")
 
+    RID_OUT_OF_FILTER_BUTTON = (By.XPATH, "//div[@class='col-md-2 col-lg-2 filter']//button[@class='close']")
 
-    FILTERED_TYPE_COLUMN            = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope']/td[6]")
-    FILTERED_GENDER_COLUMN          = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope']/td[7]")
-    FILTERED_HOSTEL_COLUMN          = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope']/td[16]")
-    FILTERED_MILITARY_COLUMN        = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope']/td[15]")
-    FILTERED_RESIDENT_COLUMN        = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope']/td[12]")
+    TO_NEXT_TABLE_PAGE_BUTTON = (By.XPATH, "//ul[@class='pagination']/li[8]/span")
 
-    RID_OUT_OF_FILTER_BUTTON        = (By.XPATH, "//div[@class='col-md-2 col-lg-2 filter']//button[@class='close']")
-
-    TO_NEXT_TABLE_PAGE_BUTTON       = (By.XPATH, "//ul[@class='pagination']/li[8]/span")
-
-    ADD_PERSON_BUTTON               = (By.XPATH, "//a[@ui-sref='root.person.new.main']")
-    SHOW_HIDE_FILTERS_BUTTON        = (By.XPATH, "//button[contains(@ng-click,'hideFilterFunc')]")
-    ACTIVE_ITEMS_PER_PAGE_BUTTON    = (By.XPATH, "//button[contains(@class, 'active')]")
-    PREVIOUS_PAGE                   = (By.XPATH, "//li[contains(@title, 'Previous Page')]")
-    LAST_NUMBERED_PAGE              = (By.XPATH, "//li[contains(@title, 'Last Page')]/preceding-sibling::li[2]/span")
-    LAST_PAGE                       = (By.XPATH, "//li[contains(@title, 'Last Page')]")
-    FIELD_CHOOSER_BUTTON            = (By.XPATH, "//button[contains(@class, 'field-chooser-button')]")
-    FIELD_CHOOSER_RED_CLOSE_BUTTON  = (By.XPATH, "//button[parent::div[contains(@class, 'modal-footer')]]")
-    INACTIVE_COLUMNS_MODAL          = (By.XPATH, "//ul[@class='list-group']/li/label/input[not(@checked)]")
+    ADD_PERSON_BUTTON = (By.XPATH, "//a[@ui-sref='root.person.new.main']")
+    SHOW_HIDE_FILTERS_BUTTON = (By.XPATH, "//button[contains(@ng-click,'hideFilterFunc')]")
+    ACTIVE_ITEMS_PER_PAGE_BUTTON = (By.XPATH, "//button[contains(@class, 'active')]")
+    PREVIOUS_PAGE = (By.XPATH, "//li[contains(@title, 'Previous Page')]")
+    LAST_NUMBERED_PAGE = (By.XPATH, "//li[contains(@title, 'Last Page')]/preceding-sibling::li[2]/span")
+    LAST_PAGE = (By.XPATH, "//li[contains(@title, 'Last Page')]")
+    FIELD_CHOOSER_BUTTON = (By.XPATH, "//button[contains(@class, 'field-chooser-button')]")
+    FIELD_CHOOSER_RED_CLOSE_BUTTON = (By.XPATH, "//button[parent::div[contains(@class, 'modal-footer')]]")
+    INACTIVE_COLUMNS_MODAL = (By.XPATH, "//ul[@class='list-group']/li/label/input[not(@checked)]")
     # Columns dictionary binding number of column to it's name
-    DELETE_FIRST_PERSON_IN_TABLE    = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope'][1]/td[18]//button[3]")
-    VIEW_FIRST_PERSON_IN_TABLE    = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope'][1]/td[18]//button[2]")
+    DELETE_FIRST_PERSON_IN_TABLE = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope'][1]/td[18]//button[3]")
+    VIEW_FIRST_PERSON_IN_TABLE = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope'][1]/td[18]//button[2]")
+    EDIT_FIRST_PERSON_IN_TABLE = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope'][1]/td[18]//button[1]")
+
+    COLUMN_NUMBER_ADD = (By.XPATH, "//li[1]//*[@id='showHideHeader']")
+    COLUMN_FIO_ADD = (By.XPATH, "//li[2]//*[@id='showHideHeader']")
+    COLUMN_NAME_ADD = (By.XPATH, "//li[3]//*[@id='showHideHeader']")
+    COLUMN_FATHER_NAME_ADD = (By.XPATH, "//li[4]//*[@id='showHideHeader']")
+    COLUMN_SURNAME_ADD = (By.XPATH, "//li[5]//*[@id='showHideHeader']")
+    COLUMN_PERSON_TYPE_ADD = (By.XPATH, "//li[6]//*[@id='showHideHeader']")
+    COLUMN_SEX_ADD = (By.XPATH, "//li[7]//*[@id='showHideHeader']")
+    COLUMN_MARITAL_STATUS_ADD = (By.XPATH, "//li[8]//*[@id='showHideHeader']")
+    COLUMN_CITIZENSHIP_ADD = (By.XPATH, "//li[9]//*[@id='showHideHeader']")
+    COLUMN_PB_SERIES_ADD = (By.XPATH, "//li[10]//*[@id='showHideHeader']")
+    COLUMN_PB_NUMBER_ADD = (By.XPATH, "//li[11]//*[@id='showHideHeader']")
+    COLUMN_RESIDENT_ADD = (By.XPATH, "//li[12]//*[@id='showHideHeader']")
+    COLUMN_PLACE_OF_BIRTH_ADD = (By.XPATH, "//li[13]//*[@id='showHideHeader']")
+    COLUMN_DATE_OF_BIRTH_ADD = (By.XPATH, "//li[14]//*[@id='showHideHeader']")
+    COLUMN_VZ_ADD = (By.XPATH, "//li[15]//*[@id='showHideHeader']")
+    COLUMN_HOSTEL_ADD = (By.XPATH, "//li[16]//*[@id='showHideHeader']")
+    COLUMN_MATERIAL_LIABILITY_ADD = (By.XPATH, "//li[17]//*[@id='showHideHeader']")
+
 
     COLUMNS_DICT = {
         1: '№',
@@ -119,9 +155,15 @@ class PersonsPage(InternalPage):
     @property
     def is_this_page(self):
         return self.is_element_visible(self.ADD_PERSON_BUTTON)
+
+    @property
+    def rows_in_body(self):
+        return self.driver.find_elements(*self.ROWS_IN_RABLE)
+
     @property
     def add_person_link(self):
         return self.driver.find_element(*self.ADD_PERSON_BUTTON).click()
+
     @property
     def delete_first_person_in_page(self):
         if self.is_element_visible(self.DELETE_FIRST_PERSON_IN_TABLE):
@@ -134,24 +176,28 @@ class PersonsPage(InternalPage):
             self.driver.find_element(*self.VIEW_FIRST_PERSON_IN_TABLE).click()
             self.is_element_present(self.SPINNER_OFF)
 
+    @property
+    def edit_first_person_in_page(self):
+        return self.is_element_visible(self.EDIT_FIRST_PERSON_IN_TABLE)
 
     def searching_person_by_surname(self, given_surname):
         """
         Method needs for "test_add_person". It checks that the added person doesn't exist in the system.
-        :param given_surname: String parametr. Added persons surname.
+        :param given_surname: String parameter. Added persons surname.
         :return:
         """
         self.is_element_present(self.SPINNER_OFF)
+        if len(self.rows_in_body) == 0:
+            return None
         if self.is_element_present(self.SEARCHED_SURNAME):
             elem = self.driver.find_element(*self.SEARCHED_SURNAME)
-            s = "aaa"
             if elem.text.__contains__(given_surname):
                 return elem
         else:
             return None
 
-    #FILTER
-    #to all filters
+    # FILTER
+    # to all filters
     def try_get_refresh_upper_button(self):
         return self.is_element_visible(self.REFRESH_UPPER_BUTTON)
 
@@ -173,8 +219,7 @@ class PersonsPage(InternalPage):
     def try_get_close_filter(self):
         return self.is_element_visible(self.RID_OUT_OF_FILTER_BUTTON)
 
-
-    #gender (male, female, not defined)
+    # gender (male, female, not defined)
     def try_get_gender_male_checkbox(self):
         return self.is_element_visible(self.GENDER_MALE_CHECKBOX)
 
@@ -183,7 +228,8 @@ class PersonsPage(InternalPage):
 
     def try_get_gender_not_defined_checkbox(self):
         return self.is_element_visible(self.GENDER_NOT_DEFINED_CHECKBOX)
-    #FILTERED
+
+    # FILTERED
     def try_get_filtered_gender(self, given_person_gender):
         self.wait.until(EC.text_to_be_present_in_element(self.FILTERED_GENDER, given_person_gender))
         return self.driver.find_element(*self.FILTERED_GENDER)
@@ -192,15 +238,14 @@ class PersonsPage(InternalPage):
 
         cells_texts = []
 
-        for i in range(1,len(self.FILTERED_GENDER_COLUMN),1):
+        for i in range(1, len(self.FILTERED_GENDER_COLUMN), 1):
             cell_path = "//tbody[@class='pointer']/tr[@class='ng-scope'][%d]/td[7]" % i
             self.wait.until(EC.text_to_be_present_in_element((By.XPATH, cell_path), given_person_gender))
             cells_texts.append((self.driver.find_element(*(By.XPATH, cell_path))).text)
 
         return cells_texts
 
-
-    #type (applicant, student, scientist, employee, graduate, outsider)
+    # type (applicant, student, scientist, employee, graduate, outsider)
     def try_get_type_applicant_checkbox(self):
         return self.is_element_visible(self.TYPE_APPLICANT_CHECKBOX)
 
@@ -218,7 +263,8 @@ class PersonsPage(InternalPage):
 
     def try_get_type_outsider_checkbox(self):
         return self.is_element_visible(self.TYPE_OUTSIDER_CHECKBOX)
-    #FILTERED
+
+    # FILTERED
     def try_get_one_filtered_type(self, given_person_type):
         self.wait.until(EC.text_to_be_present_in_element(self.FILTERED_TYPE, given_person_type))
         return self.driver.find_element(*self.FILTERED_TYPE)
@@ -227,20 +273,21 @@ class PersonsPage(InternalPage):
 
         cells_texts = []
 
-        for i in range(1,len(self.FILTERED_TYPE_COLUMN),1):
+        for i in range(1, len(self.FILTERED_TYPE_COLUMN), 1):
             cell_path = "//tbody[@class='pointer']/tr[@class='ng-scope'][%d]/td[6]" % i
             self.wait.until(EC.text_to_be_present_in_element((By.XPATH, cell_path), given_person_type))
             cells_texts.append((self.driver.find_element(*(By.XPATH, cell_path))).text)
 
         return cells_texts
 
-    #need for hostel (need, doesn`t need)
+    # need for hostel (need, doesn`t need)
     def try_get_need_hostel_checkbox(self):
         return self.is_element_visible(self.NEED_HOSTEL_CHECKBOX)
 
     def try_get_dont_need_hostel_checkbox(self):
         return self.is_element_visible(self.DONT_NEED_HOSTEL_CHECKBOX)
-    #FILTERED
+
+    # FILTERED
     def try_get_filtered_need_of_hostel(self, given_need_of_hostel):
         self.wait.until(EC.text_to_be_present_in_element(self.FILTERED_NEED_OF_HOSTEL, given_need_of_hostel))
         return self.driver.find_element(*self.FILTERED_NEED_OF_HOSTEL)
@@ -248,46 +295,44 @@ class PersonsPage(InternalPage):
     def try_get_filtered_need_hostel_column(self, given_need_of_hostel):
         cells_texts = []
 
-        for i in range(1,len(self.FILTERED_HOSTEL_COLUMN),1):
+        for i in range(1, len(self.FILTERED_HOSTEL_COLUMN), 1):
             cell_path = "//tbody[@class='pointer']/tr[@class='ng-scope'][%d]/td[16]" % i
             self.wait.until(EC.text_to_be_present_in_element((By.XPATH, cell_path), given_need_of_hostel))
             cells_texts.append((self.driver.find_element(*(By.XPATH, cell_path))).text)
 
         return cells_texts
 
-
-
-    #bound to military service(bound, isn`t bound)
+    # bound to military service(bound, isn`t bound)
     def try_get_bound_to_military_checkbox(self):
         return self.is_element_visible(self.BOUND_TO_MILITARY_CHECKBOX)
 
     def try_get_not_bound_to_military_checkbox(self):
         return self.is_element_visible(self.NOT_BOUND_TO_MILITARY_CHECKBOX)
-    #FILTERED
+
+    # FILTERED
     def try_get_filtered_bound_to_military(self, given_bound_to_military):
         self.wait.until(EC.text_to_be_present_in_element(self.FILTERED_BOUND_TO_MILITARY, given_bound_to_military))
         return self.driver.find_element(*self.FILTERED_BOUND_TO_MILITARY)
-
 
     def try_get_filtered_military_column(self, given_bound_to_military):
 
         cells_texts = []
 
-        for i in range(1,len(self.FILTERED_MILITARY_COLUMN),1):
+        for i in range(1, len(self.FILTERED_MILITARY_COLUMN), 1):
             cell_path = "//tbody[@class='pointer']/tr[@class='ng-scope'][%d]/td[15]" % i
             self.wait.until(EC.text_to_be_present_in_element((By.XPATH, cell_path), given_bound_to_military))
             cells_texts.append((self.driver.find_element(*(By.XPATH, cell_path))).text)
 
         return cells_texts
 
-
-    #resident(foreigner, isn`t foreigner)
+    # resident(foreigner, isn`t foreigner)
     def try_get_resident_foreigner_checkbox(self):
         return self.is_element_visible(self.RESIDENT_FOREIGNER_CHECKBOX)
 
     def try_get_resident_not_foreigner_checkbox(self):
         return self.is_element_visible(self.RESIDENT_NOT_FOREIGNER_CHECKBOX)
-    #FILTERED
+
+    # FILTERED
     def try_get_filtered_resident(self, given_resident):
         self.wait.until(EC.text_to_be_present_in_element(self.FILTERED_RESIDENT, given_resident))
         return self.driver.find_element(*self.FILTERED_RESIDENT)
@@ -295,15 +340,15 @@ class PersonsPage(InternalPage):
     def try_get_filtered_resident_column(self, given_resident):
         cells_texts = []
 
-        for i in range(1,len(self.FILTERED_RESIDENT_COLUMN),1):
+        for i in range(1, len(self.FILTERED_RESIDENT_COLUMN), 1):
             cell_path = "//tbody[@class='pointer']/tr[@class='ng-scope'][%d]/td[12]" % i
             self.wait.until(EC.text_to_be_present_in_element((By.XPATH, cell_path), given_resident))
             cells_texts.append((self.driver.find_element(*(By.XPATH, cell_path))).text)
 
         return cells_texts
 
-    #SEARCH
-    #to all searches
+    # SEARCH
+    # to all searches
     def try_get_input_group(self):
         return self.is_element_visible(self.INPUT_GROUP_SEARCH_BUTTON)
 
@@ -363,16 +408,25 @@ class PersonsPage(InternalPage):
         column_headers = self.driver.find_elements_by_xpath('//thead/tr/th')
         for i in range(len(column_headers)):
             if column_headers[i].get_attribute('class') == 'ng-scope ng-hide':
-                visible_columns_list.append(i+1)
+                visible_columns_list.append(i + 1)
         return visible_columns_list
-
-    def show_all_columns(self):
-        self.driver.find_element(*PersonsPage.FIELD_CHOOSER_BUTTON).click()
-        not_selected_columns =\
-            self.driver.find_elements(*PersonsPage.INACTIVE_COLUMNS_MODAL)
-        for column_name in not_selected_columns:
-            column_name.click()
-        self.driver.find_element(*PersonsPage.FIELD_CHOOSER_RED_CLOSE_BUTTON).click()
 
     def get_number_from_selector(self, selector):
         return self.driver.find_element(*selector).text
+
+    def show_all_columns(self):
+        list_all_unchecked_checkboxes = (self.COLUMN_SURNAME_ADD,
+                                         self.COLUMN_NAME_ADD,
+                                         self.COLUMN_FATHER_NAME_ADD,
+                                         self.COLUMN_MARITAL_STATUS_ADD,
+                                         self.COLUMN_CITIZENSHIP_ADD,
+                                         self.COLUMN_RESIDENT_ADD,
+                                         self.COLUMN_PLACE_OF_BIRTH_ADD,
+                                         self.COLUMN_VZ_ADD,
+                                         self.COLUMN_MATERIAL_LIABILITY_ADD)
+        self.driver.find_element(*PersonsPage.FIELD_CHOOSER_BUTTON).click()
+        for checkbox in list_all_unchecked_checkboxes:
+            self.is_element_visible(checkbox).click()
+        self.driver.find_element(*PersonsPage.FIELD_CHOOSER_RED_CLOSE_BUTTON).click()
+        self.is_element_present(self.SPINNER_OFF)
+        sleep(2) #only sleep can help in this case.

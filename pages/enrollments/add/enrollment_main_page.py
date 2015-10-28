@@ -40,6 +40,11 @@ class EnrollmentsMainPage(InternalPage):
     BUTTON_SAVE = (By.XPATH, ".//*[@class='btn btn-primary'][@ng-click='sendToServer()']")
     ID_DETAILING_START_MENU = "inputEnrolmentTypeId"
     ID_TYPE_OF_ENTRY_MENU = "inputChiefEnrolTypes"
+    IS_ENROLLMENT_IN_PERSON = (By.XPATH, ".//*[@id='movieForm']/div[1]/div[2]/table/tbody/tr/td[1]")
+
+    @property
+    def is_enrollment_in_person(self):
+        return self.is_element_visible(self.IS_ENROLLMENT_IN_PERSON)
 
     @property
     def search_offers_field(self):
@@ -190,7 +195,8 @@ class EnrollmentsMainPage(InternalPage):
         This method fill enrollment and save one.
         """
         enrollment = self.get_enrollment(json_file, name_of_dictionary)
-        self.add_person_in_enrollment(enrollment.person_name)
+        if not self.is_enrollment_in_person:
+            self.add_person_in_enrollment(enrollment.person_name)
         self.emulation_of_input(self.SERIES_OF_STATEMENTS, enrollment.series_of_statements)
         self.emulation_of_input(self.NUMBER_STATEMENTS, enrollment.number_statements)
         self.click_all_checkbox(enrollment.checkbox_is_state,
@@ -212,6 +218,7 @@ class EnrollmentsMainPage(InternalPage):
         self.set_date(self.DATE_CLOSING_STATEMENTS, enrollment.date_closing)
         self.is_element_present(self.SPINNER_OFF)
         self.button_save.click()
+        return enrollment
 
     def add_person_in_enrollment(self, name):
         """

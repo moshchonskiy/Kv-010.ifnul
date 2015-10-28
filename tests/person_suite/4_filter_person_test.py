@@ -1,10 +1,11 @@
 # coding: utf8
 from model.user import User
-from pages.persons.persons_page import PersonsPage
+
 
 def login(app):
     app.ensure_logout()
     app.login(User.Admin(), True)
+
 
 def test_gender_filter(app):
     login(app)
@@ -23,6 +24,7 @@ def test_gender_filter(app):
     cells_texts = person_page.try_get_filtered_gender_column(u'Жіноча')
     for text in cells_texts:
         assert text == u'Жіноча'
+
 
 def test_type_filter(app):
     login(app)
@@ -75,8 +77,7 @@ def test_type_filter(app):
         assert text == u'сторонній'
 
 
-
-#only for need hostel
+# only for need hostel
 def test_need_hostel_filter(app):
     login(app)
     person_page = app.persons_page
@@ -87,7 +88,8 @@ def test_need_hostel_filter(app):
     for text in cells_texts:
         assert text == u'потреб. гуртож.'
 
-#only for bound to military person
+
+# only for bound to military person
 def test_bound_to_military_filter(app):
     login(app)
     person_page = app.persons_page
@@ -103,7 +105,8 @@ def test_bound_to_military_filter(app):
     for text in cells_texts:
         assert text == u'ВЗ'
 
-#only for foreigner resident
+
+# only for foreigner resident
 def test_resident_filter(app):
     login(app)
     person_page = app.persons_page

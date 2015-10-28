@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from model.user import User
+from utils.personCreator import PersonCreator
 
 __author__ = 'stako'
 
@@ -33,7 +34,12 @@ def fill_extra_person_page_with_invalid_data(app, person):
     app.extra_page.set_private_case_numbers(person.private_case_number)
 
 
-def test_verification_fields_in_person(app, person):
+def test_verification_fields_in_person(app, dictionary_with_json_files):
+    # create person
+    create_person = PersonCreator(dictionary_with_json_files["person_incorrect"])
+    person = create_person.create_person_from_json()
+
+    # login and follow up to person's page
     app.ensure_logout()
     app.login(User.Admin(), True)
     assert app.persons_page.is_this_page
