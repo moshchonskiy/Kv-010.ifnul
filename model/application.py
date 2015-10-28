@@ -1,25 +1,23 @@
-from pages.dictionaries_page import DictionariesPage
-
-from pages.persons.view.person_current_view_page import PersonCurrentViewPage
-from pages.persons.view.person_enrollment_view_page import PersonEnrollmentViewPage
-from pages.persons.view.person_main_view_page import PersonMainViewPage
-from pages.persons.view.person_papers_view_page import PersonPapersViewPage
 
 __author__ = 'Evgen'
 
-from selenium.webdriver.remote.webelement import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support.expected_conditions import *
 
-from pages.login_page import LoginPage
-from pages.persons.persons_page import PersonsPage
 from pages.internal_page import InternalPage
+from pages.login_page import LoginPage
 from pages.enrollments.enrollments_page import EnrollmentsPage
 from pages.enrollments.add.enrollment_main_page import EnrollmentsMainPage
 from pages.enrollments.add.enrollment_base_page import EnrollmentsBasePage
 from model.user import User
-from pages.persons.add.person_main_page import *
+from pages.dictionaries_page import DictionariesPage
+from pages.persons.view.person_current_view_page import PersonCurrentViewPage
+from pages.persons.view.person_enrollment_view_page import PersonEnrollmentViewPage
+from pages.persons.view.person_main_view_page import PersonMainViewPage
+from pages.persons.view.person_papers_view_page import PersonPapersViewPage
 from pages.persons.persons_page import PersonsPage
+from pages.persons.add.person_main_page import *
+from pages.persons.add.person_enrollments_page import PersonEnrollmentPage
 from pages.persons.add.person_extra_page import *
 from pages.persons.add.person_addresses_page import *
 from pages.persons.add.person_contacts_page import *
@@ -37,7 +35,7 @@ class Application:
         self.internal_page = InternalPage(driver, base_url)
         self.person_main_page = AddPersonMainPage(driver, base_url)
         self.enrollments_page = EnrollmentsPage(driver, base_url)
-        self.dictionaries_page = DictionariesPage(driver,base_url)
+        self.dictionaries_page = DictionariesPage(driver, base_url)
         self.person_current_view_page = PersonCurrentViewPage(driver, base_url)
         self.person_main_view_page = PersonMainViewPage(driver, base_url)
         self.person_papers_view_page = PersonPapersViewPage(driver, base_url)
@@ -50,6 +48,7 @@ class Application:
         self.contact_page = AddPersonContactsPage(driver, base_url)
         self.papers_page = AddPersonPapersPage(driver, base_url)
         self.person_base_page = AddPersonPage(driver, base_url)
+        self.person_enrollment = PersonEnrollmentPage(driver, base_url)
 
     def login(self, user, checkbox=False):
         """

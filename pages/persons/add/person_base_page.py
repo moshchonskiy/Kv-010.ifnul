@@ -6,7 +6,6 @@ from pages.internal_page import InternalPage
 from selenium.webdriver.common.by import By
 
 
-
 class AddPersonPage(InternalPage):
 
     NEXT_BUTTON = (By.XPATH, "//button[@ng-click='goToNextTab(1)']")
@@ -20,11 +19,11 @@ class AddPersonPage(InternalPage):
     PERSON_PHOTO_TAB = (By.XPATH, "//li//a[contains(., 'Фото')]")
     PERSON_CONTACTS_TAB = (By.XPATH, "//li//a[contains(., 'Контакти')]")
     PERSON_PAPERS_TAB = (By.XPATH, "//li//a[contains(., 'Документи')]")
-    PERSON_ENROLLMENTS_TAB = (By.XPATH, "//li//a[contains(., 'Заяви')]")
+    PERSON_ENROLLMENTS_TAB = (By.XPATH, "//li//a[contains(., 'Заяви')][@ng-click='select()']")
 
     @property
     def is_this_page(self):
-        return self.is_element_visible(self.SAVE_NEW_PERSON_BUTTON[1])
+        return self.is_element_visible(self.SAVE_NEW_PERSON_BUTTON)
 
     @property
     def click_next_button(self):
@@ -54,6 +53,10 @@ class AddPersonPage(InternalPage):
     @property
     def click_papers_tab(self):
         return self.driver.find_element(*self.PERSON_PAPERS_TAB).click()
+
+    @property
+    def enrollments_tab(self):
+        return self.is_element_visible(self.PERSON_ENROLLMENTS_TAB)
 
     def find_element_in_select(self, elements, value):
         """

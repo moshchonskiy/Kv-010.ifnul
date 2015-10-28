@@ -17,6 +17,7 @@ class AddPersonExtraPage(AddPersonPage):
     ALL_NATIONALITIES_SELECT = (By.XPATH, "//div[@id='citizenCountryId']//a//div")
     PRIVATE_CASE_CHARS_INPUT = (By.XPATH, "//input[@id='docSeries']")
     PRIVATE_CASE_NUMBER_INPUT = (By.XPATH, "//input[@id='docNum']")
+    PRIVATE_CASE_NUMBER_INPUT_INCORRECT = (By.XPATH, "//input[@id='docNum'][contains (@class, 'ng-invalid-pattern')]")
     IS_A_OUTLANDER_CHECKER = (By.XPATH, "//input[@ng-checked='person.resident']")
     IS_A_MILITARY_CHECKER = (By.XPATH, "//input[@ng-checked='person.isMilitary']")
     NEED_HOSTEL_CHECKER = (By.XPATH, "//input[@ng-checked='person.isHostel']")
@@ -24,6 +25,10 @@ class AddPersonExtraPage(AddPersonPage):
     @property
     def is_this_page(self):
         return self.is_element_visible(self.ACTIVATE_BIRTH_DAY_CHOOSER)
+
+    @property
+    def private_case_number_input_incorrect(self):
+        return self.is_element_visible(self.PRIVATE_CASE_NUMBER_INPUT_INCORRECT)
 
     def set_persons_birth_day(self, date):
         """
