@@ -29,6 +29,7 @@ class EnrollmentsMainPage(InternalPage):
     LIST_FROM_UI_SELECT = (By.XPATH, "//div[contains(@id, 'ui-select-choices-row')]/a/div")
     BUTTON_CHOOSE_SPECIALTIES = (By.CSS_SELECTOR, "button[class='btn btn-primary'] >i")
     CHOOSE_FIRST_SPECIALTIES = (By.XPATH, "//div[@class='table-responsive']//tbody[@class='pointer']/tr[1]/td[2]")
+    BUTTON_CLOSE_CHOOSE_OFFER = (By.XPATH, "//button[@class='close']")
     COUNT_SPECIALISTS = (By.XPATH, "//div[@class='table-responsive']//tbody[@class='pointer']/tr")
     DOCUMENT = (By.XPATH, ".//*[@class='col-xs-5']/*[@id='inputStructure']//i[@class='caret pull-right']")
     TOTAL_SCORE = (By.ID, "inputMark")
@@ -49,6 +50,10 @@ class EnrollmentsMainPage(InternalPage):
     @property
     def choose_first_specialties(self):
         return self.is_element_visible(self.CHOOSE_FIRST_SPECIALTIES)
+
+    @property
+    def button_close_choose_offer(self):
+        return self.is_element_visible(self.BUTTON_CLOSE_CHOOSE_OFFER)
 
     @property
     def search_name_field(self):
