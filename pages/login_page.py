@@ -1,3 +1,6 @@
+from selenium.webdriver.support.expected_conditions import visibility_of_element_located
+from decorators.error_handling_dec import ErrorHandler
+
 __author__ = 'Evgen'
 from selenium.webdriver.common.by import By
 
@@ -30,3 +33,7 @@ class LoginPage(Page):
     @property
     def is_this_page(self):
         return self.is_element_visible(self.LOGIN_PAGE)
+
+    @ErrorHandler("current page is not Login page")
+    def is_current_page(self):
+        return self.wait.until(visibility_of_element_located(self.LOGIN_PAGE))

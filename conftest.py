@@ -11,7 +11,6 @@ from model.application import Application
 from utils.data_provider_from_json import DataProviderJSON
 
 
-
 def pytest_addoption(parser):
     parser.addoption("--browser", action="store", default="firefox")
     # parser.addoption("--base_url", action="store", default="http://localhost:9000/")
@@ -71,3 +70,10 @@ def logout_login(app):
 
 
 
+
+
+@pytest.fixture(scope="class")
+def pre_login(request, app):
+    app.ensure_logout()
+    app.login(User.Admin(), True)
+    request.cls.app = app

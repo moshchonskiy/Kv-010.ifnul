@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+from decorators.error_handling_dec import ErrorHandler
+
 __author__ = 'Evgen'
 
 from selenium.webdriver.common.by import By
@@ -22,6 +24,10 @@ class InternalPage(Page):
     GO_TO_LEFT_BUTTON_IN_DATE_PICKER = (By.CSS_SELECTOR, "button.btn.btn-default.btn-sm.pull-left")
     GO_TO_RIGHT_BUTTON_IN_DATE_PICKER = (By.CSS_SELECTOR, "button.btn.btn-default.btn-sm.pull-right")
     ACTIVATE_MONTH_OR_YEAR_CHANGE_BUTTON = (By.CSS_SELECTOR, "button[id*='-title']")
+
+    @ErrorHandler("current page is not internal page")
+    def is_current_page(self):
+        return self.wait.until(visibility_of_element_located(self.INTERNAL_PAGE))
 
     @property
     def user_dropdown(self):
