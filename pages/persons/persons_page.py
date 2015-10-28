@@ -1,4 +1,5 @@
 # coding: utf8
+from fixtures.decorators import ErrorHandler
 from pages.internal_page import InternalPage
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
@@ -117,7 +118,7 @@ class PersonsPage(InternalPage):
     # END OF SELECTORS SECTION
     #
 
-
+    @ErrorHandler("Person page page is not current")
     def is_this_page(self):
         return self.is_element_visible(self.ADD_PERSON_BUTTON)
     @property
