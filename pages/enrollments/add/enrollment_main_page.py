@@ -47,6 +47,7 @@ class EnrollmentsMainPage(InternalPage):
     ALL_FOUND_PERSONS_PIB = (By.XPATH, "//tbody[@class='pointer']//tr//td[2]")
     ALL_FOUND_PERSONS_ID = (By.XPATH, "//tbody[@class='pointer']//tr//td[1]")
     CANCEL_BUTTON = (By.XPATH, "//div[@class='modal-footer ng-scope']//button[@ng-click='cancel()']")
+    IS_ENROLLMENT_IN_PERSON = (By.XPATH, ".//*[@class='pointer']/tr/td[1]")
 
     @property
     def cancel_click(self):

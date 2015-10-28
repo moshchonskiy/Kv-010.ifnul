@@ -2,15 +2,12 @@
 from model.user import User
 from utils.add_person_pattern import AddPersonPattern
 from utils.fill_enrollment import FillEnrollment
-from utils.personCreator import PersonCreator
 from utils.table_ease_access import TestTable
 
 __author__ = 'Vadym'
 
 
-def test_global_info_about_person(app, dictionary_with_json_files):
-    create_person = PersonCreator(dictionary_with_json_files["person"])
-    person = create_person.create_person_from_json()
+def test_global_info_about_person(app, person):
     app.ensure_logout()
     app.login(User.Admin())
     app.internal_page.is_this_page
@@ -38,9 +35,7 @@ def test_global_info_about_person(app, dictionary_with_json_files):
     assert private_case_number == actual_person.get_number_person_record()
 
 
-def test_main_info_about_person(app, dictionary_with_json_files):
-    create_person = PersonCreator(dictionary_with_json_files["person"])
-    person = create_person.create_person_from_json()
+def test_main_info_about_person(app, person):
     expected_main_info_person = [person.person_type,
                                  person.get_birthday_str_for_view(),
                                  person.get_specific_symbol_for_view(person.reservist),
@@ -58,9 +53,7 @@ def test_main_info_about_person(app, dictionary_with_json_files):
         assert expected_main_info_person[index] == actual_value_from_web
 
 
-def test_place_of_birth(app, dictionary_with_json_files):
-    create_person = PersonCreator(dictionary_with_json_files["person"])
-    person = create_person.create_person_from_json()
+def test_place_of_birth(app, person):
     expected_place_birth_person = person.burn_place
     expected_size_data_birth = len(expected_place_birth_person)
     actual_count_of_elements_on_web = app.person_current_view_page.get_count_elements_place_of_birth()
@@ -72,9 +65,7 @@ def test_place_of_birth(app, dictionary_with_json_files):
         assert expected_place_birth_person[index] == actual_value_from_web
 
 
-def test_addres_of_registration(app, dictionary_with_json_files):
-    create_person = PersonCreator(dictionary_with_json_files["person"])
-    person = create_person.create_person_from_json()
+def test_addres_of_registration(app, person):
     expected_addres_registration = person.registration_place["area"]
     expected_size_data_addres = len(expected_addres_registration)
     actual_count_of_elements = app.person_current_view_page.get_count_elements_addres_of_registration()
@@ -86,9 +77,7 @@ def test_addres_of_registration(app, dictionary_with_json_files):
         assert expected_addres_registration[index] == actual_value_from_web
 
 
-def test_exact_address_of_registration(app, dictionary_with_json_files):
-    create_person = PersonCreator(dictionary_with_json_files["person"])
-    person = create_person.create_person_from_json()
+def test_exact_address_of_registration(app, person):
     expected_exact_addres = [str(person.registration_place["index"]),
                              person.registration_place["type"],
                              person.registration_place["street"],
@@ -103,9 +92,7 @@ def test_exact_address_of_registration(app, dictionary_with_json_files):
         assert expected_exact_addres[index] == actual_value_from_web
 
 
-def test_post_address(app, dictionary_with_json_files):
-    create_person = PersonCreator(dictionary_with_json_files["person"])
-    person = create_person.create_person_from_json()
+def test_post_address(app, person):
     if person.registration_place["is_addresses_match"]:
         expected_post_addres = person.registration_place["area"]
     else:
@@ -120,9 +107,7 @@ def test_post_address(app, dictionary_with_json_files):
         assert expected_post_addres[index] == value_from_web
 
 
-def test_exact_post_addres(app, dictionary_with_json_files):
-    create_person = PersonCreator(dictionary_with_json_files["person"])
-    person = create_person.create_person_from_json()
+def test_exact_post_addres(app, person):
     expected_exact_post_addres = [str(person.post_registration_place["index"]),
                                   person.post_registration_place["type"],
                                   person.post_registration_place["street"],
@@ -137,10 +122,7 @@ def test_exact_post_addres(app, dictionary_with_json_files):
         assert expected_exact_post_addres[index] == actual_value_from_web
 
 
-def test_document_verify(app, dictionary_with_json_files):
-    create_person = PersonCreator(dictionary_with_json_files["person"])
-    person = create_person.create_person_from_json()
-
+def test_document_verify(app, person):
     app.person_main_view_page.person_document_button().click()
     app.person_papers_view_page.is_element_present(app.person_papers_view_page.SPINNER_OFF)
 
@@ -150,9 +132,7 @@ def test_document_verify(app, dictionary_with_json_files):
         assert app.person_papers_view_page.is_table_present() == False
 
 
-def test_verify_table_with_documents(app, dictionary_with_json_files):
-    create_person = PersonCreator(dictionary_with_json_files["person"])
-    person = create_person.create_person_from_json()
+def test_verify_table_with_documents(app, person):
     person_papers = app.person_papers_view_page
     if len(person.documents) == 0:
         assert person_papers.get_text_not_have_papers().text == u"У даної персони немає документів"
