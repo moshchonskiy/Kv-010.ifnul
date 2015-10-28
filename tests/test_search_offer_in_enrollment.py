@@ -9,12 +9,12 @@ __author__ = 'Vadym'
 data_provider_offers = ["Біологічний", "Економічний", "Історичний", "Фізичний",
                         "Хімічний", "Механіко-математичний", "Іноземних мов"]
 data_provider_forms_of_education = ["Молодший спеціаліст на основі повної загальної середньої освіти",
-                                    "Бакалавр"
-                                    "Магістр на основі повної загальної середньої освіти"
-                                    "Кваліфікований робітник 2 ступеня на основі БЗСО БЕЗ права отримання ПЗСО"
-                                    "Магістр (зі скороченим терміном навчання)"
-                                    "Бакалавр (з нормативним терміном навчання, на 2 курс)"
-                                    "Спеціаліст на основі повної загальної середньої освіти"
+                                    "Бакалавр",
+                                    "Магістр на основі повної загальної середньої освіти",
+                                    "Кваліфікований робітник 2 ступеня на основі БЗСО БЕЗ права отримання ПЗСО",
+                                    "Магістр (зі скороченим терміном навчання)",
+                                    "Бакалавр (з нормативним терміном навчання, на 2 курс)",
+                                    "Спеціаліст на основі повної загальної середньої освіти",
                                     "Магістр (зі скороченим терміном навчання)"
                                     ]
 
@@ -39,17 +39,12 @@ def test_check_correct_structural_subdivision(app, offers):
     actual_data_structural_subdivision = enr_page.get_arr_structural_subdivision_from_choose_offer()
     enr_page.button_close_choose_offer.click()
     for actual_data in actual_data_structural_subdivision:
-        assert offers == actual_data
+        assert offers == actual_data.encode("utf-8")
 
 def test_check_correct_type_of_offer(app, forms_of_education):
     enr_page = app.enrollments_main_page
     enr_page.search_offers("Біологічний", forms_of_education)
     actual_data_type_offer = enr_page.get_arr_type_offer_from_choose_offer()
-    enr_page.button_close_choose_offer().click()
+    enr_page.button_close_choose_offer.click()
     for actual_data in actual_data_type_offer:
-        assert forms_of_education == actual_data
-
-    # def test_correct_added_offer(self, app):
-    #     enr_page = app.enrollments_page
-    #     enr_page.choose_first_specialties.click()
-
+        assert forms_of_education == actual_data.encode("utf-8")
