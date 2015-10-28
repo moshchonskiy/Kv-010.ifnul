@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+from model.user import User
 
 __author__ = 'Evgen'
 
@@ -8,6 +9,7 @@ from selenium import webdriver
 from pyvirtualdisplay import Display
 from model.application import Application
 from utils.data_provider_from_json import DataProviderJSON
+
 
 
 def pytest_addoption(parser):
@@ -58,3 +60,14 @@ def app(request, browser_type, base_url, jenkins_display):
         driver = webdriver.Ie()
     request.addfinalizer(driver.quit)
     return Application(driver, base_url)
+
+@pytest.yield_fixture(scope="function")
+def logout_login(app):
+    app.ensure_logout()
+    app.login(User.Admin(), True)
+    app.internal_page.is_element_present(app.internal_page.SPINNER_OFF)
+    yield app
+
+
+
+
