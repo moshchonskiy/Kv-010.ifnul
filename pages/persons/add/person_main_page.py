@@ -105,3 +105,18 @@ class AddPersonMainPage(AddPersonPage):
         :return:
         """
         self.emulation_of_input(self.PERSON_FIRST_NAME_ENG_INPUT, first_eng_name)
+
+    def fill_in_main_person_page(self, person):
+        """
+        Method fill in data on the main persons page
+        :param person: persons model in Person format
+        :return:
+        """
+        self.is_this_page
+        self.person_type_select_click()
+        self.choose_person_type(person.person_type)
+        self.set_ukr_surname(person.surname_ukr)
+        self.set_first_ukr_name(person.first_name_ukr)
+        self.set_father_ukr_name(person.second_name_ukr)
+        self.set_eng_surname(person.surname_eng)
+        self.set_first_eng_name(person.first_name_eng)
