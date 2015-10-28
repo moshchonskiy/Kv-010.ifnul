@@ -7,6 +7,7 @@
     "fill_enrollment_main_test_view": "fill_enrollment_main_test_view.json",
     "info_about_unit": "info_about_unit.json",
     "person_test_view": "person_test_view.json",
-    "public_activity": "public_activity.json"
+    "public_activity": "public_activity.json",
+    "existing_person": "existing_person.json"
   }
 }

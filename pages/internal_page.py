@@ -7,6 +7,7 @@ __author__ = 'Evgen'
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.expected_conditions import *
 from page import Page
+from time import sleep
 
 
 class InternalPage(Page):
@@ -18,7 +19,8 @@ class InternalPage(Page):
     DICTIONARIES_PAGE_LINK = (By.XPATH, "//a[@ui-sref='root.dictionaries']")
     SPINNER_OFF = (By.XPATH, "//div[@id='spinnerDiv' and @style='display: none;']")
     SELECT_FIRST_SHOWED_YEAR = (By.XPATH, "//div//ul[@ng-model='date']//tbody//tr[1]//td[1]//button//span")
-    SELECT_ALL_VISIBLE_YEARS_MONTHS_OR_DAYS = (By.XPATH, "//ul[@ng-model='date']//tbody//tr//td//span[@class='ng-binding']")
+    # SELECT_ALL_VISIBLE_YEARS_MONTHS_OR_DAYS = (By.XPATH, "//ul[@ng-model='date']//tbody//tr//td//button//span[@class='ng-binding']")
+    SELECT_ALL_VISIBLE_YEARS_MONTHS_OR_DAYS = (By.XPATH, "//ul[@ng-model='date']//tbody//tr//td//button//span")
     GO_TO_LEFT_BUTTON_IN_DATE_PICKER = (By.CSS_SELECTOR, "button.btn.btn-default.btn-sm.pull-left")
     GO_TO_RIGHT_BUTTON_IN_DATE_PICKER = (By.CSS_SELECTOR, "button.btn.btn-default.btn-sm.pull-right")
     ACTIVATE_MONTH_OR_YEAR_CHANGE_BUTTON = (By.CSS_SELECTOR, "button[id*='-title']")
@@ -134,7 +136,7 @@ class InternalPage(Page):
         :param date: Date, which need to set up in datetime format
         :return:
         """
-        self.is_element_present(date_picker_locator)
+        self.is_element_visible(date_picker_locator)
         elem = self.driver.find_element(*date_picker_locator)
         elem.click()
         el = elem.find_element_by_xpath("..")

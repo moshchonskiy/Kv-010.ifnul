@@ -1,6 +1,6 @@
 # coding: utf8
-
-
+from time import sleep
+from pages.internal_page import InternalPage
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.expected_conditions import visibility_of_element_located
@@ -35,11 +35,9 @@ class PersonsPage(InternalPage):
     CLOSE_AFTER_ADDITION_BUTTON = (By.XPATH, "//div[@class='modal-footer']/button[@class='btn btn-danger']")
 
     REFRESH_UPPER_BUTTON = (
-        By.XPATH,
-        "//div[@class='container-fluid admissionSystemApp-container']//div[@class='col-md-2 col-lg-2 filter']/p[1]/button")
+        By.XPATH, "//div[@class='container-fluid admissionSystemApp-container']//div[@class='col-md-2 col-lg-2 filter']/p[1]/button")
     REFRESH_BOTTOM_BUTTON = (
-        By.XPATH,
-        "//div[@class='container-fluid admissionSystemApp-container']//div[@class='col-md-2 col-lg-2 filter']/p[2]/button")
+        By.XPATH, "//div[@class='container-fluid admissionSystemApp-container']//div[@class='col-md-2 col-lg-2 filter']/p[2]/button")
     GENDER_MALE_CHECKBOX = (
         By.XPATH, "//div[@class='panel-group']/div[1]/div[2]/div[@class='panel-body']/div[1]/label/input")
     GENDER_FEMALE_CHECKBOX = (
@@ -161,27 +159,31 @@ class PersonsPage(InternalPage):
     def is_current_page(self):
         return self.wait.until(visibility_of_element_located(self.PERSON_PAGE_LINK))
 
-
+    @property
     def is_this_page(self):
         return self.is_element_visible(self.ADD_PERSON_BUTTON)
 
+    @property
     def rows_in_body(self):
         return self.driver.find_elements(*self.ROWS_IN_RABLE)
 
+    @property
     def add_person_link(self):
         return self.driver.find_element(*self.ADD_PERSON_BUTTON).click()
 
+    @property
     def delete_first_person_in_page(self):
         if self.is_element_visible(self.DELETE_FIRST_PERSON_IN_TABLE):
             self.driver.find_element(*self.DELETE_FIRST_PERSON_IN_TABLE).click()
             self.is_element_present(self.SPINNER_OFF)
 
+    @property
     def view_first_person_in_page(self):
         if self.is_element_visible(self.VIEW_FIRST_PERSON_IN_TABLE):
             self.driver.find_element(*self.VIEW_FIRST_PERSON_IN_TABLE).click()
             self.is_element_present(self.SPINNER_OFF)
 
-
+    @property
     def edit_first_person_in_page(self):
         return self.is_element_visible(self.EDIT_FIRST_PERSON_IN_TABLE)
 
@@ -442,3 +444,22 @@ class PersonsPage(InternalPage):
             self.is_element_visible(checkbox).click()
         self.try_field_chooser_red_close_button().click()
         self.wait_until_page_generate()
+
+    def return_added_person_surname(self, person):
+        """
+        Method searches new added person
+        :param person: persons model in Person format
+        :return: finded person's surname
+        """
+        self.is_this_page
+        self.try_get_choose_surname().click()
+        self.try_get_input_group().clear()
+        self.try_get_input_group().send_keys(person.surname_ukr)
+        self.try_get_ok_button().click()
+        return self.try_get_searched_surname(person.surname_ukr).text.partition(' ')[0]
+
+    def del_newly_created_person(self, person):
+        self.is_this_page
+        expected_person = self.try_get_searched_surname(person.surname_ukr).text.partition(' ')[0]
+        if expected_person:
+            self.delete_first_person_in_page

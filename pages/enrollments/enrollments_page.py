@@ -103,7 +103,12 @@ class EnrollmentsPage(InternalPage):
 
     @property
     def is_this_page(self):
-        return self.is_element_visible(self.ADD_NEW_ENROLLMENT_BUTTON)
+        return self.is_element_visible(self.ADD_NEW_ENROLLMENT_BUTTON)\
+
+    @property
+    def add_new_enrollment_button_click(self):
+        return self.driver.find_element(*self.ADD_NEW_ENROLLMENT_BUTTON).click()
+        self.is_element_present(self.SPINNER_OFF)
 
     @property
     def search_select_dropdown(self):

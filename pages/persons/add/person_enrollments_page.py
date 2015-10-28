@@ -6,7 +6,7 @@ __author__ = 'Evgen'
 
 class PersonEnrollmentPage(InternalPage):
     ADD_ENROLLMENT = (By.XPATH, ".//*[@ng-click='newEnrolment()']")
-    ENROLLMENT_DOC_NUMBER_IN_PERSON = (By.XPATH, ".//*[@id='person']/div/div/div/table/tbody/tr/td[11]")
+    ENROLLMENT_DOC_NUMBER_IN_PERSON = (By.XPATH, ".//*[@class='pointer']/tr/td[11]")
 
     @property
     def add_enrollment(self):
