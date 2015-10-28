@@ -1,15 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from utils.add_person_pattern import AddPersonPattern
-from utils.personCreator import PersonCreator
 
 __author__ = 'acidroed'
 
 
-def test_add_person(app, dictionary_with_json_files):
-    # create person
-    create_person = PersonCreator(dictionary_with_json_files["person"])
-    person = create_person.create_person_from_json()
+def test_add_person(app, person):
     add_person_pattern = AddPersonPattern()
     add_person_pattern.add_person(app, person)
     person_page = app.persons_page
