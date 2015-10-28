@@ -16,7 +16,7 @@ class InternalPage(Page):
     PERSON_PAGE_LINK = (By.XPATH, "//a[@ui-sref='root.person.list']")
     ENROLLMENTS_PAGE_LINK = (By.XPATH, "//a[@ui-sref='root.enrolment.list']")
     DICTIONARIES_PAGE_LINK = (By.XPATH, "//a[@ui-sref='root.dictionaries']")
-    SPINNER_OFF = (By.XPATH, "//div[@id='spinnerDiv' and @style='display: none;']")
+
     SELECT_FIRST_SHOWED_YEAR = (By.XPATH, "//div//ul[@ng-model='date']//tbody//tr[1]//td[1]//button//span")
     SELECT_ALL_VISIBLE_YEARS_MONTHS_OR_DAYS = (
         By.XPATH, "//ul[@ng-model='date']//tbody//tr//td//span[@class='ng-binding']")
@@ -48,11 +48,7 @@ class InternalPage(Page):
     def try_get_dictionaries_page_link(self):
         return self.driver.find_element(*self.DICTIONARIES_PAGE_LINK)
 
-    def is_element_present(self, locator):
-        try:
-            return self.wait.until(presence_of_element_located(locator))
-        except WebDriverException:
-            return False
+
 
     def emulation_of_input(self, locator, value):
         """
