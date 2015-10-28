@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+from fixtures.decorators import ErrorHandler
+
 __author__ = 'Evgen'
 
 from selenium.webdriver.common.by import By
@@ -16,7 +18,8 @@ class InternalPage(Page):
     DICTIONARIES_PAGE_LINK = (By.XPATH, "//a[@ui-sref='root.dictionaries']")
     SPINNER_OFF = (By.XPATH, "//div[@id='spinnerDiv' and @style='display: none;']")
     SELECT_FIRST_SHOWED_YEAR = (By.XPATH, "//div//ul[@ng-model='date']//tbody//tr[1]//td[1]//button//span")
-    SELECT_ALL_VISIBLE_YEARS_MONTHS_OR_DAYS = (By.XPATH, "//ul[@ng-model='date']//tbody//tr//td//span[@class='ng-binding']")
+    SELECT_ALL_VISIBLE_YEARS_MONTHS_OR_DAYS = (
+    By.XPATH, "//ul[@ng-model='date']//tbody//tr//td//span[@class='ng-binding']")
     GO_TO_LEFT_BUTTON_IN_DATE_PICKER = (By.CSS_SELECTOR, "button.btn.btn-default.btn-sm.pull-left")
     GO_TO_RIGHT_BUTTON_IN_DATE_PICKER = (By.CSS_SELECTOR, "button.btn.btn-default.btn-sm.pull-right")
     ACTIVATE_MONTH_OR_YEAR_CHANGE_BUTTON = (By.CSS_SELECTOR, "button[id*='-title']")
@@ -29,7 +32,7 @@ class InternalPage(Page):
     def logout_button(self):
         return self.driver.find_element(*self.LOGOUT_BUTTON)
 
-
+    @ErrorHandler("Internal page page is not current")
     def is_this_page(self):
         return self.is_element_visible(self.INTERNAL_PAGE)
 
@@ -119,7 +122,6 @@ class InternalPage(Page):
             if day.text != "" and int(day.text) == date.day:
                 day.click()
                 break
-
 
     def set_date(self, date_picker_locator, date):
         """

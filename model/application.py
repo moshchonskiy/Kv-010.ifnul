@@ -32,6 +32,7 @@ class Application:
         self.driver.get(base_url)
         self.driver.maximize_window()
         self.wait = WebDriverWait(self.driver, 15)
+        # list of page
         self.login_page = LoginPage(self.driver)
         self.persons_page = PersonsPage(self.driver)
         self.internal_page = InternalPage(self.driver)
@@ -109,3 +110,6 @@ class Application:
         :return: True or False
         """
         return self.login_page.is_this_page
+
+
+

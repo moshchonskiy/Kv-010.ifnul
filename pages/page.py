@@ -10,7 +10,6 @@ class Page(object):
         self.wait = WebDriverWait(driver, 15)
 
     def is_element_visible(self, locator):
-        try:
-            return self.wait.until(visibility_of_element_located(locator))
-        except WebDriverException:
-            return False
+        return self.wait.until(visibility_of_element_located(locator))
+
+

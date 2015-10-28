@@ -1,4 +1,5 @@
 from selenium.webdriver.common.by import By
+from fixtures.decorators import ErrorHandler
 
 from pages.internal_page import InternalPage
 
@@ -16,7 +17,6 @@ class DictionariesPage(InternalPage):
     PAGE_BUTTON_NEXT = (By.XPATH, "//ul[@class='pagination ng-table-pagination']/li/a[@ng-switch-when='next']")
     PAGE_BUTTON_PREV = (By.XPATH, "//ul[@class='pagination ng-table-pagination']/li/a[@ng-switch-when='prev']")
 
-
     TABLE_HEAD_CELL = "//table/thead/tr/td[%d]"
     TABLE_HEAD_LAST_CELL = "//table/thead/tr/td[last()]"
 
@@ -24,15 +24,13 @@ class DictionariesPage(InternalPage):
     TABLE_BODY_LAST_CELL_IN_I_ROW = ("//table/tbody/tr[%d]/td[last()]")
     TABLE_BODY_LAST_CELL_IN_LAST_ROW = ("//table/tbody/tr[last()]/td[last()]")
 
-    @property
+    @ErrorHandler("Dictionary page is not current")
     def is_this_page(self):
         return self.is_element_visible(self.DICTIONARIES_PAGE)
 
-    @property
     def try_get_table(self):
         return self.is_element_visible(self.DICTIONARIES_PAGE_TABLE)
 
-    @property
     def try_get_dictionaries_select_elem(self):
         return self.is_element_visible(self.DICTIONARIES_DROPDOWN)
 

@@ -97,3 +97,9 @@ def app(request, browser_type, base_url, jenkins_display):
         driver = webdriver.Ie()
     request.addfinalizer(driver.quit)
     return Application(driver, base_url)
+
+@pytest.fixture(scope="class")
+def pre_login(request,app):
+    app.ensure_logout()
+    app.login(User.Admin(), True)
+    request.cls.app = app

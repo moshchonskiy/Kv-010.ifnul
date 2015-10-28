@@ -117,7 +117,7 @@ class PersonsPage(InternalPage):
     # END OF SELECTORS SECTION
     #
 
-    @property
+
     def is_this_page(self):
         return self.is_element_visible(self.ADD_PERSON_BUTTON)
     @property
