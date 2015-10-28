@@ -19,7 +19,7 @@ class InternalPage(Page):
     SPINNER_OFF = (By.XPATH, "//div[@id='spinnerDiv' and @style='display: none;']")
     SELECT_FIRST_SHOWED_YEAR = (By.XPATH, "//div//ul[@ng-model='date']//tbody//tr[1]//td[1]//button//span")
     SELECT_ALL_VISIBLE_YEARS_MONTHS_OR_DAYS = (
-    By.XPATH, "//ul[@ng-model='date']//tbody//tr//td//span[@class='ng-binding']")
+        By.XPATH, "//ul[@ng-model='date']//tbody//tr//td//span[@class='ng-binding']")
     GO_TO_LEFT_BUTTON_IN_DATE_PICKER = (By.CSS_SELECTOR, "button.btn.btn-default.btn-sm.pull-left")
     GO_TO_RIGHT_BUTTON_IN_DATE_PICKER = (By.CSS_SELECTOR, "button.btn.btn-default.btn-sm.pull-right")
     ACTIVATE_MONTH_OR_YEAR_CHANGE_BUTTON = (By.CSS_SELECTOR, "button[id*='-title']")
@@ -40,12 +40,12 @@ class InternalPage(Page):
     def persons_page_link(self):
         return self.driver.find_element(*self.PERSON_PAGE_LINK)
 
-    @property
-    def enrollments_page_link(self):
+    @ErrorHandler("enrolment page link not found")
+    def try_get_enrollments_page_link(self):
         return self.driver.find_element(*self.ENROLLMENTS_PAGE_LINK)
 
-    @property
-    def dictionaries_page_link(self):
+    @ErrorHandler("dictionary page link not found")
+    def try_get_dictionaries_page_link(self):
         return self.driver.find_element(*self.DICTIONARIES_PAGE_LINK)
 
     def is_element_present(self, locator):

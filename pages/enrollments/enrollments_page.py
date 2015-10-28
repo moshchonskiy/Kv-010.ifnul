@@ -3,6 +3,7 @@ import datetime
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.support.expected_conditions import *
+from fixtures.decorators import ErrorHandler
 from pages.internal_page import InternalPage
 from utils.fill_enrollment import FillEnrollment
 
@@ -96,7 +97,7 @@ class EnrollmentsPage(InternalPage):
     TABLE_HEAD = (By.XPATH, "//div[@class='table-responsive']//thead/tr/th")
     TABLE_FIRST_ROW = (By.XPATH, "//tbody[@class='pointer']/tr[1]/td")
 
-    @property
+    @ErrorHandler("Enrollments page is not current")
     def is_this_page(self):
         return self.is_element_visible(self.ADD_NEW_ENROLLMENT_BUTTON)
 
