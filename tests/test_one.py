@@ -12,7 +12,7 @@ class TestOne:
 
     def test_01(self):
         try:
-            with pytest.allure.step():
+            with pytest.allure.step("Test 1 prepare"):
                 inter_page = self.app.internal_page
                 inter_page.is_this_page()
         except AssertionError:
@@ -21,7 +21,7 @@ class TestOne:
 
     def test_02(self):
         try:
-            with pytest.allure.step():
+            with pytest.allure.step("Test 2 prepare"):
                 dict_page = self.app.dictionaries_page
                 dict_page.is_this_page()
         except AssertionError:
