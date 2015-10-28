@@ -31,7 +31,7 @@ class TestOne:
                 inter_page.is_this_page()
             with pytest.allure.step("Go to dictionary page"):
                 inter_page.try_get_dictionaries_page_link().click()
-                dict_page = self.app.dictionaries_page
+                dict_page = self.app.persons_page
                 dict_page.is_this_page()
 
         except AssertionError:
