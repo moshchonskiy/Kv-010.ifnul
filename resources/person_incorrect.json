@@ -1,11 +1,11 @@
 {
   "person": {
     "person_type": "студент",
-    "surname_ukr": "Гевара",
-    "first_name_ukr": "Ернесто",
-    "second_name_ukr": "Ернесто",
-    "surname_eng": "Gevara",
-    "first_name_eng": "Ernesto",
+    "surname_ukr": "Gevara",
+    "first_name_ukr": "Ernesto",
+    "second_name_ukr": "Ernesto",
+    "surname_eng": "Гевара",
+    "first_name_eng": "Ернесто",
     "birth_day": {
       "day": 28,
       "month": 9,
@@ -15,7 +15,7 @@
     "marital_status": "не одружений",
     "nationality": "Україна",
     "private_case_chars": "BB",
-    "private_case_number": 345678,
+    "private_case_number": "коврик",
     "is_outlander": true,
     "reservist": true,
     "hostel_need": false,

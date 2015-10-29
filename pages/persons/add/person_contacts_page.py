@@ -86,3 +86,19 @@ class AddPersonContactsPage(AddPersonPage):
         :return:
         """
         self.emulation_of_input(self.ICQ_INPUT, icq)
+
+    def fill_in_contact_page(self, person):
+        """
+        Method fill in data on the contact persons page
+        :param person: persons model in Person format
+        :return:
+        """
+        self.is_this_page
+        self.set_first_mobile_phone(person.mobile_phone1)
+        self.set_second_mobile_phone(person.mobile_phone2)
+        self.set_home_phone(person.home_phone)
+        self.set_work_phone(person.work_phone)
+        self.set_email(person.email)
+        self.set_skype(person.skype)
+        self.set_site(person.web_site)
+        self.set_icq(person.icq)

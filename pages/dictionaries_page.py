@@ -1,5 +1,7 @@
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.expected_conditions import visibility_of_element_located
 
+from decorators.error_handling_dec import ErrorHandler
 from pages.internal_page import InternalPage
 
 __author__ = 'Denys'
@@ -16,13 +18,16 @@ class DictionariesPage(InternalPage):
     PAGE_BUTTON_NEXT = (By.XPATH, "//ul[@class='pagination ng-table-pagination']/li/a[@ng-switch-when='next']")
     PAGE_BUTTON_PREV = (By.XPATH, "//ul[@class='pagination ng-table-pagination']/li/a[@ng-switch-when='prev']")
 
-
     TABLE_HEAD_CELL = "//table/thead/tr/td[%d]"
     TABLE_HEAD_LAST_CELL = "//table/thead/tr/td[last()]"
 
     TABLE_BODY_CELL = ("//table/tbody/tr[%d]/td[%d]")
     TABLE_BODY_LAST_CELL_IN_I_ROW = ("//table/tbody/tr[%d]/td[last()]")
     TABLE_BODY_LAST_CELL_IN_LAST_ROW = ("//table/tbody/tr[last()]/td[last()]")
+
+    @ErrorHandler("current page is not Dictionaries page")
+    def is_current_page(self):
+        return self.wait.until(visibility_of_element_located(self.DICTIONARIES_PAGE))
 
     @property
     def is_this_page(self):

@@ -1,3 +1,5 @@
+import os
+
 __author__ = 'odeortc'
 
 import json
@@ -5,13 +7,19 @@ from model.person import Person
 from model.person import Document
 import datetime
 
+
 class PersonCreator(object):
 
     def __init__(self, file):
         self.file = file
 
-    def parseJson(self, file):
-        fl = open(self.file, 'r')
+    def person_file(self):
+        project_path = os.path.dirname(os.path.realpath(__file__))
+        path = os.path.normpath(os.path.abspath(project_path) + "/../resources/" + self.file)
+        return path
+
+    def parseJson(self):
+        fl = open(self.person_file(), 'r')
         st = fl.read()
         fl.close()
         person_json = json.loads(st)
@@ -19,14 +27,16 @@ class PersonCreator(object):
 
     def create_person_from_json(self):
         person = Person()
-        json_person = self.parseJson(self.file)
+        json_person = self.parseJson()
         person.person_type = json_person["person_type"]
         person.surname_ukr = json_person["surname_ukr"]
         person.first_name_ukr = json_person["first_name_ukr"]
         person.second_name_ukr = json_person["second_name_ukr"]
         person.surname_eng = json_person["surname_eng"]
         person.first_name_eng = json_person["first_name_eng"]
-        person.birth_day = datetime.date(json_person["birth_day"]["year"], json_person["birth_day"]["month"], json_person["birth_day"]["day"])
+        person.birth_day = datetime.date(json_person["birth_day"]["year"],
+                                         json_person["birth_day"]["month"],
+                                         json_person["birth_day"]["day"])
         person.sex = json_person["sex"]
         person.marital_status = json_person["marital_status"]
         person.nationality = json_person["nationality"]
@@ -53,7 +63,9 @@ class PersonCreator(object):
             document.document_name = doc["document_name"]
             document.document_case_char = doc["document_case_char"]
             document.document_case_number = doc["document_case_number"]
-            document.day_of_issue = datetime.date(doc["day_of_issue"]["year"], doc["day_of_issue"]["month"], doc["day_of_issue"]["day"])
+            document.day_of_issue = datetime.date(doc["day_of_issue"]["year"],
+                                                  doc["day_of_issue"]["month"],
+                                                  doc["day_of_issue"]["day"])
             document.issued_by = doc["issued_by"]
             document.document_is_original = doc["document_is_original"]
             document.document_is_foreign = doc["document_is_foreign"]
@@ -64,4 +76,3 @@ class PersonCreator(object):
             document.pincode = doc["pincode"]
             person.documents.append(document)
         return person
-
