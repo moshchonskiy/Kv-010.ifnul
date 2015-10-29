@@ -2,8 +2,6 @@
 # -*- coding: utf-8 -*-
 import os
 import pytest
-from model.user import User
-from time import sleep
 from utils.data_provider_from_json import DataProviderJSON
 from utils.personCreator import PersonCreator
 
@@ -13,26 +11,43 @@ __author__ = 'odeortc'
 class TestSearchPersonBy(object):
 
     @pytest.fixture
-    def real_person(request):
-        project_path = os.path.dirname(os.path.realpath(__file__))
-        path = os.path.normpath(os.path.abspath(project_path) + "../../../resources/existing_person.json")
-        person_creator = PersonCreator(path)
-        return person_creator.create_person_from_json()
+    def real_person(request, dictionary_with_json_files):
+        """
+        Fixture create model of person which already exists in the system
+        :return: Model of Person
+        """
+        create_person = PersonCreator(dictionary_with_json_files["existing_person"])
+        return create_person.create_person_from_json()
 
     @pytest.fixture
     def values(request):
         return DataProviderJSON("values_for_enrollment_test.json").get_dict_value()
 
     def search_by(self, app, searched_value, searched_by_option):
+        """
+        Method performes searching by value and searching type
+        :param searched_value: Value which need to find
+        :param searched_by_option: Searching type in Integer. 0 - by PIB, 1 - by surname, 2 - by person id, 3 - by documents number
+        :param app: application context in Application format
+        :return:
+        """
         app.internal_page.enrollments_page_link.click()
         app.enrollments_page.is_this_page
         app.enrollments_page.add_new_enrollment_button_click
         app.enrollments_main_page.is_this_page
-        app.enrollments_main_page.search_person_by(searched_by_option)
+        app.enrollments_main_page.select_person_by(searched_by_option)
         app.enrollments_main_page.set_search_person_by(searched_value)
         app.enrollments_main_page.ok_for_input_field
 
     def search_by_pib_and_surname(self, app, searched_value, searched_by_option, is_valid_value):
+        """
+        Method performes searching by PIB or surname
+        :param searched_value: Value which need to find
+        :param searched_by_option: Searching type in Integer. 0 - by PIB, 1 - by surname, 2 - by person id, 3 - by documents number
+        :param is_valid_value: Boolean format. If searched_value is valid - True, else - False
+        :param app: application context in Application format
+        :return:
+        """
         self.search_by(app, searched_value, searched_by_option)
         all_found_persons_pib = app.enrollments_main_page.get_all_found_persons_pib()
         check = False
@@ -49,6 +64,14 @@ class TestSearchPersonBy(object):
         return check
 
     def search_by_person_id(self, app, searched_value, searched_by_option, is_valid_value):
+        """
+        Method performes searching by person ID
+        :param searched_value: Value which need to find
+        :param searched_by_option: Searching type in Integer. 0 - by PIB, 1 - by surname, 2 - by person id, 3 - by documents number
+        :param is_valid_value: Boolean format. If searched_value is valid - True, else - False
+        :param app: application context in Application format
+        :return:
+        """
         self.search_by(app, searched_value, searched_by_option)
         all_found_persons_id = app.enrollments_main_page.get_all_found_persons_id()
         check = False
@@ -60,6 +83,14 @@ class TestSearchPersonBy(object):
         return check
 
     def search_by_doc_number(self, app, searched_value, persons_surname, searched_by_option, is_valid_value):
+        """
+        Method performes searching by documents number
+        :param searched_value: Value which need to find
+        :param searched_by_option: Searching type in Integer. 0 - by PIB, 1 - by surname, 2 - by person id, 3 - by documents number
+        :param is_valid_value: Boolean format. If searched_value is valid - True, else - False
+        :param app: application context in Application format
+        :return:
+        """
         self.search_by(app, searched_value, searched_by_option)
         all_found_persons_pib = app.enrollments_main_page.get_all_found_persons_pib()
         check = False

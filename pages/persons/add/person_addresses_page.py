@@ -119,3 +119,22 @@ class AddPersonAddressesPage(AddPersonPage):
         """
         self.checkbox_manager(self.driver.find_element(*self.IS_ADDRESSES_MATCH), is_addresses_match)
 
+    def fill_in_address_page(self, person):
+        """
+        Method fill in data on the address persons page
+        :param person: persons model in Person format
+        :return:
+        """
+        self.is_this_page
+        for i in range(0, len(person.burn_place)):
+            self.select_birth_place(person.burn_place[i], i)
+
+        for i in range(0, len(person.registration_place["area"])):
+            self.select_registration_address(person.registration_place["area"][i], i)
+
+        self.set_zip_code(person.registration_place["index"])
+        self.reg_address_type_select(person.registration_place["type"])
+        self.set_street(person.registration_place["street"])
+        self.set_house(person.registration_place["house"])
+        self.set_apartment(person.registration_place["apartment"])
+        self.check_is_reg_and_post_addresses_the_same(person.registration_place["is_addresses_match"])

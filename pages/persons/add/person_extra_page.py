@@ -17,6 +17,7 @@ class AddPersonExtraPage(AddPersonPage):
     ALL_NATIONALITIES_SELECT = (By.XPATH, "//div[@id='citizenCountryId']//a//div")
     PRIVATE_CASE_CHARS_INPUT = (By.XPATH, "//input[@id='docSeries']")
     PRIVATE_CASE_NUMBER_INPUT = (By.XPATH, "//input[@id='docNum']")
+    PRIVATE_CASE_NUMBER_INPUT_INCORRECT = (By.XPATH, "//input[@id='docNum'][contains (@class, 'ng-invalid-pattern')]")
     IS_A_OUTLANDER_CHECKER = (By.XPATH, "//input[@ng-checked='person.resident']")
     IS_A_MILITARY_CHECKER = (By.XPATH, "//input[@ng-checked='person.isMilitary']")
     NEED_HOSTEL_CHECKER = (By.XPATH, "//input[@ng-checked='person.isHostel']")
@@ -24,6 +25,10 @@ class AddPersonExtraPage(AddPersonPage):
     @property
     def is_this_page(self):
         return self.is_element_visible(self.ACTIVATE_BIRTH_DAY_CHOOSER)
+
+    @property
+    def private_case_number_input_incorrect(self):
+        return self.is_element_visible(self.PRIVATE_CASE_NUMBER_INPUT_INCORRECT)
 
     def set_persons_birth_day(self, date):
         """
@@ -102,6 +107,23 @@ class AddPersonExtraPage(AddPersonPage):
         :return:
         """
         self.checkbox_manager(self.driver.find_element(*self.IS_A_MILITARY_CHECKER), is_reservist)
+
+    def fill_in_extra_person_page(self, person):
+        """
+        Method fill in data on the extra persons page
+        :param person: persons model in Person format
+        :return:
+        """
+        self.is_this_page
+        self.set_persons_birth_day(person.birth_day)
+        self.choose_person_sex_type(person.sex)
+        self.choose_person_martial_status(person.marital_status)
+        self.choose_person_nationality(person.nationality)
+        self.set_private_case_chars(person.private_case_chars)
+        self.set_private_case_numbers(person.private_case_number)
+        self.check_resident_status(person.is_outlander)
+        self.check_reservist_status(person.reservist)
+        self.check_needed_hostel_status(person.hostel_need)
 
 
 
