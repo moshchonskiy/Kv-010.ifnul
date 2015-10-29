@@ -4,7 +4,6 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import Select
 from pages.internal_page import InternalPage
 from utils.fill_enrollment import FillEnrollment
-from time import sleep
 
 __author__ = 'Stako'
 
@@ -310,11 +309,11 @@ class EnrollmentsMainPage(InternalPage):
         This method is to select the radiobutton "Вища освіта" on its value.
         :param education: is value for radiobutton select.
         """
-        if education == u"Не отримую освіти":
+        if education == "Не отримую освіти":
             self.radiobutton_dont_getting_education.click()
-        elif education == u"Отримую освіту":
+        elif education == "Отримую освіту":
             self.radiobutton_getting_education.click()
-        elif education == u"Є вища освіта":
+        elif education == "Є вища освіта":
             self.radiobutton_is_education.click()
 
     def radiobutton_evaluation_of_the_interview(self, evaluation):
@@ -322,13 +321,13 @@ class EnrollmentsMainPage(InternalPage):
         This method is to select the radiobutton "Відмітка про співбесіду" on its value.
         :param evaluation: is value for radiobutton select.
         """
-        if evaluation == u"Не пройшов співбесіду":
+        if evaluation == "Не пройшов співбесіду":
             self.radiobutton_not_passed_interview.click()
-        elif evaluation == u"Не потрібно співбесіди":
+        elif evaluation == "Не потрібно співбесіди":
             self.radiobutton_dont_need_interview.click()
-        elif evaluation == u"Потрібна співбесіда":
+        elif evaluation == "Потрібна співбесіда":
             self.radiobutton_need_interview.click()
-        elif evaluation == u"Співпебісда пройдена":
+        elif evaluation == "Співпебісда пройдена":
             self.radiobutton_interview_passed.click()
 
     def search_offers(self, offer, form_of_education):
