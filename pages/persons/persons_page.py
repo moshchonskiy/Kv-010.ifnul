@@ -185,7 +185,8 @@ class PersonsPage(InternalPage):
 
     @property
     def edit_first_person_in_page(self):
-        return self.is_element_visible(self.EDIT_FIRST_PERSON_IN_TABLE)
+        self.is_element_visible(self.EDIT_FIRST_PERSON_IN_TABLE)
+        return self.driver.find_element(*self.EDIT_FIRST_PERSON_IN_TABLE)
 
     def searching_person_by_surname(self, given_surname):
         """
@@ -468,3 +469,16 @@ class PersonsPage(InternalPage):
         app.internal_page.persons_page_link.click()
         self.is_element_present(self.SPINNER_OFF)
         self.try_get_refresh_upper_button().click()
+
+    def search_person_by_surname(self, given_surname):
+        """
+        Method performs search by surname
+        :param given_surname: wanted surname
+        :return:
+        """
+        self.is_this_page
+        self.try_get_choose_surname().click()
+        self.try_get_input_group().clear()
+        self.try_get_input_group().send_keys(given_surname)
+        self.try_get_ok_button().click()
+        self.is_element_present(self.SPINNER_OFF)
