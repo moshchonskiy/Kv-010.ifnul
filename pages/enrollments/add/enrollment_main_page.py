@@ -32,6 +32,8 @@ class EnrollmentsMainPage(InternalPage):
     LIST_FROM_UI_SELECT = (By.XPATH, "//div[contains(@id, 'ui-select-choices-row')]/a/div")
     BUTTON_CHOOSE_SPECIALTIES = (By.CSS_SELECTOR, "button[class='btn btn-primary'] >i")
     CHOOSE_FIRST_SPECIALTIES = (By.XPATH, "//div[@class='table-responsive']//tbody[@class='pointer']/tr[1]/td[2]")
+    BUTTON_CLOSE_CHOOSE_OFFER = (By.XPATH, "//button[@class='close']")
+    COUNT_SPECIALISTS = (By.XPATH, "//div[@class='table-responsive']//tbody[@class='pointer']/tr")
     DOCUMENT = (By.XPATH, ".//*[@class='col-xs-5']/*[@id='inputStructure']//i[@class='caret pull-right']")
     TOTAL_SCORE = (By.ID, "inputMark")
     GRADING_SCALE = (By.XPATH, ".//*[@id='markScale']//i[@class='caret pull-right']")
@@ -102,6 +104,10 @@ class EnrollmentsMainPage(InternalPage):
     @property
     def choose_first_specialties(self):
         return self.is_element_visible(self.CHOOSE_FIRST_SPECIALTIES)
+
+    @property
+    def button_close_choose_offer(self):
+        return self.is_element_visible(self.BUTTON_CLOSE_CHOOSE_OFFER)
 
     @property
     def search_name_field(self):
@@ -273,6 +279,7 @@ class EnrollmentsMainPage(InternalPage):
         self.radiobutton_higher_education(enrollment.radiobutton_higher_education)
         self.radiobutton_evaluation_of_the_interview(enrollment.radiobutton_evaluation_of_the_interview)
         self.search_offers(enrollment.offers, enrollment.form_of_education)
+        self.choose_first_specialties.click()
         self.choose_document(enrollment.document)
         self.choose_grading_scale(enrollment.grading_scale)
         self.add_total_score(self.TOTAL_SCORE, enrollment.total_score)
@@ -336,7 +343,6 @@ class EnrollmentsMainPage(InternalPage):
         self.find_element_in_ui_select(self.list_form_ui_select(), form_of_education).click()
         self.button_choose_specialties.click()
         self.is_element_present(self.SPINNER_OFF)
-        self.choose_first_specialties.click()
 
     def choose_document(self, document):
         """
@@ -485,3 +491,26 @@ class EnrollmentsMainPage(InternalPage):
         """
         self.is_element_visible(self.DATE_CLOSING_STATEMENTS)
         return self.driver.find_element(*self.DATE_CLOSING_STATEMENTS)
+
+    def get_arr_structural_subdivision_from_choose_offer(self):
+        count_specialists = len(self.driver.find_elements(*self.COUNT_SPECIALISTS))
+        structural_subdivisions = []
+        for number in range(count_specialists):
+            locator = self.__get_structural_subdivision_specialist_by_number_in_table(number)
+            structural_subdivisions.append(self.driver.find_element(*locator).text)
+        return structural_subdivisions
+
+    def get_arr_type_offer_from_choose_offer(self):
+        count_specialists = len(self.driver.find_elements(*self.COUNT_SPECIALISTS))
+        type_offers = []
+        for number in range(count_specialists):
+            locator = self.__get_type_offer_specialist_by_number_in_table(number)
+            type_offers.append(self.driver.find_element(*locator).text)
+        return type_offers
+
+    def __get_structural_subdivision_specialist_by_number_in_table(self, number):
+        return (By.XPATH, "//div[@class='table-responsive']//tbody[@class='pointer']/tr[" + str(number + 1) + "]/td[4]")
+
+    def __get_type_offer_specialist_by_number_in_table(self, number):
+        return (By.XPATH, "//div[@class='table-responsive']//tbody[@class='pointer']/tr[" + str(number + 1) + "]/td[6]")
+
