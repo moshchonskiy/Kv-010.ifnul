@@ -185,7 +185,8 @@ class PersonsPage(InternalPage):
 
     @property
     def edit_first_person_in_page(self):
-        return self.is_element_visible(self.EDIT_FIRST_PERSON_IN_TABLE)
+        self.is_element_visible(self.EDIT_FIRST_PERSON_IN_TABLE)
+        return self.driver.find_element(*self.EDIT_FIRST_PERSON_IN_TABLE)
 
     def searching_person_by_surname(self, given_surname):
         """
