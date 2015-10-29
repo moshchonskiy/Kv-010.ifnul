@@ -4,7 +4,6 @@ from pages.internal_page import InternalPage
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 
-
 class PersonsPage(InternalPage):
     #
     # TO SEARCH
@@ -179,6 +178,12 @@ class PersonsPage(InternalPage):
     @property
     def edit_first_person_in_page(self):
         return self.is_element_visible(self.EDIT_FIRST_PERSON_IN_TABLE)
+
+    @property
+    def edit_first_person_in_page(self):
+        if self.is_element_visible(self.EDIT_FIRST_PERSON_IN_TABLE):
+            self.driver.find_element(*self.EDIT_FIRST_PERSON_IN_TABLE).click()
+            self.is_element_present(self.SPINNER_OFF)
 
     def searching_person_by_surname(self, given_surname):
         """
@@ -449,3 +454,16 @@ class PersonsPage(InternalPage):
         expected_person = self.try_get_searched_surname(person.surname_ukr).text.partition(' ')[0]
         if expected_person:
             self.delete_first_person_in_page
+
+    def search_person_by_surname(self, given_surname):
+        """
+        Method performs search by surname
+        :param given_surname: wanted surname
+        :return:
+        """
+        self.is_this_page
+        self.try_get_choose_surname().click()
+        self.try_get_input_group().clear()
+        self.try_get_input_group().send_keys(given_surname)
+        self.try_get_ok_button().click()
+        self.is_element_present(self.SPINNER_OFF)

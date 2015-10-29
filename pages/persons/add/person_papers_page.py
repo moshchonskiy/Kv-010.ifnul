@@ -5,7 +5,7 @@ __author__ = 'Deorditsa'
 from person_base_page import AddPersonPage
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
-
+from selenium.webdriver.support import expected_conditions as EC
 
 class AddPersonPapersPage(AddPersonPage):
 
@@ -21,7 +21,8 @@ class AddPersonPapersPage(AddPersonPage):
     DOCUMENT_IS_ORIGINAL = (By.XPATH, "//input[@ng-model='currentObj.isChecked']")
     DOCUMENT_IS_FOREIGN = (By.XPATH, "//input[@ng-model='currentObj.isForeign']")
     TABLE_DOCUMENTS_NUM_ROW = (By.XPATH, "//div[@class='col-xs-12']/table/tbody/tr/td[3]")
-    DELETE_FIRST_DOCUMENT = (By.XPATH, "//div[@class='col-xs-12']/table/tbody/tr/td[13]/button[2]")
+    DELETE_FIRST_DOCUMENT_BUTTON = (By.XPATH, "//div[@class='col-xs-12']/table/tbody/tr[1]/td[13]/button[2]")
+    DELETE_DOCUMENT_BUTTONS = (By.XPATH, "//div[@class='col-xs-12']/table/tbody/tr[1]/td[13]/button[2]")
 
     @property
     def is_this_page(self):
@@ -109,11 +110,24 @@ class AddPersonPapersPage(AddPersonPage):
         self.wait.until(EC.text_to_be_present_in_element(self.TABLE_DOCUMENTS_NUM_ROW, given_num))
         return self.driver.find_element(*self.TABLE_DOCUMENTS_NUM_ROW)
 
-    @property
     def delete_first_document_in_page(self):
         if self.is_element_visible(self.DELETE_FIRST_DOCUMENT):
             self.driver.find_element(*self.DELETE_FIRST_DOCUMENT).click()
             self.is_element_present(self.SPINNER_OFF)
+
+    def get_number_of_person_documents(self):
+        return len(self.driver.find_elements(*self.DELETE_DOCUMENT_BUTTONS))
+
+    def delete_all_person_documents(self):
+        """
+        Method deletes all the person's documents
+        :return:
+        """
+        elements = self.driver.find_elements(*self.DELETE_DOCUMENT_BUTTONS)
+        if elements:
+            for element in elements:
+                element.click()
+                self.is_element_present(self.SPINNER_OFF)
 
     def fill_in_document_page(self, person):
         """
