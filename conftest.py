@@ -6,7 +6,7 @@ __author__ = 'Evgen'
 
 import pytest
 from selenium import webdriver
-from pyvirtualdisplay import Display
+#from pyvirtualdisplay import Display
 from model.application import Application
 from utils.data_provider_from_json import DataProviderJSON
 
@@ -48,9 +48,9 @@ def app(request, browser_type, base_url, jenkins_display):
     you can write in the console something like >>> py.test --browser "chrome"
     :return: new Application with chosen or default params
     """
-    if jenkins_display:
-        display = Display(visible=0, size=(1366, 768))
-        display.start()
+    #if jenkins_display:
+    #    display = Display(visible=0, size=(1366, 768))
+    #    display.start()
     if browser_type == "firefox":
         driver = webdriver.Firefox()
     elif browser_type == "chrome":
