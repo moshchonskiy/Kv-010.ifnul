@@ -1,13 +1,16 @@
 # -*- coding: utf-8 -*-
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import Select
 from pages.internal_page import InternalPage
 from utils.fill_enrollment import FillEnrollment
+from time import sleep
 
 __author__ = 'Stako'
 
 
 class EnrollmentsMainPage(InternalPage):
+    TEXT_CORRECT_PAGE_ENROLLMENT_ADD = (By.XPATH, "//h2[@class='content-header-title top-buffer bottom-buffer']")
     OK_FOR_INPUT_FIELD = (By.CSS_SELECTOR, "div[class='input-group'] * button[class='btn btn-primary']")
     SEARCH_NAME_FIELD = (By.XPATH, "//div[@class='modal-body ng-scope']//input[contains (@type, 'search')]")
     FIRST_PERSON = (By.XPATH, "//*[@class='table-responsive']//tbody[@class='pointer']//tr[1]/td[2]")
@@ -29,9 +32,12 @@ class EnrollmentsMainPage(InternalPage):
     LIST_FROM_UI_SELECT = (By.XPATH, "//div[contains(@id, 'ui-select-choices-row')]/a/div")
     BUTTON_CHOOSE_SPECIALTIES = (By.CSS_SELECTOR, "button[class='btn btn-primary'] >i")
     CHOOSE_FIRST_SPECIALTIES = (By.XPATH, "//div[@class='table-responsive']//tbody[@class='pointer']/tr[1]/td[2]")
+    BUTTON_CLOSE_CHOOSE_OFFER = (By.XPATH, "//button[@class='close']")
+    COUNT_SPECIALISTS = (By.XPATH, "//div[@class='table-responsive']//tbody[@class='pointer']/tr")
     DOCUMENT = (By.XPATH, ".//*[@class='col-xs-5']/*[@id='inputStructure']//i[@class='caret pull-right']")
     TOTAL_SCORE = (By.ID, "inputMark")
     GRADING_SCALE = (By.XPATH, ".//*[@id='markScale']//i[@class='caret pull-right']")
+    TEXT_FROM_GRADING_SCALE = (By.XPATH, ".//*[@id='markScale']//span[@class='ng-binding ng-scope']")
     CHECKBOX_DOCUMENT_IS_ORIGINAL = (By.XPATH, ".//*[@ng-init='enrolment.isOriginal = 0']")
     PRIORITY = (By.ID, "inputPriority")
     STRUCTURAL_UNIT = (By.XPATH, ".//*[@class='col-xs-3']/*[@id='inputStructure']//i[@class='caret pull-right']")
@@ -61,6 +67,36 @@ class EnrollmentsMainPage(InternalPage):
     def is_enrollment_in_person(self):
         return self.is_element_visible(self.IS_ENROLLMENT_IN_PERSON)
 
+    def search_person_by(self, index):
+        self.is_element_present(self.SPINNER_OFF)
+        Select(self.driver.find_element(*self.SEARCH_PERSON_BY_SELECT)).select_by_index(index)
+
+    def set_search_person_by(self, searched_value):
+        """
+        Method sets the searched value
+        :param searched_value: String parametr.
+        :return:
+        """
+        self.emulation_of_input(self.SEARCH_PERSON_BY_INPUT, searched_value)
+
+    def get_all_found_persons_pib(self):
+        return self.driver.find_elements(*self.ALL_FOUND_PERSONS_PIB)
+
+    def get_all_found_persons_id(self):
+        return self.driver.find_elements(*self.ALL_FOUND_PERSONS_ID)
+
+    def find_date_of_creation(self):
+        self.is_element_visible(self.DATE_OF_CREATION_STATEMENTS)
+        return self.driver.find_elements(*self.DATE_OF_CREATION_STATEMENTS)
+
+    @property
+    def is_this_page(self):
+        return self.is_element_visible(self.SEARCH_PERSON_BY_SELECT)
+
+    @property
+    def cancel_click(self):
+        self.driver.find_element(*self.CANCEL_BUTTON).click()
+
     @property
     def search_offers_field(self):
         return self.is_element_visible(self.SEARCH_OFFERS_FIELD)
@@ -68,6 +104,10 @@ class EnrollmentsMainPage(InternalPage):
     @property
     def choose_first_specialties(self):
         return self.is_element_visible(self.CHOOSE_FIRST_SPECIALTIES)
+
+    @property
+    def button_close_choose_offer(self):
+        return self.is_element_visible(self.BUTTON_CLOSE_CHOOSE_OFFER)
 
     @property
     def search_name_field(self):
@@ -174,6 +214,20 @@ class EnrollmentsMainPage(InternalPage):
     def button_save(self):
         return self.is_element_visible(self.BUTTON_SAVE)
 
+    def get_text_add_enrollment(self):
+        return self.driver.find_element(*self.TEXT_CORRECT_PAGE_ENROLLMENT_ADD)
+
+    def get_form_input_total_score(self):
+        return self.driver.find_element(*self.TOTAL_SCORE)
+
+    def clear_form_input_total_score(self):
+        toClear = self.driver.find_element(*self.TOTAL_SCORE)
+        toClear.send_keys(Keys.CONTROL + "a")
+        toClear.send_keys(Keys.DELETE)
+
+    def get_atrribute_of_element_by(self, element, value):
+        return element.get_attribute(value)
+
     def find_element_in_ui_select(self, elements, string):
         """
         This method looks for WebElement in ui-select by name.
@@ -182,7 +236,8 @@ class EnrollmentsMainPage(InternalPage):
         :return: looked for WebElement.
         """
         for el in elements:
-            if el.text.encode('utf8') == string:
+            # if el.text.encode('utf8') == string:
+            if el.text == string:
                 return el
 
     def find_element_in_select(self, elements, string):
@@ -192,7 +247,8 @@ class EnrollmentsMainPage(InternalPage):
         :param string: is name of elements.
         """
         for sel in elements:
-            if sel.text.encode('utf8') == string:
+            # if sel.text.encode('utf8') == string:
+            if sel.text == string:
                 sel.click()
                 break
 
@@ -223,6 +279,7 @@ class EnrollmentsMainPage(InternalPage):
         self.radiobutton_higher_education(enrollment.radiobutton_higher_education)
         self.radiobutton_evaluation_of_the_interview(enrollment.radiobutton_evaluation_of_the_interview)
         self.search_offers(enrollment.offers, enrollment.form_of_education)
+        self.choose_first_specialties.click()
         self.choose_document(enrollment.document)
         self.choose_grading_scale(enrollment.grading_scale)
         self.add_total_score(self.TOTAL_SCORE, enrollment.total_score)
@@ -242,9 +299,9 @@ class EnrollmentsMainPage(InternalPage):
         :param name: is name of person.
         """
         self.is_element_present(self.SPINNER_OFF)
-        self.ok_for_input_field.click()
+        self.ok_for_input_field
         self.is_element_present(self.SPINNER_OFF)
-        self.emulation_of_input(self.SEARCH_NAME_FIELD, name.decode('utf8'))
+        self.emulation_of_input(self.SEARCH_NAME_FIELD, name)
         self.first_person.click()
         self.is_element_present(self.SPINNER_OFF)
 
@@ -253,11 +310,11 @@ class EnrollmentsMainPage(InternalPage):
         This method is to select the radiobutton "Вища освіта" on its value.
         :param education: is value for radiobutton select.
         """
-        if education == "Не отримую освіти":
+        if education == u"Не отримую освіти":
             self.radiobutton_dont_getting_education.click()
-        elif education == "Отримую освіту":
+        elif education == u"Отримую освіту":
             self.radiobutton_getting_education.click()
-        elif education == "Є вища освіта":
+        elif education == u"Є вища освіта":
             self.radiobutton_is_education.click()
 
     def radiobutton_evaluation_of_the_interview(self, evaluation):
@@ -265,13 +322,13 @@ class EnrollmentsMainPage(InternalPage):
         This method is to select the radiobutton "Відмітка про співбесіду" on its value.
         :param evaluation: is value for radiobutton select.
         """
-        if evaluation == "Не пройшов співбесіду":
+        if evaluation == u"Не пройшов співбесіду":
             self.radiobutton_not_passed_interview.click()
-        elif evaluation == "Не потрібно співбесіди":
+        elif evaluation == u"Не потрібно співбесіди":
             self.radiobutton_dont_need_interview.click()
-        elif evaluation == "Потрібна співбесіда":
+        elif evaluation == u"Потрібна співбесіда":
             self.radiobutton_need_interview.click()
-        elif evaluation == "Співпебісда пройдена":
+        elif evaluation == u"Співпебісда пройдена":
             self.radiobutton_interview_passed.click()
 
     def search_offers(self, offer, form_of_education):
@@ -286,7 +343,6 @@ class EnrollmentsMainPage(InternalPage):
         self.find_element_in_ui_select(self.list_form_ui_select(), form_of_education).click()
         self.button_choose_specialties.click()
         self.is_element_present(self.SPINNER_OFF)
-        self.choose_first_specialties.click()
 
     def choose_document(self, document):
         """
@@ -303,6 +359,9 @@ class EnrollmentsMainPage(InternalPage):
         """
         self.grading_scale.click()
         self.find_element_in_ui_select(self.list_form_ui_select(), scale).click()
+
+    def get_text_choose_grading_scale(self):
+        return self.driver.find_element(*self.TEXT_FROM_GRADING_SCALE)
 
     def add_total_score(self, locator, score):
         """
@@ -353,15 +412,15 @@ class EnrollmentsMainPage(InternalPage):
         :param hostel: is value of checkbox "need hostel".
         :param document: is value of checkbox "document is original".
         """
-        if state == "False":
+        if not state:
             self.checkbox_is_state.click()
-        if contract == "False":
+        if not contract:
             self.checkbox_is_contract.click()
-        if privilege == "True":
+        if privilege:
             self.checkbox_is_privilege.click()
-        if hostel == "True":
+        if hostel:
             self.checkbox_is_hostel.click()
-        if document == "True":
+        if document:
             self.checkbox_document_is_original.click()
 
     def select_person_by(self, index):
@@ -432,3 +491,26 @@ class EnrollmentsMainPage(InternalPage):
         """
         self.is_element_visible(self.DATE_CLOSING_STATEMENTS)
         return self.driver.find_element(*self.DATE_CLOSING_STATEMENTS)
+
+    def get_arr_structural_subdivision_from_choose_offer(self):
+        count_specialists = len(self.driver.find_elements(*self.COUNT_SPECIALISTS))
+        structural_subdivisions = []
+        for number in range(count_specialists):
+            locator = self.__get_structural_subdivision_specialist_by_number_in_table(number)
+            structural_subdivisions.append(self.driver.find_element(*locator).text)
+        return structural_subdivisions
+
+    def get_arr_type_offer_from_choose_offer(self):
+        count_specialists = len(self.driver.find_elements(*self.COUNT_SPECIALISTS))
+        type_offers = []
+        for number in range(count_specialists):
+            locator = self.__get_type_offer_specialist_by_number_in_table(number)
+            type_offers.append(self.driver.find_element(*locator).text)
+        return type_offers
+
+    def __get_structural_subdivision_specialist_by_number_in_table(self, number):
+        return (By.XPATH, "//div[@class='table-responsive']//tbody[@class='pointer']/tr[" + str(number + 1) + "]/td[4]")
+
+    def __get_type_offer_specialist_by_number_in_table(self, number):
+        return (By.XPATH, "//div[@class='table-responsive']//tbody[@class='pointer']/tr[" + str(number + 1) + "]/td[6]")
+
