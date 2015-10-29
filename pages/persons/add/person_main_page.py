@@ -2,7 +2,6 @@ __author__ = 'Evgen'
 
 from person_base_page import AddPersonPage
 from selenium.webdriver.common.by import By
-from selenium.webdriver.remote.webelement import WebElement
 
 
 class AddPersonMainPage(AddPersonPage):
@@ -14,11 +13,39 @@ class AddPersonMainPage(AddPersonPage):
     PERSON_FARTHER_NAME_UKR_INPUT = (By.XPATH, "//input[@id='fatherName']")
     PERSON_FIRST_NAME_UKR_INPUT = (By.XPATH, "//input[@id='firstName']")
     PERSON_FIRST_NAME_ENG_INPUT = (By.XPATH, "//input[@id='firstNameEng']")
-
+    PERSON_SURNAME_UKR_INPUT_INCORRECT = (By.XPATH, "//input[@id='surname'][contains (@class, 'ng-invalid-pattern')]")
+    PERSON_SURNAME_ENG_INPUT_INCORRECT = \
+        (By.XPATH, "//input[@id='surnameEng'][contains (@class, 'ng-invalid-pattern')]")
+    PERSON_FARTHER_NAME_UKR_INPUT_INCORRECT = \
+        (By.XPATH, "//input[@id='fatherName'][contains (@class, 'ng-invalid-pattern')]")
+    PERSON_FIRST_NAME_UKR_INPUT_INCORRECT = \
+        (By.XPATH, "//input[@id='firstName'][contains (@class, 'ng-invalid-pattern')]")
+    PERSON_FIRST_NAME_ENG_INPUT_INCORRECT = \
+        (By.XPATH, "//input[@id='firstNameEng'][contains (@class, 'ng-invalid-pattern')]")
 
     @property
     def is_this_page(self):
         return self.is_element_visible(self.PERSON_TYPE_SELECT)
+
+    @property
+    def person_surname_ukr_input_incorrect(self):
+        return self.is_element_visible(self.PERSON_SURNAME_UKR_INPUT_INCORRECT)
+
+    @property
+    def person_surname_eng_input_incorrect(self):
+        return self.is_element_visible(self.PERSON_SURNAME_ENG_INPUT_INCORRECT)
+
+    @property
+    def person_father_name_input_incorrect(self):
+        return self.is_element_visible(self.PERSON_FARTHER_NAME_UKR_INPUT_INCORRECT)
+
+    @property
+    def person_first_name_ukr_input_incorrect(self):
+        return self.is_element_visible(self.PERSON_FIRST_NAME_UKR_INPUT_INCORRECT)
+
+    @property
+    def person_first_name_eng_input_incorrect(self):
+        return self.is_element_visible(self.PERSON_FIRST_NAME_ENG_INPUT_INCORRECT)
 
     def person_type_select_click(self):
         """
@@ -31,7 +58,8 @@ class AddPersonMainPage(AddPersonPage):
     def choose_person_type(self, person_type):
         """
         Method performs choosing concrete person type
-        :param person_type: if person_type exists in select menu, then method will click on it, else will leave default value
+        :param person_type: if person_type exists in select menu,
+                then method will click on it, else will leave default value
         :return:
         """
         self.is_element_present(self.ALL_PERSON_TYPES_SELECT)
@@ -39,8 +67,8 @@ class AddPersonMainPage(AddPersonPage):
 
     def set_first_ukr_name(self, first_ukr_name):
         """
-        Method sets the first person name on Ukranian language
-        :param first_ukr_name: first person name on Ukranian language
+        Method sets the first person name on Ukrainian language
+        :param first_ukr_name: first person name on Ukrainian language
         :return:
         """
         self.is_element_present(self.PERSON_FIRST_NAME_UKR_INPUT)
@@ -78,3 +106,17 @@ class AddPersonMainPage(AddPersonPage):
         """
         self.emulation_of_input(self.PERSON_FIRST_NAME_ENG_INPUT, first_eng_name)
 
+    def fill_in_main_person_page(self, person):
+        """
+        Method fill in data on the main persons page
+        :param person: persons model in Person format
+        :return:
+        """
+        self.is_this_page
+        self.person_type_select_click()
+        self.choose_person_type(person.person_type)
+        self.set_ukr_surname(person.surname_ukr)
+        self.set_first_ukr_name(person.first_name_ukr)
+        self.set_father_ukr_name(person.second_name_ukr)
+        self.set_eng_surname(person.surname_eng)
+        self.set_first_eng_name(person.first_name_eng)

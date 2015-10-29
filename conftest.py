@@ -1,29 +1,27 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import json
-import threading
 from model.user import User
-from utils.personCreator import PersonCreator
-from pyvirtualdisplay import Display
 
 __author__ = 'Evgen'
 
 import pytest
 from selenium import webdriver
+from pyvirtualdisplay import Display
 from model.application import Application
-import os
+from utils.data_provider_from_json import DataProviderJSON
 
 
 def pytest_addoption(parser):
     parser.addoption("--browser", action="store", default="firefox")
     # parser.addoption("--base_url", action="store", default="http://localhost:9000/")
     parser.addoption("--base_url", action="store", default="http://194.44.198.221/")
-    parser.addoption("--person_file", action="store", default="person_test_view.json")
     parser.addoption("--jenkins_display", action="store_true")
+
 
 @pytest.fixture(scope="session")
 def browser_type(request):
     return request.config.getoption("--browser")
+
 
 @pytest.fixture(scope="session")
 def base_url(request):
@@ -31,42 +29,10 @@ def base_url(request):
 
 
 @pytest.fixture(scope="session")
-def person_file(request):
-    project_path = os.path.dirname(os.path.realpath(__file__))
-    path = os.path.normpath(os.path.abspath(project_path) + "/resources/" + request.config.getoption("--person_file"))
-    return path
+def dictionary_with_json_files():
+    data_provider = DataProviderJSON("properties.json")
+    return data_provider.get_value_by_key("json_files")
 
-
-@pytest.fixture(scope="session")
-def person(request, person_file):
-    person_creator = PersonCreator(person_file)
-    return person_creator.create_person_from_json()
-
-
-@pytest.yield_fixture(scope="session")
-def add_person(app, person):
-    app.ensure_logout()
-    app.login(User.Admin(), True)
-    # Check that the added person doesn't exist
-    person_page = app.persons_page
-    is_person_already_exists = True
-    while is_person_already_exists:
-        person_page.is_this_page
-        person_page.try_get_choose_surname().click()
-        person_page.try_get_input_group().clear()
-        person_page.try_get_input_group().send_keys(person.surname_ukr)
-        person_page.try_get_ok_button().click()
-        if person_page.searching_person_by_surname(person.surname_ukr) != None:
-            person_page.delete_first_person_in_page
-        else:
-            is_person_already_exists = False
-
-    yield app
-    # Delete new added person
-    person_page.is_this_page
-    expected_person = person_page.try_get_searched_surname(person.surname_ukr).text.partition(' ')[0]
-    if expected_person:
-        person_page.delete_first_person_in_page
 
 @pytest.fixture(scope="session")
 def jenkins_display(request):
@@ -94,8 +60,20 @@ def app(request, browser_type, base_url, jenkins_display):
     request.addfinalizer(driver.quit)
     return Application(driver, base_url)
 
+@pytest.yield_fixture(scope="function")
+def logout_login(app):
+    app.ensure_logout()
+    app.login(User.Admin(), True)
+    app.internal_page.is_element_present(app.internal_page.SPINNER_OFF)
+    yield app
 
 
 
 
 
+
+@pytest.fixture(scope="class")
+def pre_login(request, app):
+    app.ensure_logout()
+    app.login(User.Admin(), True)
+    request.cls.app = app
