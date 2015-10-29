@@ -27,6 +27,7 @@ class AddPersonPattern(object):
 
     def search_person_by_surname(self, app, surname):
         person_page = app.persons_page
+        person_page.is_element_present(person_page.SPINNER_OFF)
         person_page.try_get_choose_surname().click()
         person_page.try_get_input_group().clear()
         person_page.try_get_input_group().send_keys(surname)
