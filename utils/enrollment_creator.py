@@ -10,9 +10,7 @@ class EnrollmentCreator():
 
     def __init__(self, file_name):
         dict = DataProviderJSON(file_name).get_dict_value()
-        print dict
         enroll_dict = dict["enrollment"]
-        print enroll_dict
         self.__enrollment.person_name = enroll_dict["person_name"]
         self.__enrollment.series_of_statements = enroll_dict["series_of_statements"]
         self.__enrollment.number_statements = enroll_dict["number_statements"]

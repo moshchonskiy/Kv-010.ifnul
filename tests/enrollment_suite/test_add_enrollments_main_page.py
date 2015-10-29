@@ -7,7 +7,8 @@ from utils.fill_enrollment import FillEnrollment
 __author__ = 'stako'
 
 
-def test_add_enrollments(app):
+# def test_add_enrollments(app):
+def add_enrollments(app):
     """
     Method creates and adds the enrollment.
     :param app:

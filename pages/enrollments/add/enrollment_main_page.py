@@ -31,6 +31,8 @@ class EnrollmentsMainPage(InternalPage):
     LIST_FROM_UI_SELECT = (By.XPATH, "//div[contains(@id, 'ui-select-choices-row')]/a/div")
     BUTTON_CHOOSE_SPECIALTIES = (By.CSS_SELECTOR, "button[class='btn btn-primary'] >i")
     CHOOSE_FIRST_SPECIALTIES = (By.XPATH, "//div[@class='table-responsive']//tbody[@class='pointer']/tr[1]/td[2]")
+    FIRST_SPECIALTIES_ID = (By.XPATH, "//div[@class='table-responsive']//tbody[@class='pointer']/tr[1]/td[1]")
+    FIRST_SPECIALTIES_ID_IN_VIEW_TABLE = (By.XPATH, "//tbody[@class='pointer']/tr[1]//td[1]")
     BUTTON_CLOSE_CHOOSE_OFFER = (By.XPATH, "//button[@class='close']")
     COUNT_SPECIALISTS = (By.XPATH, "//div[@class='table-responsive']//tbody[@class='pointer']/tr")
     DOCUMENT = (By.XPATH, ".//*[@class='col-xs-5']/*[@id='inputStructure']//i[@class='caret pull-right']")
@@ -65,6 +67,12 @@ class EnrollmentsMainPage(InternalPage):
     @property
     def is_enrollment_in_person(self):
         return self.is_element_visible(self.IS_ENROLLMENT_IN_PERSON)
+
+    def find_first_specialities_id(self):
+        return self.driver.find_element(*self.FIRST_SPECIALTIES_ID)
+
+    def find_first_specialities_id_in_view_table(self):
+        return self.driver.find_elements(*self.FIRST_SPECIALTIES_ID_IN_VIEW_TABLE)[1]
 
     def search_person_by(self, index):
         self.is_element_present(self.SPINNER_OFF)
@@ -129,13 +137,45 @@ class EnrollmentsMainPage(InternalPage):
         self.is_element_visible(self.OK_FOR_INPUT_FIELD).click()
         self.is_element_present(self.SPINNER_OFF)
 
-    @property
-    def series_of_statements(self):
-        return self.is_element_visible(self.SERIES_OF_STATEMENTS)
+    def find_series_of_statements(self):
+        self.is_element_visible(self.SERIES_OF_STATEMENTS)
+        return self.driver.find_element(*self.SERIES_OF_STATEMENTS)
 
-    @property
-    def number_statements(self):
-        return self.is_element_visible(self.NUMBER_STATEMENTS)
+    def find_number_statements(self):
+        self.is_element_visible(self.NUMBER_STATEMENTS)
+        return self.driver.find_element(*self.NUMBER_STATEMENTS)
+
+    def find_checkbox_is_state(self):
+        self.is_element_visible(self.CHECKBOX_IS_STATE)
+        return self.driver.find_element(*self.CHECKBOX_IS_STATE)
+
+    def find_checkbox_is_contract(self):
+        self.is_element_visible(self.CHECKBOX_IS_CONTRACT)
+        return self.driver.find_element(*self.CHECKBOX_IS_CONTRACT)
+
+    def find_checkbox_is_privilege(self):
+        self.is_element_visible(self.CHECKBOX_IS_PRIVILEGE)
+        return self.driver.find_element(*self.CHECKBOX_IS_PRIVILEGE)
+
+    def find_radiobutton_getting_education(self):
+        self.is_element_visible(self.RADIOBUTTON_GETTING_EDUCATION)
+        return self.driver.find_element(*self.RADIOBUTTON_GETTING_EDUCATION)
+
+    def find_radiobutton_is_education(self):
+        self.is_element_visible(self.RADIOBUTTON_IS_EDUCATION)
+        return self.driver.find_element(*self.RADIOBUTTON_IS_EDUCATION)
+
+    def find_checkbox_is_hostel(self):
+        self.is_element_visible(self.CHECKBOX_IS_HOSTEL)
+        return self.driver.find_element(*self.CHECKBOX_IS_HOSTEL)
+
+    def find_total_score(self):
+        self.is_element_visible(self.TOTAL_SCORE)
+        return self.driver.find_element(*self.TOTAL_SCORE)
+
+    def find_grading_scale(self):
+        self.is_element_visible(self.GRADING_SCALE)
+        return self.driver.find_element(*self.GRADING_SCALE)
 
     @property
     def checkbox_is_state(self):
@@ -412,13 +452,13 @@ class EnrollmentsMainPage(InternalPage):
         :param document: is value of checkbox "document is original".
         """
         if not state:
-            self.checkbox_is_state.click()
+            self.find_checkbox_is_state().click()
         if not contract:
-            self.checkbox_is_contract.click()
+            self.find_checkbox_is_contract().click()
         if privilege:
-            self.checkbox_is_privilege.click()
+            self.find_checkbox_is_privilege().click()
         if hostel:
-            self.checkbox_is_hostel.click()
+            self.find_checkbox_is_hostel().click()
         if document:
             self.checkbox_document_is_original.click()
 
