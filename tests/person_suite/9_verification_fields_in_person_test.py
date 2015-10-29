@@ -18,7 +18,6 @@ def fill_main_person_page_with_invalid_data(app, invalid_person):
     main_page.set_ukr_surname(invalid_person.surname_ukr)
     main_page.set_first_ukr_name(invalid_person.first_name_ukr)
     main_page.set_father_ukr_name(invalid_person.second_name_ukr)
-    main_page.is_element_present(main_page.SPINNER_OFF)
     main_page.set_eng_surname(invalid_person.surname_eng)
     main_page.set_first_eng_name(invalid_person.first_name_eng)
 
