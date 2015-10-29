@@ -14,6 +14,7 @@ class PersonsPage(InternalPage):
     #
     # TO SEARCH
     #
+    MODAL_HEADER_CHOOSER = (By.XPATH,"//div[@id='modalHeaderChooser']")
     ADD_PERSON_BUTTON = (By.XPATH, "//button[contains(@class,'btn-success')]")
     CHOOSE_SURNAME_SEARCH = (By.XPATH, "//div[@class='col-sm-12']//option[@value='0']")
     CHOOSE_PERSON_ID_SEARCH = (By.XPATH, "//div[@class='col-sm-12']//option[@value='1']")
@@ -446,6 +447,8 @@ class PersonsPage(InternalPage):
         for checkbox in list_all_unchecked_checkboxes:
             self.driver.find_element(*checkbox).click()
         self.try_field_chooser_red_close_button().click()
+
+        self.is_element_present(self.MODAL_HEADER_CHOOSER)
         self.wait_until_page_generate()
 
 
