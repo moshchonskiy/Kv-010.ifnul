@@ -14,6 +14,7 @@ class PersonsPage(InternalPage):
     #
     # TO SEARCH
     #
+    MODAL_HEADER_CHOOSER = (By.XPATH,"//div[@id='modalHeaderChooser']")
     ADD_PERSON_BUTTON = (By.XPATH, "//button[contains(@class,'btn-success')]")
     CHOOSE_SURNAME_SEARCH = (By.XPATH, "//div[@class='col-sm-12']//option[@value='0']")
     CHOOSE_PERSON_ID_SEARCH = (By.XPATH, "//div[@class='col-sm-12']//option[@value='1']")
@@ -374,8 +375,8 @@ class PersonsPage(InternalPage):
 
     # surname search
     def try_get_choose_surname(self):
-        self.is_element_present(self.CHOOSE_SURNAME_SEARCH)
-        return self.is_element_visible(self.CHOOSE_SURNAME_SEARCH)
+        self.is_element_visible(self.CHOOSE_SURNAME_SEARCH)
+        return self.driver.find_element(*self.CHOOSE_SURNAME_SEARCH)
 
     def try_get_searched_surname(self, given_surname):
         self.wait.until(EC.text_to_be_present_in_element(self.SEARCHED_SURNAME, given_surname))
@@ -446,6 +447,8 @@ class PersonsPage(InternalPage):
         for checkbox in list_all_unchecked_checkboxes:
             self.driver.find_element(*checkbox).click()
         self.try_field_chooser_red_close_button().click()
+
+        self.is_element_present(self.MODAL_HEADER_CHOOSER)
         self.wait_until_page_generate()
 
 
