@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# /coding=utf-8
 import pytest
 
 __author__ = 'Vadym'
@@ -31,17 +31,19 @@ def test_open_add_enrollment(app):
     app.enrollments_page.is_this_page.click()
 
 def test_check_correct_structural_subdivision(app, offers):
+    offers = offers.decode('utf8')
     enr_page = app.enrollments_main_page
-    enr_page.search_offers(offers, "Молодший спеціаліст на основі базової загальної середньої освіти")
+    enr_page.search_offers(offers, u"Молодший спеціаліст на основі базової загальної середньої освіти")
     actual_data_structural_subdivision = enr_page.get_arr_structural_subdivision_from_choose_offer()
     enr_page.button_close_choose_offer.click()
     for actual_data in actual_data_structural_subdivision:
-        assert offers == actual_data.encode("utf-8")
+        assert offers == actual_data
 
 def test_check_correct_type_of_offer(app, forms_of_education):
+    forms_of_education = forms_of_education.decode('utf8')
     enr_page = app.enrollments_main_page
-    enr_page.search_offers("Біологічний", forms_of_education)
+    enr_page.search_offers(u"Біологічний", forms_of_education)
     actual_data_type_offer = enr_page.get_arr_type_offer_from_choose_offer()
     enr_page.button_close_choose_offer.click()
     for actual_data in actual_data_type_offer:
-        assert forms_of_education == actual_data.encode("utf-8")
+        assert forms_of_education == actual_data
