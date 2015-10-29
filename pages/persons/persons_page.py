@@ -179,12 +179,6 @@ class PersonsPage(InternalPage):
     def edit_first_person_in_page(self):
         return self.is_element_visible(self.EDIT_FIRST_PERSON_IN_TABLE)
 
-    @property
-    def edit_first_person_in_page(self):
-        if self.is_element_visible(self.EDIT_FIRST_PERSON_IN_TABLE):
-            self.driver.find_element(*self.EDIT_FIRST_PERSON_IN_TABLE).click()
-            self.is_element_present(self.SPINNER_OFF)
-
     def searching_person_by_surname(self, given_surname):
         """
         Method needs for "test_add_person". It checks that the added person doesn't exist in the system.
