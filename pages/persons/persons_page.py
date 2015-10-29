@@ -35,9 +35,9 @@ class PersonsPage(InternalPage):
     CLOSE_AFTER_ADDITION_BUTTON = (By.XPATH, "//div[@class='modal-footer']/button[@class='btn btn-danger']")
 
     REFRESH_UPPER_BUTTON = (
-        By.XPATH, "//div[@class='container-fluid admissionSystemApp-container']//div[@class='col-md-2 col-lg-2 filter']/p[1]/button")
+        By.XPATH, "//p[1]/*[contains(@class, 'personFilterUpdateButton')]")
     REFRESH_BOTTOM_BUTTON = (
-        By.XPATH, "//div[@class='container-fluid admissionSystemApp-container']//div[@class='col-md-2 col-lg-2 filter']/p[2]/button")
+        By.XPATH, "//p[2]/*[contains(@class, 'personFilterUpdateButton')]")
     GENDER_MALE_CHECKBOX = (
         By.XPATH, "//div[@class='panel-group']/div[1]/div[2]/div[@class='panel-body']/div[1]/label/input")
     GENDER_FEMALE_CHECKBOX = (
@@ -185,7 +185,8 @@ class PersonsPage(InternalPage):
 
     @property
     def edit_first_person_in_page(self):
-        return self.is_element_visible(self.EDIT_FIRST_PERSON_IN_TABLE)
+        self.is_element_visible(self.EDIT_FIRST_PERSON_IN_TABLE)
+        return self.driver.find_element(*self.EDIT_FIRST_PERSON_IN_TABLE)
 
     def searching_person_by_surname(self, given_surname):
         """
@@ -463,3 +464,21 @@ class PersonsPage(InternalPage):
         expected_person = self.try_get_searched_surname(person.surname_ukr).text.partition(' ')[0]
         if expected_person:
             self.delete_first_person_in_page
+
+    def return_to_persons_main_page(self, app):
+        app.internal_page.persons_page_link.click()
+        self.is_element_present(self.SPINNER_OFF)
+        self.try_get_refresh_upper_button().click()
+
+    def search_person_by_surname(self, given_surname):
+        """
+        Method performs search by surname
+        :param given_surname: wanted surname
+        :return:
+        """
+        self.is_this_page
+        self.try_get_choose_surname().click()
+        self.try_get_input_group().clear()
+        self.try_get_input_group().send_keys(given_surname)
+        self.try_get_ok_button().click()
+        self.is_element_present(self.SPINNER_OFF)

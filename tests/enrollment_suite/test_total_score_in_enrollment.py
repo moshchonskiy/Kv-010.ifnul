@@ -54,8 +54,9 @@ def test_field_total_score_on_characters(app, character):
 def test_twelve_scale(app, number_and_character):
     enr_page = app.enrollments_main_page
 
-    if(enr_page.get_text_choose_grading_scale().text != u"дванадцятибальна"):
-        enr_page.choose_grading_scale("дванадцятибальна")
+    scale = u"дванадцятибальна"
+    if(enr_page.get_text_choose_grading_scale().text != scale):
+        enr_page.choose_grading_scale(scale)
 
     enr_page.add_total_score(enr_page.TOTAL_SCORE, number_and_character)
     element = enr_page.get_form_input_total_score()
@@ -71,8 +72,9 @@ def test_twelve_scale(app, number_and_character):
 def test_sixty_scale(app, number_and_character):
     enr_page = app.enrollments_main_page
 
-    if(enr_page.get_text_choose_grading_scale().text != u"шестидесятибальна"):
-        enr_page.choose_grading_scale("шестидесятибальна")
+    scale = u"шестидесятибальна"
+    if(enr_page.get_text_choose_grading_scale().text != scale):
+        enr_page.choose_grading_scale(scale)
 
     enr_page.add_total_score(enr_page.TOTAL_SCORE, number_and_character)
     element = enr_page.get_form_input_total_score()
@@ -88,8 +90,9 @@ def test_sixty_scale(app, number_and_character):
 def test_one_hundred_scale(app, number_and_character):
     enr_page = app.enrollments_main_page
 
-    if(enr_page.get_text_choose_grading_scale().text != u"стобальна"):
-        enr_page.choose_grading_scale("стобальна")
+    scale = u"стобальна"
+    if(enr_page.get_text_choose_grading_scale().text != scale):
+        enr_page.choose_grading_scale(scale)
 
     enr_page.add_total_score(enr_page.TOTAL_SCORE, number_and_character)
     element = enr_page.get_form_input_total_score()
@@ -105,8 +108,9 @@ def test_one_hundred_scale(app, number_and_character):
 def test_two_hundred_scale(app, number_and_character):
     enr_page = app.enrollments_main_page
 
-    if(enr_page.get_text_choose_grading_scale().text != u"двохсотбальна"):
-        enr_page.choose_grading_scale("двохсотбальна")
+    scale = u"двохсотбальна"
+    if(enr_page.get_text_choose_grading_scale().text != scale):
+        enr_page.choose_grading_scale(scale)
 
     enr_page.add_total_score(enr_page.TOTAL_SCORE, number_and_character)
     element = enr_page.get_form_input_total_score()
@@ -122,8 +126,9 @@ def test_two_hundred_scale(app, number_and_character):
 def test_ECTS_scale(app, number_and_character):
     enr_page = app.enrollments_main_page
 
-    if(enr_page.get_text_choose_grading_scale().text != "ECTS"):
-        enr_page.choose_grading_scale("ECTS")
+    scale = "ECTS"
+    if(enr_page.get_text_choose_grading_scale().text != scale):
+        enr_page.choose_grading_scale(scale)
     ECTS_DATA = ['A', 'B', 'C', 'D', 'E', 'Fx', 'F']
 
     enr_page.add_total_score(enr_page.TOTAL_SCORE, number_and_character)
@@ -140,8 +145,9 @@ def test_ECTS_scale(app, number_and_character):
 def test_five_point_scale(app, number_and_character):
     enr_page = app.enrollments_main_page
 
-    if(enr_page.get_text_choose_grading_scale().text != u"п'ятибальна"):
-        enr_page.choose_grading_scale("п'ятибальна")
+    scale = u"п'ятибальна"
+    if(enr_page.get_text_choose_grading_scale().text != scale):
+        enr_page.choose_grading_scale(scale)
 
     enr_page.add_total_score(enr_page.TOTAL_SCORE, number_and_character)
     element = enr_page.get_form_input_total_score()
@@ -156,8 +162,9 @@ def test_five_point_scale(app, number_and_character):
 
 def test_interview_scale(app, number_and_character):
     enr_page = app.enrollments_main_page
-    if(enr_page.get_text_choose_grading_scale().text != u"співбесіда"):
-        enr_page.choose_grading_scale("співбесіда")
+    scale = u"співбесіда"
+    if(enr_page.get_text_choose_grading_scale().text != scale):
+        enr_page.choose_grading_scale(scale)
     enr_page.add_total_score(enr_page.TOTAL_SCORE, number_and_character)
     element = enr_page.get_form_input_total_score()
     status_form_right_now = enr_page.get_atrribute_of_element_by(element, "class").split(' ')
