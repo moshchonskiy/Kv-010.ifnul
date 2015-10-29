@@ -1,11 +1,10 @@
 # coding: utf8
-from time import sleep
-from pages.internal_page import InternalPage
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.expected_conditions import visibility_of_element_located
 
-from decorators.error_handling_dec import ErrorHandler
+
+from decorators.error_handling_dec import ErrorHandlerPO
 from pages.internal_page import InternalPage
 
 
@@ -35,9 +34,11 @@ class PersonsPage(InternalPage):
     CLOSE_AFTER_ADDITION_BUTTON = (By.XPATH, "//div[@class='modal-footer']/button[@class='btn btn-danger']")
 
     REFRESH_UPPER_BUTTON = (
-        By.XPATH, "//div[@class='container-fluid admissionSystemApp-container']//div[@class='col-md-2 col-lg-2 filter']/p[1]/button")
+        By.XPATH,
+        "//div[@class='container-fluid admissionSystemApp-container']//div[@class='col-md-2 col-lg-2 filter']/p[1]/button")
     REFRESH_BOTTOM_BUTTON = (
-        By.XPATH, "//div[@class='container-fluid admissionSystemApp-container']//div[@class='col-md-2 col-lg-2 filter']/p[2]/button")
+        By.XPATH,
+        "//div[@class='container-fluid admissionSystemApp-container']//div[@class='col-md-2 col-lg-2 filter']/p[2]/button")
     GENDER_MALE_CHECKBOX = (
         By.XPATH, "//div[@class='panel-group']/div[1]/div[2]/div[@class='panel-body']/div[1]/label/input")
     GENDER_FEMALE_CHECKBOX = (
@@ -91,7 +92,7 @@ class PersonsPage(InternalPage):
     ACTIVE_ITEMS_PER_PAGE_BUTTON = (By.XPATH, "//button[contains(@class, 'active')]")
     PREVIOUS_PAGE = (By.XPATH, "//li[contains(@title, 'Previous Page')]")
     LAST_NUMBERED_PAGE = (By.XPATH, "//li[contains(@title, 'Last Page')]/preceding-sibling::li[2]/span")
-    LAST_PAGE = (By.XPATH, "//li[contains(@title, 'Last Page')]")
+    LAST_PAGE = (By.XPATH, "//li/span[contains(.,'>>')]")
     FIELD_CHOOSER_BUTTON = (By.XPATH, "//button[contains(@class, 'field-chooser-button')]")
     FIELD_CHOOSER_RED_CLOSE_BUTTON = (By.XPATH, "//button[parent::div[contains(@class, 'modal-footer')]]")
     INACTIVE_COLUMNS_MODAL = (By.XPATH, "//ul[@class='list-group']/li/label/input[not(@checked)]")
@@ -155,9 +156,9 @@ class PersonsPage(InternalPage):
     # END OF SELECTORS SECTION
     #
 
-    @ErrorHandler("current page is not Persons page")
+    @ErrorHandlerPO("current page is not Persons page")
     def is_current_page(self):
-        return self.wait.until(visibility_of_element_located(self.PERSON_PAGE_LINK))
+        return self.wait.until(visibility_of_element_located(self.ADD_PERSON_BUTTON))
 
     @property
     def is_this_page(self):
@@ -181,7 +182,7 @@ class PersonsPage(InternalPage):
     def view_first_person_in_page(self):
         if self.is_element_visible(self.VIEW_FIRST_PERSON_IN_TABLE):
             self.driver.find_element(*self.VIEW_FIRST_PERSON_IN_TABLE).click()
-            self.is_element_present(self.SPINNER_OFF)
+            self.wait_until_page_generate()
 
     @property
     def edit_first_person_in_page(self):
@@ -205,11 +206,11 @@ class PersonsPage(InternalPage):
 
     # FILTER
     # to all filters
-    @ErrorHandler(message='in person page last page ref is not found')
+    @ErrorHandlerPO(message='in person page last page ref is not found')
     def try_get_last_page_ref(self):
-        return self.driver.find_element(*self.LAST_PAGE)
+        return self.try_get_visible_element(self.LAST_PAGE)
 
-    @ErrorHandler(message='Red button is not found in field chooser')
+    @ErrorHandlerPO(message='Red button is not found in field chooser')
     def try_field_chooser_red_close_button(self):
         return self.driver.find_element(*self.FIELD_CHOOSER_RED_CLOSE_BUTTON)
 
@@ -440,10 +441,13 @@ class PersonsPage(InternalPage):
                                          self.COLUMN_VZ_ADD,
                                          self.COLUMN_MATERIAL_LIABILITY_ADD)
         self.driver.find_element(*PersonsPage.FIELD_CHOOSER_BUTTON).click()
-        for checkbox in list_all_unchecked_checkboxes:
-            self.is_element_visible(checkbox).click()
-        self.try_field_chooser_red_close_button().click()
         self.wait_until_page_generate()
+        for checkbox in list_all_unchecked_checkboxes:
+            self.driver.find_element(*checkbox).click()
+        self.try_field_chooser_red_close_button().click()
+
+
+
 
     def return_added_person_surname(self, person):
         """
