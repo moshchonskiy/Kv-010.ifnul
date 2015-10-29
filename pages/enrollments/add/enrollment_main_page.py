@@ -220,7 +220,8 @@ class EnrollmentsMainPage(InternalPage):
         :return: looked for WebElement.
         """
         for el in elements:
-            if el.text.encode('utf8') == string:
+            # if el.text.encode('utf8') == string:
+            if el.text == string:
                 return el
 
     def find_element_in_select(self, elements, string):
@@ -230,7 +231,8 @@ class EnrollmentsMainPage(InternalPage):
         :param string: is name of elements.
         """
         for sel in elements:
-            if sel.text.encode('utf8') == string:
+            # if sel.text.encode('utf8') == string:
+            if sel.text == string:
                 sel.click()
                 break
 
@@ -280,9 +282,9 @@ class EnrollmentsMainPage(InternalPage):
         :param name: is name of person.
         """
         self.is_element_present(self.SPINNER_OFF)
-        self.ok_for_input_field.click()
+        self.ok_for_input_field
         self.is_element_present(self.SPINNER_OFF)
-        self.emulation_of_input(self.SEARCH_NAME_FIELD, name.decode('utf8'))
+        self.emulation_of_input(self.SEARCH_NAME_FIELD, name)
         self.first_person.click()
         self.is_element_present(self.SPINNER_OFF)
 
@@ -291,11 +293,11 @@ class EnrollmentsMainPage(InternalPage):
         This method is to select the radiobutton "Вища освіта" on its value.
         :param education: is value for radiobutton select.
         """
-        if education == "Не отримую освіти":
+        if education == u"Не отримую освіти":
             self.radiobutton_dont_getting_education.click()
-        elif education == "Отримую освіту":
+        elif education == u"Отримую освіту":
             self.radiobutton_getting_education.click()
-        elif education == "Є вища освіта":
+        elif education == u"Є вища освіта":
             self.radiobutton_is_education.click()
 
     def radiobutton_evaluation_of_the_interview(self, evaluation):
@@ -303,13 +305,13 @@ class EnrollmentsMainPage(InternalPage):
         This method is to select the radiobutton "Відмітка про співбесіду" on its value.
         :param evaluation: is value for radiobutton select.
         """
-        if evaluation == "Не пройшов співбесіду":
+        if evaluation == u"Не пройшов співбесіду":
             self.radiobutton_not_passed_interview.click()
-        elif evaluation == "Не потрібно співбесіди":
+        elif evaluation == u"Не потрібно співбесіди":
             self.radiobutton_dont_need_interview.click()
-        elif evaluation == "Потрібна співбесіда":
+        elif evaluation == u"Потрібна співбесіда":
             self.radiobutton_need_interview.click()
-        elif evaluation == "Співпебісда пройдена":
+        elif evaluation == u"Співпебісда пройдена":
             self.radiobutton_interview_passed.click()
 
     def search_offers(self, offer, form_of_education):
@@ -391,15 +393,15 @@ class EnrollmentsMainPage(InternalPage):
         :param hostel: is value of checkbox "need hostel".
         :param document: is value of checkbox "document is original".
         """
-        if state == "False":
+        if not state:
             self.checkbox_is_state.click()
-        if contract == "False":
+        if not contract:
             self.checkbox_is_contract.click()
-        if privilege == "True":
+        if privilege:
             self.checkbox_is_privilege.click()
-        if hostel == "True":
+        if hostel:
             self.checkbox_is_hostel.click()
-        if document == "True":
+        if document:
             self.checkbox_document_is_original.click()
 
     def select_person_by(self, index):
