@@ -40,9 +40,9 @@ def test_add_person(app, person):
     with pytest.allure.step('Assert surname of added person is the same as from input data'):
         try:
             assert app.persons_page.return_added_person_surname(person) == person.surname_ukr
-            allure.attach('screenshot', app.papers_page.driver.get_screenshot_as_png(), type=AttachmentType.PNG)
+            allure.attach('screenshot', app.persons_page.driver.get_screenshot_as_png(), type=AttachmentType.PNG)
         except AssertionError:
-            allure.attach('screenshot', app.papers_page.driver.get_screenshot_as_png(), type=AttachmentType.PNG)
+            allure.attach('screenshot', app.persons_page.driver.get_screenshot_as_png(), type=AttachmentType.PNG)
             print_simple_stacktrace()
             raise
 
