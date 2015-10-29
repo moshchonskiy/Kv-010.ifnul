@@ -66,6 +66,36 @@ class EnrollmentsMainPage(InternalPage):
     def is_enrollment_in_person(self):
         return self.is_element_visible(self.IS_ENROLLMENT_IN_PERSON)
 
+    def search_person_by(self, index):
+        self.is_element_present(self.SPINNER_OFF)
+        Select(self.driver.find_element(*self.SEARCH_PERSON_BY_SELECT)).select_by_index(index)
+
+    def set_search_person_by(self, searched_value):
+        """
+        Method sets the searched value
+        :param searched_value: String parametr.
+        :return:
+        """
+        self.emulation_of_input(self.SEARCH_PERSON_BY_INPUT, searched_value)
+
+    def get_all_found_persons_pib(self):
+        return self.driver.find_elements(*self.ALL_FOUND_PERSONS_PIB)
+
+    def get_all_found_persons_id(self):
+        return self.driver.find_elements(*self.ALL_FOUND_PERSONS_ID)
+
+    def find_date_of_creation(self):
+        self.is_element_visible(self.DATE_OF_CREATION_STATEMENTS)
+        return self.driver.find_elements(*self.DATE_OF_CREATION_STATEMENTS)
+
+    @property
+    def is_this_page(self):
+        return self.is_element_visible(self.SEARCH_PERSON_BY_SELECT)
+
+    @property
+    def cancel_click(self):
+        self.driver.find_element(*self.CANCEL_BUTTON).click()
+
     @property
     def search_offers_field(self):
         return self.is_element_visible(self.SEARCH_OFFERS_FIELD)
@@ -205,7 +235,8 @@ class EnrollmentsMainPage(InternalPage):
         :return: looked for WebElement.
         """
         for el in elements:
-            if el.text.encode('utf8') == string:
+            # if el.text.encode('utf8') == string:
+            if el.text == string:
                 return el
 
     def find_element_in_select(self, elements, string):
@@ -215,7 +246,8 @@ class EnrollmentsMainPage(InternalPage):
         :param string: is name of elements.
         """
         for sel in elements:
-            if sel.text.encode('utf8') == string:
+            # if sel.text.encode('utf8') == string:
+            if sel.text == string:
                 sel.click()
                 break
 
@@ -266,9 +298,9 @@ class EnrollmentsMainPage(InternalPage):
         :param name: is name of person.
         """
         self.is_element_present(self.SPINNER_OFF)
-        self.ok_for_input_field.click()
+        self.ok_for_input_field
         self.is_element_present(self.SPINNER_OFF)
-        self.emulation_of_input(self.SEARCH_NAME_FIELD, name.decode('utf8'))
+        self.emulation_of_input(self.SEARCH_NAME_FIELD, name)
         self.first_person.click()
         self.is_element_present(self.SPINNER_OFF)
 
@@ -379,15 +411,15 @@ class EnrollmentsMainPage(InternalPage):
         :param hostel: is value of checkbox "need hostel".
         :param document: is value of checkbox "document is original".
         """
-        if state == "False":
+        if not state:
             self.checkbox_is_state.click()
-        if contract == "False":
+        if not contract:
             self.checkbox_is_contract.click()
-        if privilege == "True":
+        if privilege:
             self.checkbox_is_privilege.click()
-        if hostel == "True":
+        if hostel:
             self.checkbox_is_hostel.click()
-        if document == "True":
+        if document:
             self.checkbox_document_is_original.click()
 
     def select_person_by(self, index):

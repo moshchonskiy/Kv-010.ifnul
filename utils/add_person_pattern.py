@@ -5,7 +5,7 @@ __author__ = 'stako'
 
 class AddPersonPattern(object):
 
-    def add_person(self, app, person):
+    def login_and_delete_all_person_by_name(self, app, person):
         app.ensure_logout()
         app.login(User.Admin(), True)
         # Check that the added person doesn't exist
