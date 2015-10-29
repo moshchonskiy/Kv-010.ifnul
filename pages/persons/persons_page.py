@@ -374,8 +374,8 @@ class PersonsPage(InternalPage):
 
     # surname search
     def try_get_choose_surname(self):
-        self.is_element_present(self.CHOOSE_SURNAME_SEARCH)
-        return self.is_element_visible(self.CHOOSE_SURNAME_SEARCH)
+        self.is_element_visible(self.CHOOSE_SURNAME_SEARCH)
+        return self.driver.find_element(self.CHOOSE_SURNAME_SEARCH)
 
     def try_get_searched_surname(self, given_surname):
         self.wait.until(EC.text_to_be_present_in_element(self.SEARCHED_SURNAME, given_surname))
