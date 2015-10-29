@@ -35,9 +35,9 @@ class PersonsPage(InternalPage):
     CLOSE_AFTER_ADDITION_BUTTON = (By.XPATH, "//div[@class='modal-footer']/button[@class='btn btn-danger']")
 
     REFRESH_UPPER_BUTTON = (
-        By.XPATH, "//div[@class='container-fluid admissionSystemApp-container']//div[@class='col-md-2 col-lg-2 filter']/p[1]/button")
+        By.XPATH, "//p[1]/*[contains(@class, 'personFilterUpdateButton')]")
     REFRESH_BOTTOM_BUTTON = (
-        By.XPATH, "//div[@class='container-fluid admissionSystemApp-container']//div[@class='col-md-2 col-lg-2 filter']/p[2]/button")
+        By.XPATH, "//p[2]/*[contains(@class, 'personFilterUpdateButton')]")
     GENDER_MALE_CHECKBOX = (
         By.XPATH, "//div[@class='panel-group']/div[1]/div[2]/div[@class='panel-body']/div[1]/label/input")
     GENDER_FEMALE_CHECKBOX = (
@@ -463,3 +463,8 @@ class PersonsPage(InternalPage):
         expected_person = self.try_get_searched_surname(person.surname_ukr).text.partition(' ')[0]
         if expected_person:
             self.delete_first_person_in_page
+
+    def return_to_persons_main_page(self, app):
+        app.internal_page.persons_page_link.click()
+        self.is_element_present(self.SPINNER_OFF)
+        self.try_get_refresh_upper_button().click()
