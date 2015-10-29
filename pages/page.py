@@ -1,5 +1,5 @@
 import abc
-from decorators.error_handling_dec import ErrorHandler
+from decorators.error_handling_dec import  ErrorHandlerPO
 
 __author__ = 'Evgen'
 
@@ -24,7 +24,7 @@ class Page(object):
     def try_get_visible_element(self, locator):
         return self.wait.until(visibility_of_element_located(locator))
 
-    @ErrorHandler("page generation is failed")
+    @ErrorHandlerPO("page generation is failed")
     def wait_until_page_generate(self):
         return self.wait.until(presence_of_element_located(self.SPINNER_OFF))
 

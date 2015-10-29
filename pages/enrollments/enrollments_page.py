@@ -3,7 +3,7 @@ import datetime
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.support.expected_conditions import *
-from decorators.error_handling_dec import ErrorHandler
+from decorators.error_handling_dec import  ErrorHandlerPO
 from pages.internal_page import InternalPage
 from utils.fill_enrollment import FillEnrollment
 
@@ -97,7 +97,7 @@ class EnrollmentsPage(InternalPage):
     TABLE_HEAD = (By.XPATH, "//div[@class='table-responsive']//thead/tr/th")
     TABLE_FIRST_ROW = (By.XPATH, "//tbody[@class='pointer']/tr[1]/td")
 
-    @ErrorHandler("current page is not Enrollments page")
+    @ErrorHandlerPO("current page is not Enrollments page")
     def is_current_page(self):
         return self.wait.until(visibility_of_element_located(self.ADD_NEW_ENROLLMENT_BUTTON))
 

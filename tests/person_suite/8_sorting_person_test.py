@@ -3,6 +3,7 @@ import allure
 from allure.constants import AttachmentType
 import pytest
 
+
 __author__ = 'yioteh'
 
 
@@ -16,7 +17,7 @@ class TestSortingPerson():
 
             with pytest.allure.step("Prepare TestSortingPerson"):
                 pers_page = self.app.persons_page
-                pers_page.is_current_page
+                pers_page.is_current_page()
             with pytest.allure.step("Check all checkbox"):
                 pers_page.show_all_columns()
             # Looping over columns starts here
@@ -25,6 +26,7 @@ class TestSortingPerson():
             with pytest.allure.step("start generate test array of value"):
                 # resulting list of all columns values
                 pers_page.try_get_last_page_ref().click()
+
                 pers_page.wait_until_page_generate()
                 # How many pages do we have in pagination
                 looping_over_pagination = int(pers_page.get_number_from_selector(pers_page.LAST_NUMBERED_PAGE))

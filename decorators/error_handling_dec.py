@@ -1,9 +1,8 @@
 __author__ = 'dmakstc'
 
 
-class ErrorHandler(object):
+class ErrorHandlerPO(object):
     def __init__(self, message):
-
         self.message = message
 
     def __call__(self, func):
@@ -11,6 +10,6 @@ class ErrorHandler(object):
             try:
                 return func(*args)
             except Exception:
-                raise AssertionError(self.message)
+                    raise AssertionError(self.message)
 
         return wr
