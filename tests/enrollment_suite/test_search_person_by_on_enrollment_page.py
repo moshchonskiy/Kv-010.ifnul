@@ -38,6 +38,7 @@ class TestSearchPersonBy(object):
         app.enrollments_main_page.select_person_by(searched_by_option)
         app.enrollments_main_page.set_search_person_by(searched_value)
         app.enrollments_main_page.ok_for_input_field
+        app.enrollments_main_page.wait_while_alert_present()
 
     def search_by_pib_and_surname(self, app, searched_value, searched_by_option, is_valid_value):
         """

@@ -24,6 +24,7 @@ class InternalPage(Page):
     GO_TO_LEFT_BUTTON_IN_DATE_PICKER = (By.CSS_SELECTOR, "button.btn.btn-default.btn-sm.pull-left")
     GO_TO_RIGHT_BUTTON_IN_DATE_PICKER = (By.CSS_SELECTOR, "button.btn.btn-default.btn-sm.pull-right")
     ACTIVATE_MONTH_OR_YEAR_CHANGE_BUTTON = (By.CSS_SELECTOR, "button[id*='-title']")
+    ERROR_ALERT = (By.XPATH, "//*[@class='toast-message']")
 
     @ErrorHandlerPO("current page is not internal page")
     def is_current_page(self):
@@ -58,6 +59,11 @@ class InternalPage(Page):
             return self.wait.until(presence_of_element_located(locator))
         except WebDriverException:
             return False
+
+    def wait_while_alert_present(self):
+        while self.is_element_visible(self.ERROR_ALERT):
+            self.driver.find_element(*self.ERROR_ALERT).click()
+
 
     def emulation_of_input(self, locator, value):
         """
