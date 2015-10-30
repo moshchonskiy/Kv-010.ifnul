@@ -77,7 +77,7 @@ class AddPersonContactsPage(AddPersonPage):
         :param site: String parametr.
         :return:
         """
-        self.emulation_of_input(self.HOME_PHONE_INPUT, site)
+        self.emulation_of_input(self.SITE_INPUT, site)
 
     def set_icq(self, icq):
         """
