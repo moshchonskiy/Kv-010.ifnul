@@ -1,5 +1,5 @@
 # coding: utf8
-from time import sleep
+import time
 from pages.internal_page import InternalPage
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
@@ -442,10 +442,14 @@ class PersonsPage(InternalPage):
                                          self.COLUMN_PLACE_OF_BIRTH_ADD,
                                          self.COLUMN_VZ_ADD,
                                          self.COLUMN_MATERIAL_LIABILITY_ADD)
+        assert self.is_element_visible(PersonsPage.FIELD_CHOOSER_BUTTON)
         self.driver.find_element(*PersonsPage.FIELD_CHOOSER_BUTTON).click()
         self.wait_until_page_generate()
+        self.is_element_visible(self.MODAL_HEADER_CHOOSER)
         for checkbox in list_all_unchecked_checkboxes:
+
             self.driver.find_element(*checkbox).click()
+
         self.try_field_chooser_red_close_button().click()
 
         self.is_element_present(self.MODAL_HEADER_CHOOSER)
