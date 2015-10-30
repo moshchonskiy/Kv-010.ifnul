@@ -31,10 +31,12 @@ class InternalPage(Page):
 
     @property
     def user_dropdown(self):
+        self.is_element_visible(self.USER_DROPDOWN)
         return self.driver.find_element(*self.USER_DROPDOWN)
 
     @property
     def logout_button(self):
+        self.is_element_visible(self.LOGOUT_BUTTON)
         return self.driver.find_element(*self.LOGOUT_BUTTON)
 
     @property
