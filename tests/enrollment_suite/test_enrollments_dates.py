@@ -21,7 +21,7 @@ class TestEnrollmentsDates(object):
         return self.convert_string_to_datetime(app.enrollments_main_page.find_date_of_creation().get_attribute("value"))
 
     @pytest.allure.severity(pytest.allure.severity_level.CRITICAL)
-    def test_beginning_date_later_than_creation_date(self, logout_login):
+    def test_beginning_date_later_than_creation_date(self, logout_login, screenshot):
         with pytest.allure.step('Authorize to the application, click add enrollment button and read date of creation'):
             app = logout_login
             creation_date = self.read_creation_date(app)
@@ -30,10 +30,11 @@ class TestEnrollmentsDates(object):
         with pytest.allure.step('Set begining date later than creation date'):
             app.enrollments_main_page.set_begin_date(begin_date)
         with pytest.allure.step('Asert that the beginning date input field is not red'):
-            assert not app.enrollments_main_page.find_date_of_begining().get_attribute("class").__contains__("ng-invalid")
+            screenshot.assert_and_get_screenshot(logout_login, not app.enrollments_main_page.find_date_of_begining().get_attribute("class").__contains__("ng-invalid"))
+            # assert not app.enrollments_main_page.find_date_of_begining().get_attribute("class").__contains__("ng-invalid")
 
     @pytest.allure.severity(pytest.allure.severity_level.CRITICAL)
-    def test_beginning_date_earlier_than_creation_date(self, logout_login):
+    def test_beginning_date_earlier_than_creation_date(self, logout_login, screenshot):
         with pytest.allure.step('Authorize to the application, click add enrollment button and read date of creation'):
             app = logout_login
             creation_date = self.read_creation_date(app)
@@ -42,10 +43,11 @@ class TestEnrollmentsDates(object):
         with pytest.allure.step('Set begining date earlier than creation date'):
             app.enrollments_main_page.set_begin_date(begin_date)
         with pytest.allure.step('Asert that the beginning date input field is red'):
-            assert app.enrollments_main_page.find_date_of_begining().get_attribute("class").__contains__("ng-invalid")
+            screenshot.assert_and_get_screenshot(logout_login, app.enrollments_main_page.find_date_of_begining().get_attribute("class").__contains__("ng-invalid"))
+            # assert app.enrollments_main_page.find_date_of_begining().get_attribute("class").__contains__("ng-invalid")
 
     @pytest.allure.severity(pytest.allure.severity_level.CRITICAL)
-    def test_ending_date_later_than_creation_date(self, logout_login):
+    def test_ending_date_later_than_creation_date(self, logout_login, screenshot):
         with pytest.allure.step('Authorize to the application, click add enrollment button and read date of creation'):
             app = logout_login
             creation_date = self.read_creation_date(app)
@@ -54,10 +56,11 @@ class TestEnrollmentsDates(object):
         with pytest.allure.step('Set ending date earlier than creation date'):
             app.enrollments_main_page.set_end_date(end_date)
         with pytest.allure.step('Asert that the ending date input field is not red'):
-            assert not app.enrollments_main_page.find_date_of_ending().get_attribute("class").__contains__("ng-invalid")
+            screenshot.assert_and_get_screenshot(logout_login, not app.enrollments_main_page.find_date_of_ending().get_attribute("class").__contains__("ng-invalid"))
+            # assert not app.enrollments_main_page.find_date_of_ending().get_attribute("class").__contains__("ng-invalid")
 
     @pytest.allure.severity(pytest.allure.severity_level.CRITICAL)
-    def test_ending_date_earlier_than_creation_date(self, logout_login):
+    def test_ending_date_earlier_than_creation_date(self, logout_login, screenshot):
         with pytest.allure.step('Authorize to the application, click add enrollment button and read date of creation'):
             app = logout_login
             creation_date = self.read_creation_date(app)
@@ -66,10 +69,11 @@ class TestEnrollmentsDates(object):
         with pytest.allure.step('Set ending date earlier than creation date'):
             app.enrollments_main_page.set_end_date(end_date)
         with pytest.allure.step('Asert that the ending date input field is red'):
-            assert app.enrollments_main_page.find_date_of_ending().get_attribute("class").__contains__("ng-invalid")
+            screenshot.assert_and_get_screenshot(logout_login, app.enrollments_main_page.find_date_of_ending().get_attribute("class").__contains__("ng-invalid"))
+            # assert app.enrollments_main_page.find_date_of_ending().get_attribute("class").__contains__("ng-invalid")
 
     @pytest.allure.severity(pytest.allure.severity_level.CRITICAL)
-    def test_ending_date_later_than_beginning_date(self, logout_login):
+    def test_ending_date_later_than_beginning_date(self, logout_login, screenshot):
         with pytest.allure.step('Authorize to the application, click add enrollment button and read date of creation'):
             app = logout_login
             creation_date = self.read_creation_date(app)
@@ -80,10 +84,11 @@ class TestEnrollmentsDates(object):
             app.enrollments_main_page.set_begin_date(begin_date)
             app.enrollments_main_page.set_end_date(end_date)
         with pytest.allure.step('Asert that the ending date input field is not red'):
-            assert not app.enrollments_main_page.find_date_of_ending().get_attribute("class").__contains__("ng-invalid")
+            screenshot.assert_and_get_screenshot(logout_login, not app.enrollments_main_page.find_date_of_ending().get_attribute("class").__contains__("ng-invalid"))
+            # assert not app.enrollments_main_page.find_date_of_ending().get_attribute("class").__contains__("ng-invalid")
 
     @pytest.allure.severity(pytest.allure.severity_level.CRITICAL)
-    def test_ending_date_earlier_than_beginning_date(self, logout_login):
+    def test_ending_date_earlier_than_beginning_date(self, logout_login, screenshot):
         with pytest.allure.step('Authorize to the application, click add enrollment button and read date of creation'):
             app = logout_login
             creation_date = self.read_creation_date(app)
@@ -95,4 +100,5 @@ class TestEnrollmentsDates(object):
             app.enrollments_main_page.set_begin_date(begin_date)
             app.enrollments_main_page.set_end_date(end_date)
         with pytest.allure.step('Asert that the ending date input field is red'):
-            assert app.enrollments_main_page.find_date_of_ending().get_attribute("class").__contains__("ng-invalid")
+            screenshot.assert_and_get_screenshot(logout_login, app.enrollments_main_page.find_date_of_ending().get_attribute("class").__contains__("ng-invalid"))
+            # assert app.enrollments_main_page.find_date_of_ending().get_attribute("class").__contains__("ng-invalid")
