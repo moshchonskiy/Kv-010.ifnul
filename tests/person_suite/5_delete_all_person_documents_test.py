@@ -45,3 +45,4 @@ def test_delete_person_documents(app, person, screenshot):
         actual = app.papers_page.get_number_of_person_documents()
         expected = 0
         screenshot.assert_and_get_screenshot(app, actual == expected)
+        base_page.save_new_person()
