@@ -9,7 +9,7 @@ import traceback
 __author__ = 'acidroed'
 
 @pytest.allure.severity(pytest.allure.severity_level.CRITICAL)
-def test_add_person(app, person):
+def test_add_person(app, person, screenshot):
     with pytest.allure.step('Authorize to the application and click add person button'):
         add_person_pattern = AddPersonPattern()
         add_person_pattern.login_and_delete_all_person_by_name(app, person)
@@ -38,18 +38,19 @@ def test_add_person(app, person):
         papers_page.fill_in_document_page(person)
         base_page.save_new_person()
     with pytest.allure.step('Assert surname of added person is the same as from input data'):
-        try:
-            assert app.persons_page.return_added_person_surname(person) == person.surname_ukr
-            allure.attach('screenshot', app.persons_page.driver.get_screenshot_as_png(), type=AttachmentType.PNG)
-        except AssertionError:
-            allure.attach('screenshot', app.persons_page.driver.get_screenshot_as_png(), type=AttachmentType.PNG)
-            print_simple_stacktrace()
-            raise
-
-def print_simple_stacktrace():
-        _, _, tb = sys.exc_info()
-        tb_info = traceback.extract_tb(tb)
-        filename, line, func, text = tb_info[-1]
-        print('An error occurred on line: {}, in statement: {}. The filename is: {}, and function is: {}.'
-              .format(line, text, filename, func))
+        screenshot.assert_and_get_screenshot(app, app.persons_page.return_added_person_surname(person) == person.surname_ukr)
+#         try:
+#             assert app.persons_page.return_added_person_surname(person) == person.surname_ukr
+#             allure.attach('screenshot', app.persons_page.driver.get_screenshot_as_png(), type=AttachmentType.PNG)
+#         except AssertionError:
+#             allure.attach('screenshot', app.persons_page.driver.get_screenshot_as_png(), type=AttachmentType.PNG)
+#             print_simple_stacktrace()
+#             raise
+#
+# def print_simple_stacktrace():
+#         _, _, tb = sys.exc_info()
+#         tb_info = traceback.extract_tb(tb)
+#         filename, line, func, text = tb_info[-1]
+#         print('An error occurred on line: {}, in statement: {}. The filename is: {}, and function is: {}.'
+#               .format(line, text, filename, func))
 
