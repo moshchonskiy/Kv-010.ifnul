@@ -32,6 +32,7 @@ class InternalPage(Page):
 
     @property
     def user_dropdown(self):
+        self.is_element_visible(self.USER_DROPDOWN)
         return self.driver.find_element(*self.USER_DROPDOWN)
 
     @property
