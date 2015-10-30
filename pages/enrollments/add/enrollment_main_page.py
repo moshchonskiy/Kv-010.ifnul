@@ -4,6 +4,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import Select
 from pages.internal_page import InternalPage
 from utils.fill_enrollment import FillEnrollment
+from selenium.webdriver.support import expected_conditions as EC
 from time import sleep
 
 __author__ = 'Stako'
@@ -15,7 +16,11 @@ class EnrollmentsMainPage(InternalPage):
     SEARCH_NAME_FIELD = (By.XPATH, "//div[@class='modal-body ng-scope']//input[contains (@type, 'search')]")
     FIRST_PERSON = (By.XPATH, "//*[@class='table-responsive']//tbody[@class='pointer']//tr[1]/td[2]")
     SERIES_OF_STATEMENTS = (By.ID, "inputDocSeries")
+
     NUMBER_STATEMENTS = (By.ID, "inputdocNum")
+    NUMBER_STATEMENTS_RIGHT = (By.XPATH, "//input[contains(@class, 'ng-valid-pattern')]")
+    NUMBER_STATEMENTS_WRONG = (By.XPATH, "//input[contains(@class, 'ng-invalid-pattern')]")
+
     CHECKBOX_IS_STATE = (By.XPATH, ".//input[@ng-model='enrolment.isState']")
     CHECKBOX_IS_CONTRACT = (By.XPATH, ".//input[@ng-model='enrolment.isContract']")
     CHECKBOX_IS_PRIVILEGE = (By.XPATH, ".//input[@ng-model='enrolment.isPrivilege']")
@@ -37,7 +42,12 @@ class EnrollmentsMainPage(InternalPage):
     GRADING_SCALE = (By.XPATH, ".//*[@id='markScale']//i[@class='caret pull-right']")
     TEXT_FROM_GRADING_SCALE = (By.XPATH, ".//*[@id='markScale']//span[@class='ng-binding ng-scope']")
     CHECKBOX_DOCUMENT_IS_ORIGINAL = (By.XPATH, ".//*[@ng-init='enrolment.isOriginal = 0']")
+
     PRIORITY = (By.ID, "inputPriority")
+    PRIORITY_WRONG_UP = (By.XPATH, "//input[contains(@class, 'ng-invalid-max')]")
+    PRIORITY_WRONG_DOWN = (By.XPATH, "//input[contains(@class, 'ng-invalid-min')]")
+    PRIORITY_RIGHT = (By.XPATH, "//input[contains(@class, 'ng-valid')]")
+
     STRUCTURAL_UNIT = (By.XPATH, ".//*[@class='col-xs-3']/*[@id='inputStructure']//i[@class='caret pull-right']")
     DATE_OF_CREATION_STATEMENTS = (By.ID, "evDate")
     DATE_OF_ENTRY_STATEMENTS = (By.ID, "begDate")
@@ -76,6 +86,7 @@ class EnrollmentsMainPage(InternalPage):
         self.is_element_present(self.SPINNER_OFF)
         Select(self.driver.find_element(*self.SEARCH_PERSON_BY_SELECT)).select_by_index(index)
 
+
     def set_search_person_by(self, searched_value):
         """
         Method sets the searched value
@@ -93,6 +104,38 @@ class EnrollmentsMainPage(InternalPage):
     def find_date_of_creation(self):
         self.is_element_visible(self.DATE_OF_CREATION_STATEMENTS)
         return self.driver.find_elements(*self.DATE_OF_CREATION_STATEMENTS)
+
+    @property
+    def is_this_page(self):
+        return self.is_element_visible(self.SEARCH_PERSON_BY_SELECT)
+
+    @property
+    def cancel_click(self):
+        self.driver.find_element(*self.CANCEL_BUTTON).click()
+
+    SEARCH_PERSON_BY_SELECT = (By.XPATH, "//select[@ng-model='fieldSearchBy']")
+    SEARCH_PERSON_BY_INPUT = (By.XPATH, "//input[@ng-model='querySearchBy']")
+    ALL_FOUND_PERSONS_PIB = (By.XPATH, "//tbody[@class='pointer']//tr//td[2]")
+    CANCEL_BUTTON = (By.XPATH, "//div[@class='modal-footer ng-scope']//button[@ng-click='cancel()']")
+
+
+
+
+    def search_person_by(self, index):
+        self.is_element_visible(self.SEARCH_PERSON_BY_SELECT)
+        Select(self.driver.find_element(*self.SEARCH_PERSON_BY_SELECT)).select_by_index(index)
+
+
+    def set_search_person_by(self, searched_value):
+        """
+        Method sets the searched value
+        :param searched_value: String parametr.
+        :return:
+        """
+        self.emulation_of_input(self.SEARCH_PERSON_BY_INPUT, searched_value)
+
+    def get_all_found_persons_pib(self):
+        return self.driver.find_elements(*self.ALL_FOUND_PERSONS_PIB)
 
     @property
     def is_this_page(self):
@@ -138,6 +181,20 @@ class EnrollmentsMainPage(InternalPage):
     @property
     def number_statements(self):
         return self.is_element_visible(self.NUMBER_STATEMENTS)
+    @property
+    def try_get_number_statements(self):
+        self.wait.until(EC.element_to_be_clickable(self.NUMBER_STATEMENTS))
+        return self.is_element_visible(self.NUMBER_STATEMENTS)
+
+    def certain_positive_number_statements(self):
+        self.wait.until(EC.element_to_be_clickable(self.NUMBER_STATEMENTS_RIGHT))
+        return self.is_element_visible(self.NUMBER_STATEMENTS_RIGHT)
+
+    def certain_negative_number_statements(self):
+        self.wait.until(EC.element_to_be_clickable(self.NUMBER_STATEMENTS_WRONG))
+        return self.is_element_visible(self.NUMBER_STATEMENTS_WRONG)
+
+
 
     @property
     def checkbox_is_state(self):
@@ -207,6 +264,16 @@ class EnrollmentsMainPage(InternalPage):
     def priority(self):
         return self.is_element_visible(self.PRIORITY)
 
+    def try_get_priority(self):
+        #self.wait.until(EC.element_to_be_clickable(self.PRIORITY))
+        return self.is_element_visible(self.PRIORITY)
+
+    def certain_priority(self, pr):
+        if 1 <= pr <= 15:
+            return self.is_element_visible(self.PRIORITY_RIGHT)
+        return (self.is_element_visible(self.PRIORITY_WRONG_UP) or self.is_element_visible(self.PRIORITY_WRONG_DOWN))
+
+
     @property
     def structural_unit(self):
         return self.is_element_visible(self.STRUCTURAL_UNIT)
@@ -268,8 +335,7 @@ class EnrollmentsMainPage(InternalPage):
         This method fill enrollment and save one.
         """
         enrollment = self.get_enrollment(json_file, name_of_dictionary)
-        if not self.is_enrollment_in_person:
-            self.add_person_in_enrollment(enrollment.person_name)
+        self.add_person_in_enrollment(enrollment.person_name)
         self.emulation_of_input(self.SERIES_OF_STATEMENTS, enrollment.series_of_statements)
         self.emulation_of_input(self.NUMBER_STATEMENTS, enrollment.number_statements)
         self.click_all_checkbox(enrollment.checkbox_is_state,
@@ -291,7 +357,6 @@ class EnrollmentsMainPage(InternalPage):
         self.set_date(self.DATE_CLOSING_STATEMENTS, enrollment.date_closing)
         self.is_element_present(self.SPINNER_OFF)
         self.button_save.click()
-        return enrollment
 
     def add_person_in_enrollment(self, name):
         """
@@ -299,9 +364,9 @@ class EnrollmentsMainPage(InternalPage):
         :param name: is name of person.
         """
         self.is_element_present(self.SPINNER_OFF)
-        self.ok_for_input_field
+        self.ok_for_input_field.click()
         self.is_element_present(self.SPINNER_OFF)
-        self.emulation_of_input(self.SEARCH_NAME_FIELD, name)
+        self.emulation_of_input(self.SEARCH_NAME_FIELD, name.decode('utf8'))
         self.first_person.click()
         self.is_element_present(self.SPINNER_OFF)
 
