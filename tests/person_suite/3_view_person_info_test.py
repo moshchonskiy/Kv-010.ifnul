@@ -6,8 +6,10 @@ from utils.fill_enrollment import FillEnrollment
 from utils.table_ease_access import TestTable
 
 __author__ = 'Vadym'
+__author__ = 'Denys'
 
 
+@pytest.allure.severity(pytest.allure.severity_level.NORMAL)
 @pytest.mark.usefixtures('pre_login')
 class TestViewPersonInfo():
     def test_global_info_about_person(self, person):

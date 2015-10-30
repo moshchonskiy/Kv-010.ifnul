@@ -5,10 +5,12 @@ import pytest
 
 
 __author__ = 'yioteh'
+__author__ = 'Denys'
 
 
 @pytest.mark.usefixtures('pre_login')
 class TestSortingPerson():
+    @pytest.allure.severity(pytest.allure.severity_level.NORMAL)
     def test_sorting_person(self):
         # variable list
         list_of_all_columns_values = []
