@@ -1,7 +1,7 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.expected_conditions import visibility_of_element_located
 
-from decorators.error_handling_dec import ErrorHandler
+from decorators.error_handling_dec import ErrorHandlerPO
 from pages.internal_page import InternalPage
 
 __author__ = 'Denys'
@@ -25,7 +25,7 @@ class DictionariesPage(InternalPage):
     TABLE_BODY_LAST_CELL_IN_I_ROW = ("//table/tbody/tr[%d]/td[last()]")
     TABLE_BODY_LAST_CELL_IN_LAST_ROW = ("//table/tbody/tr[last()]/td[last()]")
 
-    @ErrorHandler("current page is not Dictionaries page")
+    @ErrorHandlerPO("current page is not Dictionaries page")
     def is_current_page(self):
         return self.wait.until(visibility_of_element_located(self.DICTIONARIES_PAGE))
 
