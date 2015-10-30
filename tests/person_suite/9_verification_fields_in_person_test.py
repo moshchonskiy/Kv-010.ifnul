@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 import pytest
 from model.user import User
+from utils.configuration import Configuration
 
 __author__ = 'stako'
 
@@ -40,18 +41,31 @@ def test_verification_fields_in_person(app, invalid_person):
         # login and follow up to person's page
         app.ensure_logout()
         app.login(User.Admin(), True)
-        assert app.persons_page.is_this_page
+        assert_expression = app.persons_page.is_this_page
+        configuration = Configuration()
+        configuration.assert_and_get_screenshot(app, assert_expression)
 
-        # filling and asserting main page
+    with pytest.allure.step('Verification of fields in main page.'):
         app.persons_page.add_person_link
         fill_main_person_page_with_invalid_data(app, invalid_person)
-        assert app.main_page.person_surname_ukr_input_incorrect
-        assert app.main_page.person_surname_eng_input_incorrect
-        assert app.main_page.person_father_name_input_incorrect
-        assert app.main_page.person_first_name_ukr_input_incorrect
-        assert app.main_page.person_first_name_eng_input_incorrect
+        assert_expression = app.main_page.person_surname_ukr_input_incorrect
+        configuration.assert_and_get_screenshot(app, assert_expression)
 
-        # filling and asserting extra page
+        assert_expression = app.main_page.person_surname_eng_input_incorrect
+        configuration.assert_and_get_screenshot(app, assert_expression)
+
+        assert_expression = app.main_page.person_father_name_input_incorrect
+        configuration.assert_and_get_screenshot(app, assert_expression)
+
+        assert_expression = app.main_page.person_first_name_ukr_input_incorrect
+        configuration.assert_and_get_screenshot(app, assert_expression)
+
+        assert_expression = app.main_page.person_first_name_eng_input_incorrect
+        configuration.assert_and_get_screenshot(app, assert_expression)
+
+    with pytest.allure.step('Verification of fields in extra page.'):
         app.person_base_page.click_extra_tab
         fill_extra_person_page_with_invalid_data(app, invalid_person)
-        assert app.extra_page.private_case_number_input_incorrect
+        assert_expression = app.extra_page.private_case_number_input_incorrect
+        configuration.assert_and_get_screenshot(app, assert_expression)
+
