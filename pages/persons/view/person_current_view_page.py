@@ -75,6 +75,10 @@ class PersonCurrentViewPage(PersonMainViewPage):
         return result
 
     def get_arr_place_of_birth(self):
+        """
+        The method collect array of strings from UI drop-down menus place of birth
+        :return:
+        """
         result = []
         # add locators to the array
         count_of_elements = self.get_count_elements_place_of_birth()
@@ -87,11 +91,19 @@ class PersonCurrentViewPage(PersonMainViewPage):
         return result
 
     def get_count_elements_place_of_birth(self):
+        """
+        The method counts drop-down menus in birth place
+        :return:
+        """
         elements_place_of_birth = self.driver.find_elements(*self.FOR_COUNT_ELEMENTS_DATE_OF_BIRTH)
         return len(elements_place_of_birth)
 
     # Address of registration
     def get_arr_addres_of_registration(self):
+        """
+        The method collect array of strings from UI drop-down menus address of registration
+        :return:
+        """
         result = []
         # add locators to the array
         count_of_elements = self.get_count_elements_addres_of_registration()
@@ -105,6 +117,10 @@ class PersonCurrentViewPage(PersonMainViewPage):
         return result
 
     def get_count_elements_addres_of_registration(self):
+        """
+        The method counts drop-down menus in address of registration
+        :return:
+        """
         elements_addres_of_registration = self.driver.find_elements(*self.FOR_COUNT_ELEMENTS_ADDRES_OF_REGISTRATION)
         return len(elements_addres_of_registration)
 
@@ -116,7 +132,6 @@ class PersonCurrentViewPage(PersonMainViewPage):
                       self.REGISTRATION_HOME, self.REGISTRATION_APARTMENT))
         for index, locator in enumerate(result):
             element_by_locator = self.driver.find_element(*locator).text
-            # возможно стоит проверить, не пустое ли тут значение
             result[index] = element_by_locator #replace locator by value found by this locator
         return result
 
