@@ -95,8 +95,6 @@ class TestSearchFilters(object):
                 self.print_simple_stacktrace()
                 raise
 
-
-
     def test_filter_by_not_budget(self, app):
         with pytest.allure.step("Authorize on the site with admin credentials"):
             app.ensure_logout()
