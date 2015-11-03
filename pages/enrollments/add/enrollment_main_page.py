@@ -4,8 +4,6 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import Select
 from pages.internal_page import InternalPage
 from utils.fill_enrollment import FillEnrollment
-from selenium.webdriver.support import expected_conditions as EC
-from time import sleep
 
 __author__ = 'Stako'
 
@@ -16,9 +14,7 @@ class EnrollmentsMainPage(InternalPage):
     SEARCH_NAME_FIELD = (By.XPATH, "//div[@class='modal-body ng-scope']//input[contains (@type, 'search')]")
     FIRST_PERSON = (By.XPATH, "//*[@class='table-responsive']//tbody[@class='pointer']//tr[1]/td[2]")
     SERIES_OF_STATEMENTS = (By.ID, "inputDocSeries")
-    NUMBER_STATEMENTS        = (By.ID, "inputdocNum")
-    NUMBER_WRONG_STATMENTS   = (By.XPATH, "//input[contains(@class, 'ng-invalid-pattern')]")
-    NUMBER_RIGHT_STATMENTS   = (By.XPATH, "//input[contains(@class, 'ng-valid-pattern')]")
+    NUMBER_STATEMENTS = (By.ID, "inputdocNum")
     CHECKBOX_IS_STATE = (By.XPATH, ".//input[@ng-model='enrolment.isState']")
     CHECKBOX_IS_CONTRACT = (By.XPATH, ".//input[@ng-model='enrolment.isContract']")
     CHECKBOX_IS_PRIVILEGE = (By.XPATH, ".//input[@ng-model='enrolment.isPrivilege']")
@@ -35,6 +31,8 @@ class EnrollmentsMainPage(InternalPage):
     LIST_FROM_UI_SELECT = (By.XPATH, "//div[contains(@id, 'ui-select-choices-row')]/a/div")
     BUTTON_CHOOSE_SPECIALTIES = (By.CSS_SELECTOR, "button[class='btn btn-primary'] >i")
     CHOOSE_FIRST_SPECIALTIES = (By.XPATH, "//div[@class='table-responsive']//tbody[@class='pointer']/tr[1]/td[2]")
+    FIRST_SPECIALTIES_ID = (By.XPATH, "//div[@class='table-responsive']//tbody[@class='pointer']/tr[1]/td[1]")
+    FIRST_SPECIALTIES_ID_IN_VIEW_TABLE = (By.XPATH, "//tbody[@class='pointer']/tr[1]//td[1]")
     BUTTON_CLOSE_CHOOSE_OFFER = (By.XPATH, "//button[@class='close']")
     COUNT_SPECIALISTS = (By.XPATH, "//div[@class='table-responsive']//tbody[@class='pointer']/tr")
     DOCUMENT = (By.XPATH, ".//*[@class='col-xs-5']/*[@id='inputStructure']//i[@class='caret pull-right']")
@@ -42,13 +40,7 @@ class EnrollmentsMainPage(InternalPage):
     GRADING_SCALE = (By.XPATH, ".//*[@id='markScale']//i[@class='caret pull-right']")
     TEXT_FROM_GRADING_SCALE = (By.XPATH, ".//*[@id='markScale']//span[@class='ng-binding ng-scope']")
     CHECKBOX_DOCUMENT_IS_ORIGINAL = (By.XPATH, ".//*[@ng-init='enrolment.isOriginal = 0']")
-    
-
     PRIORITY = (By.ID, "inputPriority")
-    PRIORITY_WRONG_UP = (By.XPATH, "//input[contains(@class, 'ng-invalid-max')]")
-    PRIORITY_WRONG_DOWN = (By.XPATH, "//input[contains(@class, 'ng-invalid-min')]")
-    PRIORITY_RIGHT = (By.XPATH, "//input[contains(@class, 'ng-valid')]")
-
     STRUCTURAL_UNIT = (By.XPATH, ".//*[@class='col-xs-3']/*[@id='inputStructure']//i[@class='caret pull-right']")
     DATE_OF_CREATION_STATEMENTS = (By.ID, "evDate")
     DATE_OF_ENTRY_STATEMENTS = (By.ID, "begDate")
@@ -76,10 +68,15 @@ class EnrollmentsMainPage(InternalPage):
     def is_enrollment_in_person(self):
         return self.is_element_visible(self.IS_ENROLLMENT_IN_PERSON)
 
+    def find_first_specialities_id(self):
+        return self.driver.find_element(*self.FIRST_SPECIALTIES_ID)
+
+    def find_first_specialities_id_in_view_table(self):
+        return self.driver.find_elements(*self.FIRST_SPECIALTIES_ID_IN_VIEW_TABLE)[1]
+
     def search_person_by(self, index):
         self.is_element_present(self.SPINNER_OFF)
         Select(self.driver.find_element(*self.SEARCH_PERSON_BY_SELECT)).select_by_index(index)
-
 
     def set_search_person_by(self, searched_value):
         """
@@ -106,22 +103,6 @@ class EnrollmentsMainPage(InternalPage):
     @property
     def cancel_click(self):
         self.driver.find_element(*self.CANCEL_BUTTON).click()
-
-    def search_person_by(self, index):
-        self.is_element_visible(self.SEARCH_PERSON_BY_SELECT)
-        Select(self.driver.find_element(*self.SEARCH_PERSON_BY_SELECT)).select_by_index(index)
-
-
-    def set_search_person_by(self, searched_value):
-        """
-        Method sets the searched value
-        :param searched_value: String parametr.
-        :return:
-        """
-        self.emulation_of_input(self.SEARCH_PERSON_BY_INPUT, searched_value)
-
-    def get_all_found_persons_pib(self):
-        return self.driver.find_elements(*self.ALL_FOUND_PERSONS_PIB)
 
     @property
     def search_offers_field(self):
@@ -156,37 +137,45 @@ class EnrollmentsMainPage(InternalPage):
         self.is_element_visible(self.OK_FOR_INPUT_FIELD).click()
         self.is_element_present(self.SPINNER_OFF)
 
-    @property
-    def series_of_statements(self):
-        return self.is_element_visible(self.SERIES_OF_STATEMENTS)
+    def find_series_of_statements(self):
+        self.is_element_visible(self.SERIES_OF_STATEMENTS)
+        return self.driver.find_element(*self.SERIES_OF_STATEMENTS)
 
-    @property
-    def number_statements(self):
-        self.wait.until(EC.element_to_be_clickable(self.NUMBER_STATEMENTS))
-        return self.is_element_present(self.NUMBER_STATEMENTS)
+    def find_number_statements(self):
+        self.is_element_visible(self.NUMBER_STATEMENTS)
+        return self.driver.find_element(*self.NUMBER_STATEMENTS)
 
-    @property
-    def try_get_number_statements(self):
-        self.wait.until(EC.element_to_be_clickable(self.NUMBER_STATEMENTS))
-        return self.is_element_visible(self.NUMBER_STATEMENTS)
+    def find_checkbox_is_state(self):
+        self.is_element_visible(self.CHECKBOX_IS_STATE)
+        return self.driver.find_element(*self.CHECKBOX_IS_STATE)
 
-    def certain_number_statements(self, c_number_statements):
-        try:
-            val = int(c_number_statements)
-            if val <= 0:
-                raise ValueError
-        except ValueError:
-            return self.driver.find_element(*self.NUMBER_WRONG_STATMENTS)
-        else:
-            return self.driver.find_element(*self.NUMBER_RIGHT_STATMENTS)
+    def find_checkbox_is_contract(self):
+        self.is_element_visible(self.CHECKBOX_IS_CONTRACT)
+        return self.driver.find_element(*self.CHECKBOX_IS_CONTRACT)
 
-    def certain_negative_number_statements(self):
-        self.wait.until(EC.element_to_be_clickable(self.NUMBER_WRONG_STATMENTS))
-        return self.driver.find_element(*self.NUMBER_WRONG_STATMENTS)
+    def find_checkbox_is_privilege(self):
+        self.is_element_visible(self.CHECKBOX_IS_PRIVILEGE)
+        return self.driver.find_element(*self.CHECKBOX_IS_PRIVILEGE)
 
-    def certain_positive_number_statements(self):
-        self.wait.until(EC.element_to_be_clickable(self.NUMBER_RIGHT_STATMENTS))
-        return self.driver.find_element(*self.NUMBER_RIGHT_STATMENTS)
+    def find_radiobutton_getting_education(self):
+        self.is_element_visible(self.RADIOBUTTON_GETTING_EDUCATION)
+        return self.driver.find_element(*self.RADIOBUTTON_GETTING_EDUCATION)
+
+    def find_radiobutton_is_education(self):
+        self.is_element_visible(self.RADIOBUTTON_IS_EDUCATION)
+        return self.driver.find_element(*self.RADIOBUTTON_IS_EDUCATION)
+
+    def find_checkbox_is_hostel(self):
+        self.is_element_visible(self.CHECKBOX_IS_HOSTEL)
+        return self.driver.find_element(*self.CHECKBOX_IS_HOSTEL)
+
+    def find_total_score(self):
+        self.is_element_visible(self.TOTAL_SCORE)
+        return self.driver.find_element(*self.TOTAL_SCORE)
+
+    def find_grading_scale(self):
+        self.is_element_visible(self.GRADING_SCALE)
+        return self.driver.find_element(*self.GRADING_SCALE)
 
     @property
     def checkbox_is_state(self):
@@ -255,15 +244,6 @@ class EnrollmentsMainPage(InternalPage):
     @property
     def priority(self):
         return self.is_element_visible(self.PRIORITY)
-
-    def try_get_priority(self):
-        #self.wait.until(EC.element_to_be_clickable(self.PRIORITY))
-        return self.is_element_visible(self.PRIORITY)
-
-    def certain_priority(self, pr):
-        if 1 <= pr <= 15:
-            return self.is_element_visible(self.PRIORITY_RIGHT)
-        return (self.is_element_visible(self.PRIORITY_WRONG_UP) or self.is_element_visible(self.PRIORITY_WRONG_DOWN))
 
     @property
     def structural_unit(self):
@@ -472,13 +452,13 @@ class EnrollmentsMainPage(InternalPage):
         :param document: is value of checkbox "document is original".
         """
         if not state:
-            self.checkbox_is_state.click()
+            self.find_checkbox_is_state().click()
         if not contract:
-            self.checkbox_is_contract.click()
+            self.find_checkbox_is_contract().click()
         if privilege:
-            self.checkbox_is_privilege.click()
+            self.find_checkbox_is_privilege().click()
         if hostel:
-            self.checkbox_is_hostel.click()
+            self.find_checkbox_is_hostel().click()
         if document:
             self.checkbox_document_is_original.click()
 
