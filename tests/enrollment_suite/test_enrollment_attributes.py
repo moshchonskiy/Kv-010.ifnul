@@ -24,7 +24,7 @@ def test_request_priority(app):
 def test_request_number_negative(app):
     to_page(app)
     en_p = app.enrollments_main_page
-    values = ('fsffrg', '1s', 'dgdg');
+    values = ('fsffrg', '1s', 'dgdg', -1);
     for x in values:
         en_p.try_get_number_statements.click()
         en_p.try_get_number_statements.clear()
