@@ -164,11 +164,7 @@ class EnrollmentsMainPage(InternalPage):
     def number_statements(self):
         self.wait.until(EC.element_to_be_clickable(self.NUMBER_STATEMENTS))
         return self.is_element_present(self.NUMBER_STATEMENTS)
-    @property
-    def try_get_number_statements(self):
-        self.wait.until(EC.element_to_be_clickable(self.NUMBER_STATEMENTS))
-        return self.driver.find_element(*self.NUMBER_STATEMENTS)
-        return self.is_element_visible(self.NUMBER_STATEMENTS)
+
     @property
     def try_get_number_statements(self):
         self.wait.until(EC.element_to_be_clickable(self.NUMBER_STATEMENTS))
@@ -191,7 +187,6 @@ class EnrollmentsMainPage(InternalPage):
     def certain_positive_number_statements(self):
         self.wait.until(EC.element_to_be_clickable(self.NUMBER_RIGHT_STATMENTS))
         return self.driver.find_element(*self.NUMBER_RIGHT_STATMENTS)
-
 
     @property
     def checkbox_is_state(self):
@@ -269,7 +264,6 @@ class EnrollmentsMainPage(InternalPage):
         if 1 <= pr <= 15:
             return self.is_element_visible(self.PRIORITY_RIGHT)
         return (self.is_element_visible(self.PRIORITY_WRONG_UP) or self.is_element_visible(self.PRIORITY_WRONG_DOWN))
-
 
     @property
     def structural_unit(self):
