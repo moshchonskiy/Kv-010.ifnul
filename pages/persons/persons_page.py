@@ -1,11 +1,12 @@
 # coding: utf8
-from time import sleep
+import time
 from pages.internal_page import InternalPage
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.expected_conditions import visibility_of_element_located
 
-from decorators.error_handling_dec import ErrorHandler
+
+from decorators.error_handling_dec import ErrorHandlerPO
 from pages.internal_page import InternalPage
 
 
@@ -13,6 +14,7 @@ class PersonsPage(InternalPage):
     #
     # TO SEARCH
     #
+    MODAL_HEADER_CHOOSER = (By.XPATH,"//div[@id='modalHeaderChooser']")
     ADD_PERSON_BUTTON = (By.XPATH, "//button[contains(@class,'btn-success')]")
     CHOOSE_SURNAME_SEARCH = (By.XPATH, "//div[@class='col-sm-12']//option[@value='0']")
     CHOOSE_PERSON_ID_SEARCH = (By.XPATH, "//div[@class='col-sm-12']//option[@value='1']")
@@ -35,9 +37,9 @@ class PersonsPage(InternalPage):
     CLOSE_AFTER_ADDITION_BUTTON = (By.XPATH, "//div[@class='modal-footer']/button[@class='btn btn-danger']")
 
     REFRESH_UPPER_BUTTON = (
-        By.XPATH, "//div[@class='container-fluid admissionSystemApp-container']//div[@class='col-md-2 col-lg-2 filter']/p[1]/button")
+        By.XPATH, "//p[1]/*[contains(@class, 'personFilterUpdateButton')]")
     REFRESH_BOTTOM_BUTTON = (
-        By.XPATH, "//div[@class='container-fluid admissionSystemApp-container']//div[@class='col-md-2 col-lg-2 filter']/p[2]/button")
+        By.XPATH, "//p[2]/*[contains(@class, 'personFilterUpdateButton')]")
     GENDER_MALE_CHECKBOX = (
         By.XPATH, "//div[@class='panel-group']/div[1]/div[2]/div[@class='panel-body']/div[1]/label/input")
     GENDER_FEMALE_CHECKBOX = (
@@ -91,7 +93,7 @@ class PersonsPage(InternalPage):
     ACTIVE_ITEMS_PER_PAGE_BUTTON = (By.XPATH, "//button[contains(@class, 'active')]")
     PREVIOUS_PAGE = (By.XPATH, "//li[contains(@title, 'Previous Page')]")
     LAST_NUMBERED_PAGE = (By.XPATH, "//li[contains(@title, 'Last Page')]/preceding-sibling::li[2]/span")
-    LAST_PAGE = (By.XPATH, "//li[contains(@title, 'Last Page')]")
+    LAST_PAGE = (By.XPATH, "//li/span[contains(.,'>>')]")
     FIELD_CHOOSER_BUTTON = (By.XPATH, "//button[contains(@class, 'field-chooser-button')]")
     FIELD_CHOOSER_RED_CLOSE_BUTTON = (By.XPATH, "//button[parent::div[contains(@class, 'modal-footer')]]")
     INACTIVE_COLUMNS_MODAL = (By.XPATH, "//ul[@class='list-group']/li/label/input[not(@checked)]")
@@ -155,9 +157,9 @@ class PersonsPage(InternalPage):
     # END OF SELECTORS SECTION
     #
 
-    @ErrorHandler("current page is not Persons page")
+    @ErrorHandlerPO("current page is not Persons page")
     def is_current_page(self):
-        return self.wait.until(visibility_of_element_located(self.PERSON_PAGE_LINK))
+        return self.wait.until(visibility_of_element_located(self.ADD_PERSON_BUTTON))
 
     @property
     def is_this_page(self):
@@ -181,11 +183,12 @@ class PersonsPage(InternalPage):
     def view_first_person_in_page(self):
         if self.is_element_visible(self.VIEW_FIRST_PERSON_IN_TABLE):
             self.driver.find_element(*self.VIEW_FIRST_PERSON_IN_TABLE).click()
-            self.is_element_present(self.SPINNER_OFF)
+            self.wait_until_page_generate()
 
     @property
     def edit_first_person_in_page(self):
-        return self.is_element_visible(self.EDIT_FIRST_PERSON_IN_TABLE)
+        self.is_element_visible(self.EDIT_FIRST_PERSON_IN_TABLE)
+        return self.driver.find_element(*self.EDIT_FIRST_PERSON_IN_TABLE)
 
     def searching_person_by_surname(self, given_surname):
         """
@@ -205,11 +208,11 @@ class PersonsPage(InternalPage):
 
     # FILTER
     # to all filters
-    @ErrorHandler(message='in person page last page ref is not found')
+    @ErrorHandlerPO(message='in person page last page ref is not found')
     def try_get_last_page_ref(self):
-        return self.driver.find_element(*self.LAST_PAGE)
+        return self.try_get_visible_element(self.LAST_PAGE)
 
-    @ErrorHandler(message='Red button is not found in field chooser')
+    @ErrorHandlerPO(message='Red button is not found in field chooser')
     def try_field_chooser_red_close_button(self):
         return self.driver.find_element(*self.FIELD_CHOOSER_RED_CLOSE_BUTTON)
 
@@ -372,8 +375,8 @@ class PersonsPage(InternalPage):
 
     # surname search
     def try_get_choose_surname(self):
-        self.is_element_present(self.CHOOSE_SURNAME_SEARCH)
-        return self.is_element_visible(self.CHOOSE_SURNAME_SEARCH)
+        self.is_element_visible(self.CHOOSE_SURNAME_SEARCH)
+        return self.driver.find_element(*self.CHOOSE_SURNAME_SEARCH)
 
     def try_get_searched_surname(self, given_surname):
         self.wait.until(EC.text_to_be_present_in_element(self.SEARCHED_SURNAME, given_surname))
@@ -439,11 +442,21 @@ class PersonsPage(InternalPage):
                                          self.COLUMN_PLACE_OF_BIRTH_ADD,
                                          self.COLUMN_VZ_ADD,
                                          self.COLUMN_MATERIAL_LIABILITY_ADD)
+        assert self.is_element_visible(PersonsPage.FIELD_CHOOSER_BUTTON)
         self.driver.find_element(*PersonsPage.FIELD_CHOOSER_BUTTON).click()
-        for checkbox in list_all_unchecked_checkboxes:
-            self.is_element_visible(checkbox).click()
-        self.try_field_chooser_red_close_button().click()
         self.wait_until_page_generate()
+        self.is_element_visible(self.MODAL_HEADER_CHOOSER)
+        for checkbox in list_all_unchecked_checkboxes:
+
+            self.driver.find_element(*checkbox).click()
+
+        self.try_field_chooser_red_close_button().click()
+
+        self.is_element_present(self.MODAL_HEADER_CHOOSER)
+        self.wait_until_page_generate()
+
+
+
 
     def return_added_person_surname(self, person):
         """
@@ -463,3 +476,21 @@ class PersonsPage(InternalPage):
         expected_person = self.try_get_searched_surname(person.surname_ukr).text.partition(' ')[0]
         if expected_person:
             self.delete_first_person_in_page
+
+    def return_to_persons_main_page(self, app):
+        app.internal_page.persons_page_link.click()
+        self.is_element_present(self.SPINNER_OFF)
+        self.try_get_refresh_upper_button().click()
+
+    def search_person_by_surname(self, given_surname):
+        """
+        Method performs search by surname
+        :param given_surname: wanted surname
+        :return:
+        """
+        self.is_this_page
+        self.try_get_choose_surname().click()
+        self.try_get_input_group().clear()
+        self.try_get_input_group().send_keys(given_surname)
+        self.try_get_ok_button().click()
+        self.is_element_present(self.SPINNER_OFF)

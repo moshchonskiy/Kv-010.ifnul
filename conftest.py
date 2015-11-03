@@ -9,6 +9,7 @@ from selenium import webdriver
 #from pyvirtualdisplay import Display
 from model.application import Application
 from utils.data_provider_from_json import DataProviderJSON
+from utils.configuration import Configuration
 
 
 def pytest_addoption(parser):
@@ -60,6 +61,7 @@ def app(request, browser_type, base_url, jenkins_display):
     request.addfinalizer(driver.quit)
     return Application(driver, base_url)
 
+
 @pytest.yield_fixture(scope="function")
 def logout_login(app):
     app.ensure_logout()
@@ -68,12 +70,12 @@ def logout_login(app):
     yield app
 
 
-
-
-
-
 @pytest.fixture(scope="class")
 def pre_login(request, app):
     app.ensure_logout()
     app.login(User.Admin(), True)
     request.cls.app = app
+
+@pytest.fixture(scope="session")
+def screenshot():
+    return Configuration()

@@ -53,15 +53,15 @@ class FillEnrollment(object):
         enrollment.checkbox_is_privilege = enrollment_json["checkbox_is_privilege"]
         enrollment.checkbox_is_hostel = enrollment_json["checkbox_is_hostel"]
         enrollment.checkbox_document_is_original = enrollment_json["checkbox_document_is_original"]
-        enrollment.offers = enrollment_json["offers"].encode('utf8')
-        enrollment.form_of_education = enrollment_json["form_of_education"].encode('utf8')
-        enrollment.document = enrollment_json["document"].encode('utf8')
-        enrollment.grading_scale = enrollment_json["grading_scale"].encode('utf8')
+        enrollment.offers = enrollment_json["offers"]
+        enrollment.form_of_education = enrollment_json["form_of_education"]
+        enrollment.document = enrollment_json["document"]
+        enrollment.grading_scale = enrollment_json["grading_scale"]
         enrollment.total_score = enrollment_json["total_score"]
         enrollment.priority = enrollment_json["priority"]
-        enrollment.structural_unit = enrollment_json["structural_unit"].encode('utf8')
-        enrollment.type_of_entry = enrollment_json["type_of_entry"].encode('utf8')
-        enrollment.detailing_start = enrollment_json["detailing_start"].encode('utf8')
+        enrollment.structural_unit = enrollment_json["structural_unit"]
+        enrollment.type_of_entry = enrollment_json["type_of_entry"]
+        enrollment.detailing_start = enrollment_json["detailing_start"]
         enrollment.date_of_entry = datetime.date(enrollment_json["date_of_entry"]["year"],
                                                  enrollment_json["date_of_entry"]["month"],
                                                  enrollment_json["date_of_entry"]["day"])

@@ -3,7 +3,7 @@ import datetime
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.support.expected_conditions import *
-from decorators.error_handling_dec import ErrorHandler
+from decorators.error_handling_dec import  ErrorHandlerPO
 from pages.internal_page import InternalPage
 from utils.fill_enrollment import FillEnrollment
 
@@ -95,11 +95,23 @@ class EnrollmentsPage(InternalPage):
     COLUMN_HIERARCHY_ADD = (By.XPATH, "//li[17]//*[@id='showHideHeader']")
     COLUMN_CHOOSER_CLOSE_BUTTON = (By.XPATH, "//div[@class='modal-footer']/button")
     TABLE_HEAD = (By.XPATH, "//div[@class='table-responsive']//thead/tr/th")
-    TABLE_FIRST_ROW = (By.XPATH, "//tbody[@class='pointer']/tr[1]/td")
+    TABLE_FIRST_ROW = (By.XPATH, "//tbody[@class='pointer']/tr[1]/td/i")
+    EDIT_BUTTON_ON_FIRST_ROW = (By.XPATH, "//tbody[@class='pointer']/tr[1]/td//i[@class='fa fa-pencil-square-o']")
+    DELETE_BUTTON_ON_FIRST_ROW = (By.XPATH, "//tbody[@class='pointer']/tr[1]/td//i[@class='fa fa-times']")
 
-    @ErrorHandler("current page is not Enrollments page")
+    @ErrorHandlerPO("current page is not Enrollments page")
     def is_current_page(self):
         return self.wait.until(visibility_of_element_located(self.ADD_NEW_ENROLLMENT_BUTTON))
+
+    def delete_button_on_first_row_click(self):
+        self.is_element_visible(self.DELETE_BUTTON_ON_FIRST_ROW)
+        self.driver.find_element(*self.DELETE_BUTTON_ON_FIRST_ROW).click()
+        self.is_element_present(self.SPINNER_OFF)
+
+    def edit_button_on_first_row_click(self):
+        self.is_element_visible(self.EDIT_BUTTON_ON_FIRST_ROW)
+        self.driver.find_element(*self.EDIT_BUTTON_ON_FIRST_ROW).click()
+        self.is_element_present(self.SPINNER_OFF)
 
     @property
     def is_this_page(self):
@@ -182,7 +194,7 @@ class EnrollmentsPage(InternalPage):
         :return: List with found values. It will return list with correct values if method find only correct ones.
         Opposite, it returns list with incorrect values.
         """
-        req = req.lower()
+        req = str(req).lower()
         correct = list()
         incorrect = list()
         web_elem = self.wait.until(presence_of_element_located(self.IF_NEXT_BUTTON_DISABLED))

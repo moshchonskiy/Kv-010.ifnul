@@ -1,3 +1,5 @@
+
+
 import pytest
 from model.user import User
 from utils.fill_enrollment import FillEnrollment
@@ -6,12 +8,12 @@ __author__ = 'stako'
 
 
 def test_add_enrollments(app):
-    """
+    """-
     Method creates and adds the enrollment.
     :param app:
     """
     with pytest.allure.step('Test of add enrollment.'):
-        name_of_json_file = "fill_enrollment_main.json"
+        name_of_json_file  = "fill_enrollment_main.json"
         name_of_dictionary = "fill_data_enrollment"
         enrollment = app.enrollments_main_page.get_enrollment(name_of_json_file, name_of_dictionary)
         app.ensure_logout()
