@@ -3,11 +3,10 @@
 import pytest
 from model.user import User
 from utils.add_person_pattern import AddPersonPattern
-from utils.configuration import Configuration
 
 
 @pytest.allure.severity(pytest.allure.severity_level.CRITICAL)
-def test_add_enrollment_in_new_person(app, person, dictionary_with_json_files):
+def test_add_enrollment_in_new_person(app, person, dictionary_with_json_files, screenshot):
     with pytest.allure.step('Test of add enrollment in new person.'):
         add_person = AddPersonPattern()
         app.ensure_logout()
@@ -22,9 +21,8 @@ def test_add_enrollment_in_new_person(app, person, dictionary_with_json_files):
         expected_number = enrollment.number_statements
         app.internal_page.is_element_present(app.internal_page.SPINNER_OFF)
         list_with_actual_numbers = app.person_enrollment.enrollment_doc_number
-        configuration = Configuration()
         assert_expression = is_doc_number_in_list_of_numbers(expected_number, list_with_actual_numbers)
-        configuration.assert_and_get_screenshot(app, assert_expression)
+        screenshot.assert_and_get_screenshot(app, assert_expression)
         app.persons_page.return_to_persons_main_page(app)
 
 

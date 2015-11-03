@@ -7,7 +7,7 @@ import sys
 import traceback
 
 @pytest.allure.severity(pytest.allure.severity_level.NORMAL)
-def test_delete_person_documents(app, person):
+def test_delete_person_documents(app, person, screenshot):
     app.ensure_logout()
     app.login(User.Admin())
 
@@ -42,23 +42,7 @@ def test_delete_person_documents(app, person):
         base_page.is_element_present(base_page.SPINNER_OFF)
         base_page.click_papers_tab
     with pytest.allure.step("Checking that all person's document are deleted"):
-        try:
-            actual = app.papers_page.get_number_of_person_documents()
-            expected = 0
-            assert actual == expected
-            allure.attach('screenshot', app.papers_page.driver.get_screenshot_as_png(), type=AttachmentType.PNG)
-        except AssertionError:
-            allure.attach('screenshot', app.papers_page.driver.get_screenshot_as_png(), type=AttachmentType.PNG)
-            print_simple_stacktrace()
-            raise
-
-    base_page.save_new_person()
-
-
-def print_simple_stacktrace():
-        _, _, tb = sys.exc_info()
-        tb_info = traceback.extract_tb(tb)
-        filename, line, func, text = tb_info[-1]
-        print('An error occurred on line: {}, in statement: {}. The filename is: {}, and function is: {}.'
-              .format(line, text, filename, func))
-
+        actual = app.papers_page.get_number_of_person_documents()
+        expected = 0
+        screenshot.assert_and_get_screenshot(app, actual == expected)
+        base_page.save_new_person()

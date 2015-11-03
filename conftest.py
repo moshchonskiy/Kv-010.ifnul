@@ -9,6 +9,7 @@ from selenium import webdriver
 #from pyvirtualdisplay import Display
 from model.application import Application
 from utils.data_provider_from_json import DataProviderJSON
+from utils.configuration import Configuration
 
 
 def pytest_addoption(parser):
@@ -74,3 +75,7 @@ def pre_login(request, app):
     app.ensure_logout()
     app.login(User.Admin(), True)
     request.cls.app = app
+
+@pytest.fixture(scope="session")
+def screenshot():
+    return Configuration()
