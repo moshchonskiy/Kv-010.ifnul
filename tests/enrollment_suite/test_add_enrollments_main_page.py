@@ -7,7 +7,6 @@ from utils.fill_enrollment import FillEnrollment
 __author__ = 'stako'
 
 
-# def test_add_enrollments(app):logout_login
 def add_enrollments(logout_login):
     """
     Method creates and adds the enrollment.
