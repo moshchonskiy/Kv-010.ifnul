@@ -17,10 +17,10 @@ def test_request_priority(app):
     en_p = app.enrollments_main_page
     with pytest.allure.step('Entering right and wrong values to requests priority field'):
         for pr in range(0,17,1):
-            en_p.try_get_priority.click()
-            en_p.try_get_priority.clear()
-            en_p.try_get_priority.send_keys(pr)
-            assert en_p.certain_priority(pr).text == en_p.try_get_priority.text
+            en_p.priority.click()
+            en_p.priority.clear()
+            en_p.priority.send_keys(pr)
+            assert en_p.certain_priority(pr).text == en_p.priority.text
 
 
 def test_request_number_negative(app):
@@ -29,10 +29,10 @@ def test_request_number_negative(app):
     with pytest.allure.step('Entering wrong values to requests number field'):
         values = ('fsffrg', '1s', 'dgdg');
         for x in values:
-            en_p.try_get_number_statements.click()
-            en_p.try_get_number_statements.clear()
-            en_p.try_get_number_statements.send_keys(x)
-            assert en_p.certain_negative_number_statements().text == en_p.try_get_number_statements.text
+            en_p.number_statements.click()
+            en_p.number_statements.clear()
+            en_p.number_statements.send_keys(x)
+            assert en_p.certain_negative_number_statements.text == en_p.number_statements.text
 
 def test_request_number_positive(app):
     to_page(app)
@@ -40,7 +40,7 @@ def test_request_number_positive(app):
     with pytest.allure.step('Entering right values to requests number field'):
         values = (1, 19199, 82882);
         for x in values:
-            en_p.try_get_number_statements.click()
-            en_p.try_get_number_statements.clear()
-            en_p.try_get_number_statements.send_keys(x)
-            assert en_p.certain_positive_number_statements().text == en_p.try_get_number_statements.text
+            en_p.number_statements.click()
+            en_p.number_statements.clear()
+            en_p.number_statements.send_keys(x)
+            assert en_p.certain_positive_number_statements.text == en_p.number_statements.text

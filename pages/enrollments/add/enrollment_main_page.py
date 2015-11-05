@@ -153,12 +153,7 @@ class EnrollmentsMainPage(InternalPage):
 
     @property
     def number_statements(self):
-        self.wait.until(EC.element_to_be_clickable(self.NUMBER_STATEMENTS))
         return self.is_element_present(self.NUMBER_STATEMENTS)
-    @property
-    def try_get_number_statements(self):
-        self.wait.until(EC.element_to_be_clickable(self.NUMBER_STATEMENTS))
-        return self.driver.find_element(*self.NUMBER_STATEMENTS)
 
     def certain_number_statements(self, c_number_statements):
         try:
@@ -166,17 +161,17 @@ class EnrollmentsMainPage(InternalPage):
             if val <= 0:
                 raise ValueError
         except ValueError:
-            return self.driver.find_element(*self.NUMBER_WRONG_STATMENTS)
+            return self.is_element_visible(self.NUMBER_WRONG_STATMENTS)
         else:
-            return self.driver.find_element(*self.NUMBER_RIGHT_STATMENTS)
+            return self.is_element_visible(self.NUMBER_RIGHT_STATMENTS)
 
+    @property
     def certain_negative_number_statements(self):
-        self.wait.until(EC.element_to_be_clickable(self.NUMBER_WRONG_STATMENTS))
-        return self.driver.find_element(*self.NUMBER_WRONG_STATMENTS)
+        return self.is_element_visible(self.NUMBER_WRONG_STATMENTS)
 
+    @property
     def certain_positive_number_statements(self):
-        self.wait.until(EC.element_to_be_clickable(self.NUMBER_RIGHT_STATMENTS))
-        return self.driver.find_element(*self.NUMBER_RIGHT_STATMENTS)
+        return self.is_element_visible(self.NUMBER_RIGHT_STATMENTS)
 
     def find_checkbox_is_state(self):
         self.is_element_visible(self.CHECKBOX_IS_STATE)
@@ -277,10 +272,6 @@ class EnrollmentsMainPage(InternalPage):
     @property
     def priority(self):
         return self.is_element_visible(self.PRIORITY)
-
-    @property
-    def try_get_priority(self):
-        return self.driver.find_element(*self.PRIORITY)
 
     def certain_priority(self, c_priority):
         if 0 < c_priority < 16:
