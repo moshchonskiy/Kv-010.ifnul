@@ -6,14 +6,10 @@ import allure
 import sys
 import traceback
 
-def login(app):
-    app.ensure_logout()
-    app.login(User.Admin(), True)
-
 @pytest.allure.severity(pytest.allure.severity_level.NORMAL)
-def test_gender_filter(app):
+def test_gender_filter(logout_login):
     with pytest.allure.step('Authorize to the application'):
-        login(app)
+        app = logout_login
         person_page = app.persons_page
         person_page.try_get_gender_male_checkbox().click()
         person_page.try_get_refresh_upper_button().click()
@@ -44,8 +40,8 @@ def test_gender_filter(app):
 
 
 @pytest.allure.severity(pytest.allure.severity_level.NORMAL)
-def test_type_filter(app):
-    login(app)
+def test_type_filter(logout_login):
+    app = logout_login
     person_page = app.persons_page
     person_page.try_get_type_applicant_checkbox().click()
     person_page.try_get_refresh_upper_button().click()
@@ -132,8 +128,8 @@ def test_type_filter(app):
 
 
 @pytest.allure.severity(pytest.allure.severity_level.NORMAL)
-def test_need_hostel_filter(app):
-    login(app)
+def test_need_hostel_filter(logout_login):
+    app = logout_login
     person_page = app.persons_page
     person_page.try_get_need_hostel_checkbox().click()
     person_page.try_get_refresh_upper_button().click()
@@ -150,8 +146,8 @@ def test_need_hostel_filter(app):
 
 
 @pytest.allure.severity(pytest.allure.severity_level.NORMAL)
-def test_bound_to_military_filter(app):
-    login(app)
+def test_bound_to_military_filter(logout_login):
+    app = logout_login
     person_page = app.persons_page
 
     person_page.try_get_burger_button().click()
@@ -173,8 +169,8 @@ def test_bound_to_military_filter(app):
 
 
 @pytest.allure.severity(pytest.allure.severity_level.NORMAL)
-def test_resident_filter(app):
-    login(app)
+def test_resident_filter(logout_login):
+    app = logout_login
     person_page = app.persons_page
     person_page.try_get_burger_button().click()
     person_page.try_get_add_to_table_resident_checkbox().click()

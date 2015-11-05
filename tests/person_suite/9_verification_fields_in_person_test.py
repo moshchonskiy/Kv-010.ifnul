@@ -35,11 +35,10 @@ def fill_extra_person_page_with_invalid_data(app, invalid_person):
 
 
 @pytest.allure.severity(pytest.allure.severity_level.MINOR)
-def test_verification_fields_in_person(app, invalid_person, screenshot):
+def test_verification_fields_in_person(logout_login, invalid_person, screenshot):
     with pytest.allure.step('The test verifies the correct operation of inspection fields.'):
         # login and follow up to person's page
-        app.ensure_logout()
-        app.login(User.Admin(), True)
+        app = logout_login
         assert_expression = app.persons_page.is_this_page
         screenshot.assert_and_get_screenshot(app, assert_expression)
 
