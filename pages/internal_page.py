@@ -17,7 +17,7 @@ class InternalPage(Page):
     PERSON_PAGE_LINK = (By.XPATH, "//a[@ui-sref='root.person.list']")
     ENROLLMENTS_PAGE_LINK = (By.XPATH, "//a[@ui-sref='root.enrolment.list']")
     DICTIONARIES_PAGE_LINK = (By.XPATH, "//a[@ui-sref='root.dictionaries']")
-    SPINNER_OFF = (By.XPATH, "//div[@id='spinnerDiv' and @style='display: none;']")
+
     SELECT_FIRST_SHOWED_YEAR = (By.XPATH, "//div//ul[@ng-model='date']//tbody//tr[1]//td[1]//button//span")
     # SELECT_ALL_VISIBLE_YEARS_MONTHS_OR_DAYS = (By.XPATH, "//ul[@ng-model='date']//tbody//tr//td//button//span[@class='ng-binding']")
     SELECT_ALL_VISIBLE_YEARS_MONTHS_OR_DAYS = (By.XPATH, "//ul[@ng-model='date']//tbody//tr//td//button//span")

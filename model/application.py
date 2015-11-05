@@ -66,10 +66,10 @@ class Application:
         if checkbox:
             lp.login_checkbox.click()
             lp.submit_button.click()
-            self.internal_page.is_element_present(self.internal_page.SPINNER_OFF)
+            self.internal_page.wait_until_page_generate()
         else:
             lp.submit_button.click()
-            self.internal_page.is_element_present(self.internal_page.SPINNER_OFF)
+            self.internal_page.wait_until_page_generate()
 
     def ensure_logged_in(self):
         """

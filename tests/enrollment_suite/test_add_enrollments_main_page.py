@@ -19,7 +19,7 @@ def add_enrollments(app):
         enrollment = app.enrollments_main_page.get_enrollment(name_of_json_file, name_of_dictionary)
         app.ensure_logout()
         app.login(User.Admin(), True)
-        app.internal_page.is_element_present(app.internal_page.SPINNER_OFF)
+        app.internal_page.wait_until_page_generate()
         app.internal_page.enrollments_page_link.click()
         assert app.enrollments_page.is_this_page
         app.enrollments_page.is_this_page.click()
@@ -29,6 +29,6 @@ def add_enrollments(app):
                                                enrollment.series_of_statements)
         enrollment_like_table = fill_enrollment.table_enrollment_from_json(name_of_json_file,
                                                                            name_of_dictionary)
-        app.internal_page.is_element_present(app.internal_page.SPINNER_OFF)
+        app.internal_page.wait_until_page_generate()
         enrollment_in_table = app.enrollments_page.search_enrollment_in_table()
         assert enrollment_like_table == enrollment_in_table

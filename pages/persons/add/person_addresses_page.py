@@ -55,7 +55,7 @@ class AddPersonAddressesPage(AddPersonPage):
         self.driver.find_element(*self.get_selector_for_current_block_and_level(self.BIRTH_PLACE_LEVEL_SELECTOR, address_level+1)).click()
         all_level_addresses = self.driver.find_elements(*self.get_selector_for_current_block_and_level(self.BIRTH_PLACE_SELECTOR, address_level+1))
         self.find_element_in_select(all_level_addresses, address).click()
-        self.is_element_present(self.SPINNER_OFF)
+        self.wait_until_page_generate()
 
     def select_registration_address(self, address, address_level):
         """
@@ -68,7 +68,7 @@ class AddPersonAddressesPage(AddPersonPage):
         self.driver.find_element(*self.get_selector_for_current_block_and_level(self.REG_ADDRESS_LEVEL_SELECTOR, address_level+1)).click()
         all_level_addresses = self.driver.find_elements(*self.get_selector_for_current_block_and_level(self.REG_ADDRESS_PLACE_SELECTOR, address_level+1))
         self.find_element_in_select(all_level_addresses, address).click()
-        self.is_element_present(self.SPINNER_OFF)
+        self.wait_until_page_generate()
 
     def set_zip_code(self, index):
         """

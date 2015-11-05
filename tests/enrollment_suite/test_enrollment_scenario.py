@@ -59,15 +59,15 @@ class TestEnrollmentScenario(object):
         with pytest.allure.step('Choose beginning and closing dates on the add enrollment page'):
             app.enrollments_main_page.set_date(app.enrollments_main_page.DATE_OF_ENTRY_STATEMENTS, enrollment.date_of_entry)
             app.enrollments_main_page.set_date(app.enrollments_main_page.DATE_CLOSING_STATEMENTS, enrollment.date_closing)
-            app.enrollments_main_page.is_element_present(app.enrollments_main_page.SPINNER_OFF)
+            app.enrollments_main_page.iwait_until_page_generate()
         with pytest.allure.step('Save data on the add enrollment page'):
             app.enrollments_main_page.button_save.click()
         with pytest.allure.step('Logout, login after adding enrollment'):
-            app.internal_page.is_element_present(app.internal_page.SPINNER_OFF)
+            app.internal_page.wait_until_page_generate()
             app.ensure_logout()
             app.login(User.Admin(), True)
         with pytest.allure.step('Search person which enrollment was added to on the enrollment page'):
-            app.internal_page.is_element_present(app.internal_page.SPINNER_OFF)
+            app.internal_page.wait_until_page_generate()
             app.internal_page.enrollments_page_link.click()
             app.enrollments_page.is_this_page
             actual_search = app.enrollments_page.search_enrollment(app.enrollments_page.SEARCH_METHOD["person_id"], values["search_by"]["valid_person_id"])
@@ -123,12 +123,12 @@ class TestEnrollmentScenario(object):
             # assert values["search_by"]["valid_person_id"] == int(actual_search[0])
         with pytest.allure.step('Delete enrollment button click'):
             app.enrollments_page.delete_button_on_first_row_click()
-            app.internal_page.is_element_present(app.internal_page.SPINNER_OFF)
+            app.internal_page.wait_until_page_generate()
         with pytest.allure.step('Logout, login after deleting enrollment'):
             app.ensure_logout()
             app.login(User.Admin(), True)
         with pytest.allure.step('Search person which enrollment was added to on the enrollment page'):
-            app.internal_page.is_element_present(app.internal_page.SPINNER_OFF)
+            app.internal_page.wait_until_page_generate()
             app.internal_page.enrollments_page_link.click()
             app.enrollments_page.is_this_page
             actual_search = app.enrollments_page.search_enrollment(app.enrollments_page.SEARCH_METHOD["person_id"], values["search_by"]["valid_person_id"])
