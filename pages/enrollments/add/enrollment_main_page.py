@@ -4,6 +4,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import Select
 from pages.internal_page import InternalPage
 from utils.fill_enrollment import FillEnrollment
+from selenium.webdriver.support import expected_conditions as EC
 
 __author__ = 'Stako'
 
@@ -15,6 +16,8 @@ class EnrollmentsMainPage(InternalPage):
     FIRST_PERSON = (By.XPATH, "//*[@class='table-responsive']//tbody[@class='pointer']//tr[1]/td[2]")
     SERIES_OF_STATEMENTS = (By.ID, "inputDocSeries")
     NUMBER_STATEMENTS = (By.ID, "inputdocNum")
+    NUMBER_WRONG_STATMENTS = (By.XPATH, "//input[contains(@class, 'ng-invalid-pattern')]")
+    NUMBER_RIGHT_STATMENTS = (By.XPATH, "//input[contains(@class, 'ng-valid-pattern')]")
     CHECKBOX_IS_STATE = (By.XPATH, ".//input[@ng-model='enrolment.isState']")
     CHECKBOX_IS_CONTRACT = (By.XPATH, ".//input[@ng-model='enrolment.isContract']")
     CHECKBOX_IS_PRIVILEGE = (By.XPATH, ".//input[@ng-model='enrolment.isPrivilege']")
@@ -41,6 +44,9 @@ class EnrollmentsMainPage(InternalPage):
     TEXT_FROM_GRADING_SCALE = (By.XPATH, ".//*[@id='markScale']//span[@class='ng-binding ng-scope']")
     CHECKBOX_DOCUMENT_IS_ORIGINAL = (By.XPATH, ".//*[@ng-init='enrolment.isOriginal = 0']")
     PRIORITY = (By.ID, "inputPriority")
+    PRIORITY_WRONG_UP   = (By.XPATH, "//input[contains(@class, 'ng-invalid-max')]")
+    PRIORITY_WRONG_DOWN   = (By.XPATH, "//input[contains(@class, 'ng-invalid-min')]")
+    PRIORITY_RIGHT   = (By.XPATH, "//input[contains(@class, 'ng-valid')]")
     STRUCTURAL_UNIT = (By.XPATH, ".//*[@class='col-xs-3']/*[@id='inputStructure']//i[@class='caret pull-right']")
     DATE_OF_CREATION_STATEMENTS = (By.ID, "evDate")
     DATE_OF_ENTRY_STATEMENTS = (By.ID, "begDate")
@@ -145,6 +151,33 @@ class EnrollmentsMainPage(InternalPage):
         self.is_element_visible(self.NUMBER_STATEMENTS)
         return self.driver.find_element(*self.NUMBER_STATEMENTS)
 
+    @property
+    def number_statements(self):
+        self.wait.until(EC.element_to_be_clickable(self.NUMBER_STATEMENTS))
+        return self.is_element_present(self.NUMBER_STATEMENTS)
+    @property
+    def try_get_number_statements(self):
+        self.wait.until(EC.element_to_be_clickable(self.NUMBER_STATEMENTS))
+        return self.driver.find_element(*self.NUMBER_STATEMENTS)
+
+    def certain_number_statements(self, c_number_statements):
+        try:
+            val = int(c_number_statements)
+            if val <= 0:
+                raise ValueError
+        except ValueError:
+            return self.driver.find_element(*self.NUMBER_WRONG_STATMENTS)
+        else:
+            return self.driver.find_element(*self.NUMBER_RIGHT_STATMENTS)
+
+    def certain_negative_number_statements(self):
+        self.wait.until(EC.element_to_be_clickable(self.NUMBER_WRONG_STATMENTS))
+        return self.driver.find_element(*self.NUMBER_WRONG_STATMENTS)
+
+    def certain_positive_number_statements(self):
+        self.wait.until(EC.element_to_be_clickable(self.NUMBER_RIGHT_STATMENTS))
+        return self.driver.find_element(*self.NUMBER_RIGHT_STATMENTS)
+
     def find_checkbox_is_state(self):
         self.is_element_visible(self.CHECKBOX_IS_STATE)
         return self.driver.find_element(*self.CHECKBOX_IS_STATE)
@@ -244,6 +277,15 @@ class EnrollmentsMainPage(InternalPage):
     @property
     def priority(self):
         return self.is_element_visible(self.PRIORITY)
+
+    @property
+    def try_get_priority(self):
+        return self.driver.find_element(*self.PRIORITY)
+
+    def certain_priority(self, c_priority):
+        if 0 < c_priority < 16:
+            return self.is_element_visible(self.PRIORITY_RIGHT)
+        return self.is_element_visible(self.PRIORITY_WRONG_DOWN) or self.is_element_visible(self.PRIORITY_WRONG_UP)
 
     @property
     def structural_unit(self):
