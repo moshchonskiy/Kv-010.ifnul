@@ -36,19 +36,21 @@ def get_remote_saucelabs_webdriver():
     return drivers
 
 
-@pytest.yield_fixture(scope="module", params=get_remote_saucelabs_webdriver())
+pytest.yield_fixture(scope="module", params=get_remote_saucelabs_webdriver())
 def generator_app_for_sauce(request, base_url):
     test_result = sauceclient.SauceClient(SAUCE_USER_NAME, SAUCE_API_KEY)
     driver = request.param
     yield Application(driver, base_url)
-    print("Link to your job: https://saucelabs.com/jobs/%s" % driver.session_id)
     try:
         if sys.exc_info() == (None, None, None):
             test_result.jobs.update_job(driver.session_id, passed=True)
         else:
             test_result.jobs.update_job(driver.session_id, passed=False)
     finally:
+        print('SauceOnDemandSessionID={} job-name={}'.format(str(driver.session_id), str(driver.session_id)))
         driver.quit()
+
+
 
 
 
