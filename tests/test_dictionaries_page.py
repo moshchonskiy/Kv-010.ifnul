@@ -8,21 +8,15 @@ from utils.table_ease_access import TestTable
 
 __author__ = 'Den'
 
-
-def login(app):
-    app.ensure_logout()
-    app.login(User.Admin(), True)
-
-
 def goto_dictionaries_page(app):
     assert app.internal_page.is_this_page
     app.internal_page.dictionaries_page_link.click()
     assert app.dictionaries_page.is_this_page
 
 
-def test_public_activity_dict(app):
+def test_public_activity_dict(logout_login):
+    app = logout_login
     dict_page = app.dictionaries_page
-    login(app)
     goto_dictionaries_page(app)
     select_value = dict_page.try_get_dictionaries_select_elem
     assert select_value

@@ -7,9 +7,8 @@ import sys
 import traceback
 
 @pytest.allure.severity(pytest.allure.severity_level.NORMAL)
-def test_delete_person_documents(app, person, screenshot):
-    app.ensure_logout()
-    app.login(User.Admin())
+def test_delete_person_documents(logout_login, person, screenshot):
+    app = logout_login
 
     with pytest.allure.step("Search person by surname before deleting"):
         person_page = app.persons_page

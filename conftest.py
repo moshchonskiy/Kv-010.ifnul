@@ -11,7 +11,6 @@ from model.application import Application
 from utils.data_provider_from_json import DataProviderJSON
 from utils.configuration import Configuration
 
-
 def pytest_addoption(parser):
     parser.addoption("--browser", action="store", default="firefox")
     # parser.addoption("--base_url", action="store", default="http://localhost:9000/")
