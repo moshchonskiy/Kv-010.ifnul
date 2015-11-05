@@ -4,7 +4,6 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import Select
 from pages.internal_page import InternalPage
 from utils.fill_enrollment import FillEnrollment
-from selenium.webdriver.support import expected_conditions as EC
 
 __author__ = 'Stako'
 
