@@ -31,12 +31,12 @@ class AddPersonPapersPage(AddPersonPage):
     @property
     def press_add_new_document_button(self):
         self.driver.find_element(*self.ADD_DOCUMENT_BUTTON).click()
-        self.is_element_present(self.SPINNER_OFF)
+        self.wait_until_page_generate()
 
     @property
     def press_save_new_document_button(self):
         self.driver.find_element(*self.SAVE_DOCUMENT_BUTTON).click()
-        self.is_element_present(self.SPINNER_OFF)
+        self.wait_until_page_generate()
 
     def document_type_select(self, document_type):
         """
@@ -113,7 +113,7 @@ class AddPersonPapersPage(AddPersonPage):
     def delete_first_document_in_page(self):
         if self.is_element_visible(self.DELETE_FIRST_DOCUMENT):
             self.driver.find_element(*self.DELETE_FIRST_DOCUMENT).click()
-            self.is_element_present(self.SPINNER_OFF)
+            self.wait_until_page_generate()
 
     def get_number_of_person_documents(self):
         return len(self.driver.find_elements(*self.DELETE_DOCUMENT_BUTTONS))
@@ -127,7 +127,7 @@ class AddPersonPapersPage(AddPersonPage):
         if elements:
             for element in elements:
                 element.click()
-                self.is_element_present(self.SPINNER_OFF)
+                self.wait_until_page_generate()
 
     def fill_in_document_page(self, person):
         """

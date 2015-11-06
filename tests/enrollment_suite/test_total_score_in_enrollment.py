@@ -32,7 +32,7 @@ def test_open_add_enrollment(app):
         app.enrollments_page.is_this_page
         app.enrollments_page.is_this_page.click()
         enr_page = app.enrollments_main_page
-        enr_page.is_element_present(app.person_current_view_page.SPINNER_OFF)
+        enr_page.wait_until_page_generate()
 
     with pytest.allure.step('Assert the text Додавання заяви on the page'):
         assert app.enrollments_main_page.get_text_add_enrollment().text == u"Додавання заяви"

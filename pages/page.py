@@ -1,5 +1,8 @@
 import abc
-from decorators.error_handling_dec import  ErrorHandlerPO
+
+from selenium.webdriver.common.by import By
+
+from decorators.error_handling_dec import ErrorHandlerPO
 
 __author__ = 'Evgen'
 
@@ -10,6 +13,9 @@ from selenium.webdriver.support.expected_conditions import *
 
 class Page(object):
     __metaclass__ = abc.ABCMeta
+
+    SPINNER_OFF = (By.XPATH, "//div[@id='spinnerDiv' and @style='display: none;']")
+
     def __init__(self, driver, base_url):
         self.driver = driver
         self.base_url = base_url
