@@ -65,7 +65,7 @@ def app(request, browser_type, base_url, jenkins_display):
 def logout_login(app):
     app.ensure_logout()
     app.login(User.Admin(), True)
-    app.internal_page.is_element_present(app.internal_page.SPINNER_OFF)
+    app.internal_page.wait_until_page_generate()
     yield app
 
 

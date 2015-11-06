@@ -177,7 +177,7 @@ class PersonsPage(InternalPage):
     def delete_first_person_in_page(self):
         if self.is_element_visible(self.DELETE_FIRST_PERSON_IN_TABLE):
             self.driver.find_element(*self.DELETE_FIRST_PERSON_IN_TABLE).click()
-            self.is_element_present(self.SPINNER_OFF)
+            self.wait_until_page_generate()
 
     @property
     def view_first_person_in_page(self):
@@ -196,7 +196,7 @@ class PersonsPage(InternalPage):
         :param given_surname: String parameter. Added persons surname.
         :return:
         """
-        self.is_element_present(self.SPINNER_OFF)
+        self.wait_until_page_generate()
         if len(self.rows_in_body) == 0:
             return None
         if self.is_element_present(self.SEARCHED_SURNAME):
@@ -479,7 +479,7 @@ class PersonsPage(InternalPage):
 
     def return_to_persons_main_page(self, app):
         app.internal_page.persons_page_link.click()
-        self.is_element_present(self.SPINNER_OFF)
+        self.wait_until_page_generate()
         self.try_get_refresh_upper_button().click()
 
     def search_person_by_surname(self, given_surname):
@@ -493,4 +493,4 @@ class PersonsPage(InternalPage):
         self.try_get_input_group().clear()
         self.try_get_input_group().send_keys(given_surname)
         self.try_get_ok_button().click()
-        self.is_element_present(self.SPINNER_OFF)
+        self.wait_until_page_generate()

@@ -16,11 +16,11 @@ def test_global_info_about_person(app, person):
     person_page.try_get_input_group().clear()
     person_page.try_get_input_group().send_keys(person.surname_ukr)
     person_page.try_get_ok_button().click()
-    app.person_current_view_page.is_element_present(app.person_current_view_page.SPINNER_OFF)
+    app.person_current_view_page.wait_until_page_generate()
     person_page.view_first_person_in_page
 
     # Is it current view person page?
-    app.person_current_view_page.is_element_present(app.person_current_view_page.SPINNER_OFF)
+    app.person_current_view_page.wait_until_page_generate()
     assert app.person_papers_view_page.get_text_person_profile() == u"Перегляд персони"
 
     personUkrFIO = person.surname_ukr + " " + person.first_name_ukr + " " + person.second_name_ukr
@@ -124,7 +124,7 @@ def test_exact_post_addres(app, person):
 
 def test_document_verify(app, person):
     app.person_main_view_page.person_document_button().click()
-    app.person_papers_view_page.is_element_present(app.person_papers_view_page.SPINNER_OFF)
+    app.person_papers_view_page.wait_until_page_generate()
 
     if(len(person.documents) > 0):
         assert app.person_papers_view_page.is_table_present() == True
@@ -167,7 +167,7 @@ def test_enrollment_verify(app):
     person_enrollment = app.person_enrollment_view_page
 
     app.person_main_view_page.person_enrollment_button().click()
-    person_enrollment.is_element_present(app.person_enrollment_view_page.SPINNER_OFF)
+    person_enrollment.wait_until_page_generate()
 
     # Валера должен сделать json который в себе хранит множество заявок
     enrollments = FillEnrollment()

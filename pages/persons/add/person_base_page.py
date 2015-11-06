@@ -28,7 +28,7 @@ class AddPersonPage(InternalPage):
     @property
     def click_next_button(self):
         self.driver.find_element(*self.NEXT_BUTTON).click()
-        self.is_element_present(self.SPINNER_OFF)
+        self.wait_until_page_generate()
 
     @property
     def click_back_button(self):
@@ -87,4 +87,4 @@ class AddPersonPage(InternalPage):
         :return:
         """
         self.driver.find_element(*self.SAVE_NEW_PERSON_BUTTON).click()
-        self.is_element_present(self.SPINNER_OFF)
+        self.wait_until_page_generate()
