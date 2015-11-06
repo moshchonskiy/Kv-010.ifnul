@@ -194,7 +194,7 @@ class EnrollmentsPage(InternalPage):
         :return: List with found values. It will return list with correct values if method find only correct ones.
         Opposite, it returns list with incorrect values.
         """
-        req = str(req).lower()
+        req = str(req.encode("utf-8")).lower()
         correct = list()
         incorrect = list()
         web_elem = self.wait.until(presence_of_element_located(self.IF_NEXT_BUTTON_DISABLED))

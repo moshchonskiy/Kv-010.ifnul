@@ -7,19 +7,16 @@ from utils.fill_enrollment import FillEnrollment
 __author__ = 'stako'
 
 
-# def test_add_enrollments(app):
-def add_enrollments(app):
+def add_enrollments(logout_login):
     """
     Method creates and adds the enrollment.
     :param app:
     """
     with pytest.allure.step('Test of add enrollment.'):
+        app = logout_login
         name_of_json_file = "fill_enrollment_main.json"
         name_of_dictionary = "fill_data_enrollment"
         enrollment = app.enrollments_main_page.get_enrollment(name_of_json_file, name_of_dictionary)
-        app.ensure_logout()
-        app.login(User.Admin(), True)
-        app.internal_page.wait_until_page_generate()
         app.internal_page.enrollments_page_link.click()
         assert app.enrollments_page.is_this_page
         app.enrollments_page.is_this_page.click()

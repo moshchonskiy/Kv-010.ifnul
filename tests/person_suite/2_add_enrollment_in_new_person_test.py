@@ -6,12 +6,10 @@ from utils.add_person_pattern import AddPersonPattern
 
 
 @pytest.allure.severity(pytest.allure.severity_level.CRITICAL)
-def test_add_enrollment_in_new_person(app, person, dictionary_with_json_files, screenshot):
+def test_add_enrollment_in_new_person(logout_login, person, dictionary_with_json_files, screenshot):
     with pytest.allure.step('Test of add enrollment in new person.'):
         add_person = AddPersonPattern()
-        app.ensure_logout()
-        app.login(User.Admin(), True)
-        app.internal_page.wait_until_page_generate()
+        app = logout_login
         assert app.persons_page.is_this_page
         add_person.search_person_by_surname(app, person.surname_ukr)
         app.internal_page.wait_until_page_generate()
