@@ -11,11 +11,11 @@ from model.application import Application
 from utils.data_provider_from_json import DataProviderJSON
 from utils.configuration import Configuration
 
-# def pytest_addoption(parser):
-#     parser.addoption("--browser", action="store", default="firefox")
-#     parser.addoption("--base_url", action="store", default="http://192.168.96.134:9000/")
-#     # parser.addoption("--base_url", action="store", default="http://194.44.198.221/")
-#     parser.addoption("--jenkins_display", action="store_true")
+def pytest_addoption(parser):
+    parser.addoption("--browser", action="store", default="firefox")
+    parser.addoption("--base_url", action="store", default="http://192.168.96.134:9000/")
+    # parser.addoption("--base_url", action="store", default="http://194.44.198.221/")
+    parser.addoption("--jenkins_display", action="store_true")
 
 
 @pytest.fixture(scope="session")
