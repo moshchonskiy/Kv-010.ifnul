@@ -5,7 +5,7 @@ import pytest
 def to_page(app):
     app.ensure_logout()
     app.login(User.Admin(), True)
-    app.internal_page.is_element_present(app.internal_page.SPINNER_OFF)
+    app.internal_page.wait_until_page_generate()
     app.internal_page.enrollments_page_link.click()
     app.enrollments_page.is_this_page
     app.enrollments_page.add_new_enrollment_button_click
