@@ -10,7 +10,7 @@ __author__ = 'Evgen'
 
 
 class TestSearchFilters(object):
-
+    @pytest.allure.severity(pytest.allure.severity_level.NORMAL)
     def test_search_by_person_id(self, app):
         with pytest.allure.step("Authorize on the site with admin credentials"):
             app.ensure_logged_in()
@@ -30,6 +30,7 @@ class TestSearchFilters(object):
                 self.print_simple_stacktrace()
                 raise
 
+    @pytest.allure.severity(pytest.allure.severity_level.NORMAL)
     def test_search_by_document_series(self, app):
         en_page = app.enrollments_page
         with pytest.allure.step("Searching by document's series"):
@@ -43,6 +44,7 @@ class TestSearchFilters(object):
                 self.print_simple_stacktrace()
                 raise
 
+    @pytest.allure.severity(pytest.allure.severity_level.NORMAL)
     def test_search_by_document_number(self, app):
         en_page = app.enrollments_page
         with pytest.allure.step("Searching by document's number"):
@@ -56,6 +58,7 @@ class TestSearchFilters(object):
                 self.print_simple_stacktrace()
                 raise
 
+    @pytest.allure.severity(pytest.allure.severity_level.NORMAL)
     def test_search_by_proposal_id(self, app):
         en_page = app.enrollments_page
         with pytest.allure.step("Searching by proposal ID"):
@@ -68,6 +71,7 @@ class TestSearchFilters(object):
                 self.print_simple_stacktrace()
                 raise
 
+    @pytest.allure.severity(pytest.allure.severity_level.NORMAL)
     def test_filter_by_budget(self, logout_login):
         app = logout_login
         with pytest.allure.step("Go to enrollments page"):
@@ -89,6 +93,7 @@ class TestSearchFilters(object):
                 self.print_simple_stacktrace()
                 raise
 
+    @pytest.allure.severity(pytest.allure.severity_level.NORMAL)
     def test_filter_by_not_budget(self, logout_login):
         app = logout_login
         with pytest.allure.step("Go to enrollments page"):
@@ -108,6 +113,7 @@ class TestSearchFilters(object):
                 self.print_simple_stacktrace()
                 raise
 
+    @pytest.allure.severity(pytest.allure.severity_level.NORMAL)
     def test_filter_by_privileges(self, logout_login):
         app = logout_login
         with pytest.allure.step("Go to enrollments page"):
@@ -127,6 +133,7 @@ class TestSearchFilters(object):
                 self.print_simple_stacktrace()
                 raise
 
+    @pytest.allure.severity(pytest.allure.severity_level.NORMAL)
     def test_filter_by_not_privileges(self, logout_login):
         app = logout_login
         with pytest.allure.step("Go to enrollments page"):
@@ -146,6 +153,7 @@ class TestSearchFilters(object):
                 self.print_simple_stacktrace()
                 raise
 
+    @pytest.allure.severity(pytest.allure.severity_level.NORMAL)
     def test_filter_mix(self, logout_login):
         app = logout_login
         with pytest.allure.step("Go to enrollments page"):
@@ -168,6 +176,7 @@ class TestSearchFilters(object):
                 self.print_simple_stacktrace()
                 raise
 
+    @pytest.allure.severity(pytest.allure.severity_level.NORMAL)
     def test_delete_filters(self, logout_login):
         app = logout_login
         with pytest.allure.step("Go to enrollments page"):

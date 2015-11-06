@@ -7,6 +7,7 @@ from utils.fill_enrollment import FillEnrollment
 __author__ = 'stako'
 
 
+@pytest.allure.severity(pytest.allure.severity_level.CRITICAL)
 def add_enrollments(logout_login):
     """
     Method creates and adds the enrollment.

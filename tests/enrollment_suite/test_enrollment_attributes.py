@@ -2,6 +2,7 @@ __author__ = 'vika'
 from model.user import User
 import pytest
 
+
 def to_page(app):
     app.ensure_logout()
     app.login(User.Admin(), True)
@@ -12,6 +13,7 @@ def to_page(app):
     app.enrollments_main_page.is_this_page
 
 
+@pytest.allure.severity(pytest.allure.severity_level.MINOR)
 def test_request_priority(app):
     to_page(app)
     en_p = app.enrollments_main_page
@@ -23,6 +25,7 @@ def test_request_priority(app):
             assert en_p.certain_priority(pr).text == en_p.priority.text
 
 
+@pytest.allure.severity(pytest.allure.severity_level.MINOR)
 def test_request_number_negative(app):
     to_page(app)
     en_p = app.enrollments_main_page
@@ -34,6 +37,8 @@ def test_request_number_negative(app):
             en_p.number_statements.send_keys(x)
             assert en_p.certain_negative_number_statements.text == en_p.number_statements.text
 
+
+@pytest.allure.severity(pytest.allure.severity_level.MINOR)
 def test_request_number_positive(app):
     to_page(app)
     en_p = app.enrollments_main_page
