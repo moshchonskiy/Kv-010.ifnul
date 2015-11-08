@@ -1,10 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import json
-import threading
-from model.user import User
-from utils.personCreator import PersonCreator
-from pyvirtualdisplay import Display
 
 __author__ = 'Evgen'
 
