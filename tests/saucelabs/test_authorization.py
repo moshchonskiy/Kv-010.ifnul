@@ -8,4 +8,4 @@ from model.user import User
 
 def test_valid_login(generator_app_for_sauce):
     with pytest.allure.step('Valid login test'):
-        assert generator_app_for_sauce.is_this_page
+        assert generator_app_for_sauce.login_page.is_this_page
