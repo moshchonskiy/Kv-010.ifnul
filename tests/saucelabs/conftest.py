@@ -38,13 +38,17 @@ def generator_app_for_sauce(request, base_url):
     driver = request.param
     yield Application(driver, base_url)
     print('SauceOnDemandSessionID={} job-name={}'.format(str(driver.session_id), "my_job"))
-    try:
-        if sys.exc_info() == (None, None, None):
-            test_result.jobs.update_job(driver.session_id, passed=True)
-        else:
-            test_result.jobs.update_job(driver.session_id, passed=False)
-    finally:
-        driver.quit()
+    driver.quit()
+
+    status = sys.exc_info() == (None, None, None)
+    test_result.jobs.update_job(driver.session_id, passed=status)
+    # try:
+    #     if sys.exc_info() == (None, None, None):
+    #         test_result.jobs.update_job(driver.session_id, passed=True)
+    #     else:
+    #         test_result.jobs.update_job(driver.session_id, passed=False)
+    # finally:
+    #     driver.quit()
 
 
 
