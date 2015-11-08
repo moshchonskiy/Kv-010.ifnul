@@ -40,6 +40,8 @@ def generator_app_for_sauce(request, base_url):
     driver.quit()
     test_result = sauceclient.SauceClient(SAUCE_USER_NAME, SAUCE_API_KEY)
     status = (sys.exc_info() == (None, None, None))
+    print(status)
+    print(sys.exc_info())
     test_result.jobs.update_job(driver.session_id, passed=status)
 
 
