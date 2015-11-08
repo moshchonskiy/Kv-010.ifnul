@@ -47,7 +47,7 @@ def generator_app_for_sauce(request, base_url):
         else:
             test_result.jobs.update_job(driver.session_id, passed=False)
     finally:
-        print('SauceOnDemandSessionID={} job-name={}'.format(str(driver.session_id), str(driver.session_id)))
+        print('SauceOnDemandSessionID={} job-name={}'.format(str(driver.session_id), "my_job"))
         driver.quit()
 
 
