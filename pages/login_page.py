@@ -12,7 +12,7 @@ class LoginPage(Page):
     PASSWORD_FIELD = (By.ID, "inputPassword")
     LOGIN_CHECKBOX = (By.XPATH, "//input[@type='checkbox']")
     SUBMIT_BUTTON = (By.XPATH, "//button[@type='submit']")
-    LOGIN_PAGE = (By.NAME, "auth")
+    LOGIN_PAGE = (By.XPATH, ".//*[@id='lst-ib']")
 
     @property
     def username_field(self):
