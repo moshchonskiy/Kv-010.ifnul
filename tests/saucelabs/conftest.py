@@ -10,6 +10,7 @@ from model.application import Application
 import os
 import sys
 import sauceclient
+import traceback
 
 SAUCE_USER_NAME = os.environ['SAUCE_USER_NAME']
 SAUCE_API_KEY = os.environ['SAUCE_API_KEY']
@@ -42,6 +43,7 @@ def generator_app_for_sauce(request, base_url):
     status = (sys.exc_info() == (None, None, None))
     print(status)
     print(sys.exc_info())
+    print(traceback.format_exc())
     test_result.jobs.update_job(driver.session_id, passed=status)
 
 
