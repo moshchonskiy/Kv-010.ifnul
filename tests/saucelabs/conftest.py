@@ -40,6 +40,7 @@ def generator_app_for_sauce(request, base_url):
     yield Application(driver, base_url)
     driver.quit()
     status = sys.exc_info() == (None, None, None)
+    print(status)
     test_result.jobs.update_job(driver.session_id, passed=status)
 
 
