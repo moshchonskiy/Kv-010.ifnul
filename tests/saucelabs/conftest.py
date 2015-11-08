@@ -38,6 +38,7 @@ def generator_app_for_sauce(request, base_url):
     driver = request.param
     print('SauceOnDemandSessionID={} job-name={}'.format(str(driver.session_id), request.param.name))
     yield Application(driver, base_url)
+    sys.stdout.flush()
     driver.quit()
     test_result = sauceclient.SauceClient(SAUCE_USER_NAME, SAUCE_API_KEY)
     print(sys.exc_info())
