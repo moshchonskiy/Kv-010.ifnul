@@ -5,3 +5,4 @@ pyvirtualdisplay
 selenium==2.47.3
 virtualenv==13.1.2
 sauceclient==0.2.1
+pytest-xdist
