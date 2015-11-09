@@ -21,17 +21,13 @@ def get_remote_browsers():
     for setting in different_settings:
         browsers.append({"platform":setting["platform"],
                        "browserName":setting["browser"],
-                       "version":setting["browser-version"]
-                       })
+                       "version":setting["browser-version"]})
     return browsers
 
 @pytest.yield_fixture(scope="module", params=get_remote_browsers())
 def app_for_sauce(request, base_url):
     sauce_url = "http://%s:%s@ondemand.saucelabs.com:80/wd/hub"
-    selenium_platform = request.param["platform"]
-    selenium_version = request.param["browser-version"]
-    selenium_browser = request.param["browser"]
-    desired_cap = {'browserName': selenium_browser, 'platform': selenium_platform, 'version': selenium_version}
+    desired_cap = request.param
     driver = webdriver.Remote(
             command_executor=sauce_url % (sauce_user_name, sauce_api_key),
             desired_capabilities=desired_cap)
