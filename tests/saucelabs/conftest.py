@@ -24,21 +24,28 @@ def get_remote_browsers():
                        "version":setting["browser-version"]})
     return browsers
 
-@pytest.fixture(scope="function", params=get_remote_browsers())
-def app_for_sauce(request, base_url):
+@pytest.fixture(scope="module", get_remote_browsers())
+def rem_driver(request):
     sauce_url = "http://%s:%s@ondemand.saucelabs.com:80/wd/hub"
     desired_cap = request.param
     driver = webdriver.Remote(
             command_executor=sauce_url % (sauce_user_name, sauce_api_key),
             desired_capabilities=desired_cap)
-    print('SauceOnDemandSessionID={} job-name={}'.format(str(driver.session_id), request.param['browserName']))
     def fin():
         driver.quit()
         test_result = sauceclient.SauceClient(sauce_user_name, sauce_api_key)
         status = (sys.exc_info() == (None, None, None))
         test_result.jobs.update_job(driver.session_id, passed=status)
     request.addfinalizer(fin)
-    return Application(driver, base_url)
+    return driver
+
+
+@pytest.fixture(scope="function")
+def app_for_sauce(base_url, rem_driver):
+
+    print('SauceOnDemandSessionID={} job-name={}'.format(str(rem_driver.session_id), "job"))
+
+    return Application(rem_driver, base_url)
 
 
 
