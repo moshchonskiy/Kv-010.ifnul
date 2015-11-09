@@ -33,7 +33,7 @@ def get_remote_saucelabs_webdriver():
     return drivers
 
 
-@pytest.yield_fixture(scope="module", params=get_remote_saucelabs_webdriver())
+@pytest.yield_fixture(scope="class", params=get_remote_saucelabs_webdriver())
 def generator_app_for_sauce(request, base_url):
     driver = request.param
     print('SauceOnDemandSessionID={} job-name={}'.format(str(driver.session_id), request.param.name))
