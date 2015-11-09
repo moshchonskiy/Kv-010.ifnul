@@ -7,7 +7,7 @@ from sauceclient import SauceClient
 import json
 
 browsers = json.loads(os.environ['SAUCE_ONDEMAND_BROWSERS'])
-
+print(browsers)
 
 username = os.environ['SAUCE_USER_NAME']
 access_key = os.environ['SAUCE_API_KEY']
