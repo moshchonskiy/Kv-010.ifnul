@@ -6,15 +6,18 @@ from selenium import webdriver
 from sauceclient import SauceClient
 
 
-browsers = [{
-    "platform": "Windows 10",
-    "browserName": "internet explorer",
-    "version": "11"
-}, {
-    "platform": "OS X 10.11",
-    "browserName": "safari",
-    "version": "8.1"
-}]
+
+
+def get_remote_saucelabs_webdriver():
+    SAUCE_ONDEMAND_BROWSERS = os.environ['SAUCE_ONDEMAND_BROWSERS']
+    different_settings = json.loads(SAUCE_ONDEMAND_BROWSERS)
+    browsers = []
+    for i, setting in enumerate(different_settings):
+        browsers[i] = {"platform":setting["platform"],
+                       "browserName":setting["browser"],
+                       "version":setting["browser-version"]
+                       }
+    return browsers
 
 username = "vadym-shevchenko"
 access_key = "3982144c-af02-4a5b-bcac-84b61589eb99"
