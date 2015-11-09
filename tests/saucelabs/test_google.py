@@ -10,11 +10,11 @@ def get_remote_saucelabs_webdriver():
     SAUCE_ONDEMAND_BROWSERS = os.environ['SAUCE_ONDEMAND_BROWSERS']
     different_settings = json.loads(SAUCE_ONDEMAND_BROWSERS)
     browsers = []
-    for i, setting in enumerate(different_settings):
-        browsers[i] = {"platform":setting["platform"],
+    for setting in different_settings:
+        browsers.append({"platform":setting["platform"],
                        "browserName":setting["browser"],
                        "version":setting["browser-version"]
-                       }
+                       })
     return browsers
 
 username = os.environ['SAUCE_USER_NAME']
