@@ -16,8 +16,8 @@ browsers = [{
     "version": "8.1"
 }]
 
-username = os.environ['SAUCE_USERNAME']
-access_key = os.environ['SAUCE_ACCESS_KEY']
+username = "vadym-shevchenko"
+access_key = "3982144c-af02-4a5b-bcac-84b61589eb99"
 
 # This decorator is required to iterate over browsers
 def on_platforms(platforms):
