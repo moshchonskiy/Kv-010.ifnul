@@ -25,7 +25,7 @@ def get_remote_saucelabs_webdriver():
         SELENIUM_PLATFORM = setting["platform"]
         SELENIUM_VERSION = setting["browser-version"]
         SELENIUM_BROWSER = setting["browser"]
-        desired_cap = {'browserName': SELENIUM_BROWSER, 'platform': SELENIUM_PLATFORM, 'version': SELENIUM_VERSION, 'name': "Kv-010.ifnul"}
+        desired_cap = {'browserName': SELENIUM_BROWSER, 'platform': SELENIUM_PLATFORM, 'version': SELENIUM_VERSION}
         driver = webdriver.Remote(
             command_executor=SAUCE_URL % (SAUCE_USER_NAME, SAUCE_API_KEY),
             desired_capabilities=desired_cap)
