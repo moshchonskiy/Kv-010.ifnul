@@ -24,7 +24,7 @@ def get_remote_browsers():
                        "version":setting["browser-version"]})
     return browsers
 
-@pytest.fixture(scope="module", get_remote_browsers())
+@pytest.fixture(scope="module", params=get_remote_browsers())
 def rem_driver(request):
     sauce_url = "http://%s:%s@ondemand.saucelabs.com:80/wd/hub"
     desired_cap = request.param
