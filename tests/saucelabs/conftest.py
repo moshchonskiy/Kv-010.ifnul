@@ -20,6 +20,7 @@ def get_remote_saucelabs_webdriver():
     SAUCE_ONDEMAND_BROWSERS = os.environ['SAUCE_ONDEMAND_BROWSERS']
     different_settings = json.loads(SAUCE_ONDEMAND_BROWSERS)
     SAUCE_URL = "http://%s:%s@ondemand.saucelabs.com:80/wd/hub"
+    drivers = []
     for setting in different_settings:
         SELENIUM_PLATFORM = setting["platform"]
         SELENIUM_VERSION = setting["browser-version"]
@@ -28,7 +29,8 @@ def get_remote_saucelabs_webdriver():
         driver = webdriver.Remote(
             command_executor=SAUCE_URL % (SAUCE_USER_NAME, SAUCE_API_KEY),
             desired_capabilities=desired_cap)
-        yield driver
+        drivers.append(driver)
+    return drivers
 
 
 @pytest.yield_fixture(scope="module", params=get_remote_saucelabs_webdriver())
