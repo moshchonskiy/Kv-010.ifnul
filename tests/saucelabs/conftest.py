@@ -26,7 +26,7 @@ def get_remote_browsers():
     return browsers
 
 @pytest.yield_fixture(scope="module", params=get_remote_browsers())
-def generator_app_for_sauce(request, base_url):
+def app_for_sauce(request, base_url):
     sauce_url = "http://%s:%s@ondemand.saucelabs.com:80/wd/hub"
     selenium_platform = request.param["platform"]
     selenium_version = request.param["browser-version"]
