@@ -5,6 +5,7 @@ import new
 from selenium import webdriver
 from sauceclient import SauceClient
 import json
+import pytest
 
 def get_remote_saucelabs_webdriver():
     SAUCE_ONDEMAND_BROWSERS = os.environ['SAUCE_ONDEMAND_BROWSERS']
@@ -42,16 +43,12 @@ class FirstSampleTest(unittest.TestCase):
            desired_capabilities=self.desired_capabilities)
 
     # verify google title
-    def test_google(self):
-        self.driver.get("http://www.google.com")
-        assert ("Yahho" in self.driver.title), "Unable to load google page"
+    def test_valid_login(self, app):
+        with pytest.allure.step('Valid login test'):
+            assert app.login_page.is_this_page
 
-    # type 'Sauce Labs' into google search box and submit
-    def test_google_search(self):
-        self.driver.get("http://www.google.com")
-        elem = self.driver.find_element_by_name("q")
-        elem.send_keys("Sauce Labs")
-        elem.submit()
+    def test_invalid(self, app):
+        assert app.login_page.is_this_page
 
     # tearDown runs after each test case
     def tearDown(self):
