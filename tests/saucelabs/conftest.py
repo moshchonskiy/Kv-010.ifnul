@@ -31,7 +31,7 @@ def app_for_sauce(request, base_url):
     driver = webdriver.Remote(
             command_executor=sauce_url % (sauce_user_name, sauce_api_key),
             desired_capabilities=desired_cap)
-    print('SauceOnDemandSessionID={} job-name={}'.format(str(driver.session_id), request.param.name))
+    print('SauceOnDemandSessionID={} job-name={}'.format(str(driver.session_id), request.param['browserName']))
     yield Application(driver, base_url)
     driver.quit()
     test_result = sauceclient.SauceClient(sauce_user_name, sauce_api_key)
