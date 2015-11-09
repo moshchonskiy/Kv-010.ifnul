@@ -24,7 +24,7 @@ def get_remote_browsers():
                        "version":setting["browser-version"]})
     return browsers
 
-@pytest.yield_fixture(scope="module", params=get_remote_browsers())
+@pytest.fixture(scope="module", params=get_remote_browsers())
 def app_for_sauce(request, base_url):
     sauce_url = "http://%s:%s@ondemand.saucelabs.com:80/wd/hub"
     desired_cap = request.param
