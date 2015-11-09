@@ -6,6 +6,15 @@ from selenium import webdriver
 from sauceclient import SauceClient
 
 
+browsers = [{
+    "platform": "Windows 10",
+    "browserName": "internet explorer",
+    "version": "11"
+}, {
+    "platform": "OS X 10.11",
+    "browserName": "safari",
+    "version": "8.1"
+}]
 
 
 def get_remote_saucelabs_webdriver():
