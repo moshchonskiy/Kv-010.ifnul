@@ -11,9 +11,9 @@ browsers = [{
     "browserName": "internet explorer",
     "version": "11"
 }, {
-    "platform": "OS X 10.10",
-    "browserName": "safari",
-    "version": "8.1"
+    "platform": "Windows 7",
+    "browserName": "internet explorer",
+    "version": "10"
 }]
 
 username = "vadym-shevchenko"
