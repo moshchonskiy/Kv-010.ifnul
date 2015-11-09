@@ -43,7 +43,7 @@ class FirstSampleTest(unittest.TestCase):
     # verify google title
     def test_google(self):
         self.driver.get("http://www.google.com")
-        assert ("Googl" in self.driver.title), "Unable to load google page"
+        assert ("Yahho" in self.driver.title), "Unable to load google page"
 
     # type 'Sauce Labs' into google search box and submit
     def test_google_search(self):
