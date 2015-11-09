@@ -6,21 +6,8 @@ from selenium import webdriver
 from sauceclient import SauceClient
 import json
 
-browsers = [{
-    "platform": "Windows 10",
-    "browserName": "internet explorer",
-    "version": "11"
-}, {
-    "platform": "Windows 7",
-    "browserName": "internet explorer",
-    "version": "10"
-}]
+browsers = json.loads(os.environ['SAUCE_ONDEMAND_BROWSERS'])
 
-
-def get_remote_saucelabs_webdriver():
-    SAUCE_ONDEMAND_BROWSERS = os.environ['SAUCE_ONDEMAND_BROWSERS']
-    different_settings = json.loads(SAUCE_ONDEMAND_BROWSERS)
-    return different_settings
 
 username = os.environ['SAUCE_USER_NAME']
 access_key = os.environ['SAUCE_API_KEY']
@@ -36,7 +23,7 @@ def on_platforms(platforms):
             module[name] = new.classobj(name, (base_class,), d)
     return decorator
 
-@on_platforms(get_remote_saucelabs_webdriver())
+@on_platforms(browsers)
 class FirstSampleTest(unittest.TestCase):
 
     # setUp runs before each test case
